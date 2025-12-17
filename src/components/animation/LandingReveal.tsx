@@ -1,3 +1,4 @@
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -172,6 +173,8 @@ export function LandingReveal() {
         const img = document.createElement("img");
         img.src = src;
         img.alt = alt;
+        img.decoding = "async";
+        img.loading = "lazy";
 
         item.appendChild(img);
         gallery.appendChild(item);
@@ -390,11 +393,21 @@ export function LandingReveal() {
       });
     };
 
-    run();
+    // Schedule build during idle to reduce jank when BE data arrives.
+    const idleHandle =
+      typeof (window as any).requestIdleCallback === "function"
+        ? (window as any).requestIdleCallback(run)
+        : window.setTimeout(run, 16);
+
     initializedRef.current = true;
     lastMenuSignatureRef.current = menuImagesSignature;
 
     return () => {
+      if (typeof (window as any).cancelIdleCallback === "function") {
+        (window as any).cancelIdleCallback(idleHandle);
+      } else {
+        window.clearTimeout(idleHandle as number);
+      }
       buildIdRef.current++;
       gallery.innerHTML = "";
       rotationTweenRef.current?.kill();
