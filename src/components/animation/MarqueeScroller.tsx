@@ -182,12 +182,11 @@ const FALLBACK_MARQUEE_SLIDES = [
       vi: "Khai vị nhẹ nhàng để đánh thức vị giác.",
       en: "Light starters to wake up your palate.",
     },
-    imageUrl:
-      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447128/salathai/marquee-slides/slide-4.jpg",
+    imageUrl: "/Marquee/slide-1.jpg",
     orderIndex: 1,
     isActive: true,
     createdAt: "2025-12-11T10:04:16.095Z",
-    updatedAt: "2025-12-11T10:04:16.095Z",
+    updatedAt: "2025-12-16T09:20:44.485Z",
   },
   {
     id: "fallback-slide-2",
@@ -198,8 +197,7 @@ const FALLBACK_MARQUEE_SLIDES = [
       vi: "Các món signature với hương vị đặc trưng.",
       en: "Signature dishes with our distinctive flavors.",
     },
-    imageUrl:
-      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447127/salathai/marquee-slides/slide-1.jpg",
+    imageUrl: "/Marquee/slide-2.jpg",
     orderIndex: 2,
     isActive: true,
     createdAt: "2025-12-11T09:59:12.270Z",
@@ -214,8 +212,7 @@ const FALLBACK_MARQUEE_SLIDES = [
       vi: "Món nhẹ, tươi mát cho buổi chiều.",
       en: "Light, refreshing bites for the afternoon.",
     },
-    imageUrl:
-      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447127/salathai/marquee-slides/slide-2.jpg",
+    imageUrl: "/Marquee/slide-3.jpg",
     orderIndex: 3,
     isActive: true,
     createdAt: "2025-12-11T10:02:15.818Z",
@@ -230,8 +227,7 @@ const FALLBACK_MARQUEE_SLIDES = [
       vi: "Kết thúc ngọt ngào với các món tráng miệng.",
       en: "Sweet endings to finish your meal.",
     },
-    imageUrl:
-      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447129/salathai/marquee-slides/slide-7.jpg",
+    imageUrl: "/Marquee/slide-4.jpg",
     orderIndex: 4,
     isActive: true,
     createdAt: "2025-12-11T10:04:51.284Z",
