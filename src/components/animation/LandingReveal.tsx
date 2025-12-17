@@ -64,6 +64,7 @@ export function LandingReveal() {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [navReady, setNavReady] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(false);
+  const [isLandingLocked, setIsLandingLocked] = useState(true);
   const closeMobileNav = () => setMobileNavOpen(false);
   const { data: landingMenuData } = useGetLandingMenuQuery();
   const menuItems = useMemo(() => {
@@ -208,8 +209,8 @@ export function LandingReveal() {
       if (!counterElement) return;
 
       let currentValue = 0;
-      const updateInterval = 300;
-      const maxDuration = 2000;
+      const updateInterval = 140;
+      const maxDuration = 1200;
       const endValue = 100;
       const startTime = Date.now();
 
@@ -243,7 +244,7 @@ export function LandingReveal() {
                       stagger: 0.075,
                     }
                   );
-                }, 100);
+                }, 80);
               },
             });
           }, -300);
@@ -368,6 +369,7 @@ export function LandingReveal() {
           setShowCenterLogo(true);
           setNavReady(true);
           setIsNavVisible(true);
+          setIsLandingLocked(false);
           attachInteractions(true);
         },
       });
@@ -453,19 +455,79 @@ export function LandingReveal() {
     if (typeof document === "undefined") return;
     const body = document.body;
     const html = document.documentElement;
+
     const prevBodyOverflow = body.style.overflow;
     const prevHtmlOverflow = html.style.overflow;
 
-    if (showReservationModal) {
+    const blockScroll = (e: Event) => {
+      if (!isLandingLocked || showReservationModal) return true;
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+
+    const blockKeys = (e: KeyboardEvent) => {
+      if (!isLandingLocked || showReservationModal) return;
+      const keys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "PageUp",
+        "PageDown",
+        "Home",
+        "End",
+        " ",
+      ];
+      if (keys.includes(e.key)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    const forceTop = () => {
+      if (isLandingLocked && !showReservationModal) {
+        window.scrollTo({ top: 0 });
+      }
+    };
+
+    const applyLock = () => {
+      html.classList.add("lr-lock");
+      body.classList.add("lr-lock");
       body.style.overflow = "hidden";
       html.style.overflow = "hidden";
+      window.scrollTo({ top: 0 });
+      window.addEventListener("wheel", blockScroll, { passive: false });
+      window.addEventListener("touchmove", blockScroll, { passive: false });
+      document.addEventListener("wheel", blockScroll, { passive: false });
+      document.addEventListener("touchmove", blockScroll, { passive: false });
+      window.addEventListener("keydown", blockKeys, { passive: false });
+      window.addEventListener("scroll", forceTop, { passive: false });
+      document.addEventListener("scroll", forceTop, { passive: false });
+    };
+
+    const removeLock = () => {
+      html.classList.remove("lr-lock");
+      body.classList.remove("lr-lock");
+      body.style.overflow = prevBodyOverflow || "";
+      html.style.overflow = prevHtmlOverflow || "";
+      window.removeEventListener("wheel", blockScroll);
+      window.removeEventListener("touchmove", blockScroll);
+      document.removeEventListener("wheel", blockScroll);
+      document.removeEventListener("touchmove", blockScroll);
+      window.removeEventListener("keydown", blockKeys);
+      window.removeEventListener("scroll", forceTop);
+      document.removeEventListener("scroll", forceTop);
+    };
+
+    if (showReservationModal || isLandingLocked) {
+      applyLock();
+    } else {
+      removeLock();
     }
 
-    return () => {
-      body.style.overflow = prevBodyOverflow;
-      html.style.overflow = prevHtmlOverflow;
-    };
-  }, [showReservationModal]);
+    return removeLock;
+  }, [showReservationModal, isLandingLocked]);
 
   return (
     <div
@@ -473,6 +535,20 @@ export function LandingReveal() {
       id="top"
       className={`${plusJakarta.variable} ${playfair.variable} landing-reveal relative h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-black`}
     >
+      <style>
+        {`
+          html.lr-lock, body.lr-lock {
+            overflow: hidden !important;
+            overscroll-behavior: none;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            inset: 0;
+            touch-action: none;
+          }
+          html, body { overflow-x: hidden; }
+        `}
+      </style>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-4 md:px-8 pt-4 md:pt-6 pb-2 transition-all duration-300 ease-out ${navVisibilityClass}`}
       >
@@ -506,11 +582,6 @@ export function LandingReveal() {
                   >
                     {tHeader("reservations")}
                   </button>
-                </div>
-                <div className="lr-nav-item">
-                  <a href="#contact-footer" className={navPill}>
-                    {tHeader("contact")}
-                  </a>
                 </div>
                 <div className="lr-nav-item">
                   <LanguageSwitcher className={navPill} />
@@ -579,14 +650,12 @@ export function LandingReveal() {
             >
               {tHeader("reservations")}
             </button>
-            <a
-              href="#contact-footer"
+            <div
+              className="nav-pill inline-flex w-full items-center justify-between rounded-full px-3 py-2 text-sm font-semibold text-neutral-900 shadow-sm backdrop-blur"
               onClick={closeMobileNav}
-              className="nav-pill inline-flex items-center justify-between rounded-full px-4 py-3 text-sm font-semibold uppercase text-neutral-900 shadow-sm backdrop-blur hover:shadow-md"
             >
-              {tHeader("contact")}
-            </a>
-            <LanguageSwitcher className="nav-pill inline-flex w-full items-center justify-between rounded-full px-3 py-2 text-sm font-semibold text-neutral-900 shadow-sm backdrop-blur" />
+              <LanguageSwitcher className="w-full text-left" />
+            </div>
           </div>
         </div>
       </div>

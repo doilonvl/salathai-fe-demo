@@ -24,6 +24,29 @@
   "languageSwitcher": {
     "ariaLabel": "Thay đổi ngôn ngữ"
   },
+  "footer": {
+    "title": "Ẩm thực Thái chuẩn vị tại Hà Nội",
+    "addressLine1": "Nhà hàng SalaThai",
+    "addressLine2": "20 Đường Thành, Hoàn Kiếm, Hà Nội, Việt Nam",
+    "phone": "0868 555 057",
+    "isOpenLabel": "Đang mở cửa",
+    "recommendation": "92% đề xuất (10 lượt đánh giá)",
+    "copyName": "Salathai",
+    "copyLocation": "Hà Nội • Việt Nam",
+    "copySince": "Từ 2015",
+    "hoursTitle": "Giờ hoạt động",
+    "openStatus": "Đang mở cửa",
+    "updatedLabel": "Cập nhật gần đây",
+    "hours": {
+      "mon": "Thứ Hai",
+      "tue": "Thứ Ba",
+      "wed": "Thứ Tư",
+      "thu": "Thứ Năm",
+      "fri": "Thứ Sáu",
+      "sat": "Thứ Bảy",
+      "sun": "Chủ Nhật"
+    }
+  },
   "reservation": {
     "sectionTitle": "Reservations",
     "heading": "Đặt bàn theo ý bạn",

@@ -24,6 +24,29 @@
   "languageSwitcher": {
     "ariaLabel": "Change language"
   },
+  "footer": {
+    "title": "Authentic Thai cuisine in Hanoi",
+    "addressLine1": "SalaThai restaurant",
+    "addressLine2": "20 Duong Thanh, Hoan Kiem, Ha Noi, Viet Nam",
+    "phone": "0868 555 057",
+    "isOpenLabel": "Open now",
+    "recommendation": "92% recommended (10 reviews)",
+    "copyName": "Salathai",
+    "copyLocation": "Hanoi • Vietnam",
+    "copySince": "Since 2015",
+    "hoursTitle": "Opening hours",
+    "openStatus": "Open now",
+    "updatedLabel": "Last updated recently",
+    "hours": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday",
+      "sun": "Sunday"
+    }
+  },
   "reservation": {
     "sectionTitle": "Reservations",
     "heading": "Book a table your way",

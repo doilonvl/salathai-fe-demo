@@ -1,8 +1,9 @@
-﻿/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/unsupported-syntax */
 "use client";
 
-import { useEffect, useRef, useCallback, useState, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type ParticleConfig = {
   gravity: number;
@@ -21,7 +22,7 @@ type FooterExplosionProps = {
   phone?: string;
   isOpenLabel?: string;
   recommendation?: string;
-  images?: string[]; // paths for particles
+  images?: string[];
   config?: Partial<ParticleConfig>;
 };
 
@@ -41,15 +42,38 @@ const defaultConfig: ParticleConfig = {
 };
 
 export function FooterExplosion({
-  title = "Authentic Thai Cuisine in Hanoi",
-  addressLine1 = "Trang · Nha hang",
-  addressLine2 = "20 Duong Thanh, Hoan Kiem, Hanoi, Vietnam",
-  phone = "0868 555 057",
-  isOpenLabel = "Dang mo cua",
-  recommendation = "92% de xuat (10 luot danh gia)",
+  title,
+  addressLine1,
+  addressLine2,
+  phone,
+  isOpenLabel,
+  recommendation,
   images = defaultImages,
   config: overrides = {},
 }: FooterExplosionProps) {
+  const t = useTranslations("footer");
+  const resolvedTitle = title ?? t("title");
+  const resolvedAddressLine1 = addressLine1 ?? t("addressLine1");
+  const resolvedAddressLine2 = addressLine2 ?? t("addressLine2");
+  const resolvedPhone = phone ?? t("phone");
+  const resolvedIsOpenLabel = isOpenLabel ?? t("isOpenLabel");
+  const resolvedRecommendation = recommendation ?? t("recommendation");
+  const copyName = t("copyName");
+  const copyLocation = t("copyLocation");
+  const copySince = t("copySince");
+  const hours = useMemo(
+    () => [
+      { day: t("hours.mon"), time: "10:00 - 22:00" },
+      { day: t("hours.tue"), time: "10:00 - 22:00" },
+      { day: t("hours.wed"), time: "10:00 - 22:00" },
+      { day: t("hours.thu"), time: "10:00 - 22:00" },
+      { day: t("hours.fri"), time: "10:00 - 22:00" },
+      { day: t("hours.sat"), time: "10:00 - 22:00" },
+      { day: t("hours.sun"), time: "10:00 - 22:00" },
+    ],
+    [t]
+  );
+
   const config = { ...defaultConfig, ...overrides };
   const footerRef = useRef<HTMLElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -57,19 +81,6 @@ export function FooterExplosion({
   const animationId = useRef<number | null>(null);
   const [isHoursOpen, setIsHoursOpen] = useState(false);
   const lastScrollY = useRef(0);
-
-  const hours = useMemo(
-    () => [
-      { day: "Thu Hai", time: "10:00 - 22:00" },
-      { day: "Thu Ba", time: "10:00 - 22:00" },
-      { day: "Thu Tu", time: "10:00 - 22:00" },
-      { day: "Thu Nam", time: "10:00 - 22:00" },
-      { day: "Thu Sau", time: "10:00 - 22:00" },
-      { day: "Thu Bay", time: "10:00 - 22:00" },
-      { day: "Chu Nhat", time: "10:00 - 22:00" },
-    ],
-    []
-  );
 
   const createParticles = useCallback(() => {
     const container = containerRef.current;
@@ -192,6 +203,7 @@ export function FooterExplosion({
     explosionTriggered.current = false;
     createParticles();
   }, [createParticles]);
+
   return (
     <footer
       ref={footerRef}
@@ -199,10 +211,10 @@ export function FooterExplosion({
     >
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-3 text-center">
         <p className="text-sm uppercase tracking-[0.12em] text-amber-200/80">
-          {addressLine1}
+          {resolvedAddressLine1}
         </p>
         <h1 className="cg-footer-title text-3xl md:text-4xl font-semibold">
-          {title}
+          {resolvedTitle}
         </h1>
         <a
           href="https://www.google.com/maps/search/?api=1&query=20%20Duong%20Thanh%2C%20Hoan%20Kiem%2C%20Hanoi%2C%20Vietnam"
@@ -210,13 +222,13 @@ export function FooterExplosion({
           rel="noreferrer"
           className="text-base md:text-lg text-white/80 underline-offset-4 hover:text-amber-200/90 hover:underline"
         >
-          {addressLine2}
+          {resolvedAddressLine2}
         </a>
         <a
-          href={`tel:${phone.replace(/\s+/g, "")}`}
+          href={`tel:${resolvedPhone.replace(/\s+/g, "")}`}
           className="text-base md:text-lg font-semibold text-white hover:text-emerald-200"
         >
-          {phone}
+          {resolvedPhone}
         </a>
         <div className="flex flex-wrap items-center justify-center gap-3 text-sm md:text-base mt-3">
           <button
@@ -224,14 +236,14 @@ export function FooterExplosion({
             onClick={() => setIsHoursOpen(true)}
             className="rounded-full border border-emerald-400/50 bg-emerald-500/10 px-4 py-2 text-emerald-300 hover:bg-emerald-500/20 transition"
           >
-            {isOpenLabel}
+            {resolvedIsOpenLabel}
           </button>
-          <span className="text-amber-200/80">{recommendation}</span>
+          <span className="text-amber-200/80">{resolvedRecommendation}</span>
         </div>
         <div className="cg-footer-copy mt-4 grid grid-cols-1 gap-3 text-sm uppercase text-white/70 text-center md:grid-cols-3 md:text-left">
-          <p>Salathai</p>
-          <p>Hanoi · Vietnam</p>
-          <p className="md:text-right">Since 2015</p>
+          <p>{copyName}</p>
+          <p>{copyLocation}</p>
+          <p className="md:text-right">{copySince}</p>
         </div>
       </div>
       <div ref={containerRef} className="cg-explosion-container" />
@@ -246,7 +258,7 @@ export function FooterExplosion({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-4 pt-4">
-              <h2 className="text-lg font-semibold">Gio hoat dong</h2>
+              <h2 className="text-lg font-semibold">{t("hoursTitle")}</h2>
               <button
                 type="button"
                 onClick={closeHours}
@@ -258,7 +270,7 @@ export function FooterExplosion({
             <div className="px-4 pb-4">
               <div className="flex items-center gap-2 text-sm text-emerald-600 font-medium">
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                Dang mo cua
+                {t("openStatus")}
               </div>
               <div className="mt-3 space-y-2">
                 {hours.map((item) => (
@@ -271,7 +283,9 @@ export function FooterExplosion({
                   </div>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-neutral-500">Cap nhat gan day</p>
+              <p className="mt-3 text-xs text-neutral-500">
+                {t("updatedLabel")}
+              </p>
             </div>
           </div>
         </div>
