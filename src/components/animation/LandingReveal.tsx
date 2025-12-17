@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { useGetLandingMenuQuery } from "@/services/api";
+import type { LandingMenuItem } from "@/types/landing";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -22,6 +23,27 @@ const playfair = Playfair_Display({
   weight: ["600", "700"],
   variable: "--font-landing-display",
 });
+
+const FALLBACK_LANDING_MENU: LandingMenuItem[] = Array.from(
+  { length: 15 },
+  (_, idx) => {
+    const orderIndex = idx + 1;
+    const id = `local-landing-menu-${orderIndex}`;
+    return {
+      id,
+      imageUrl: `/Menu/menu${orderIndex}.jpg`,
+      altText: `Landing menu ${orderIndex}`,
+      orderIndex,
+      isActive: true,
+      createdAt: "",
+      updatedAt: "",
+      altText_i18n: {
+        vi: `Thực đơn ${orderIndex}`,
+        en: `Landing menu ${orderIndex}`,
+      },
+    };
+  }
+);
 
 export function LandingReveal() {
   const tHeader = useTranslations("header");
@@ -45,7 +67,7 @@ export function LandingReveal() {
   const closeMobileNav = () => setMobileNavOpen(false);
   const { data: landingMenuData } = useGetLandingMenuQuery();
   const menuItems = useMemo(() => {
-    const items = landingMenuData?.items ?? [];
+    const items = landingMenuData?.items ?? FALLBACK_LANDING_MENU;
     const seen = new Set<string>();
     // Dedupe defensive: avoid duplicated images when data refetches or locale switches.
     return items.filter((item) => {
