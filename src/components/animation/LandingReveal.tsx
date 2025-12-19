@@ -25,28 +25,11 @@ const playfair = Playfair_Display({
   variable: "--font-landing-display",
 });
 
-const FALLBACK_LANDING_MENU: LandingMenuItem[] = Array.from(
-  { length: 15 },
-  (_, idx) => {
-    const orderIndex = idx + 1;
-    const id = `local-landing-menu-${orderIndex}`;
-    return {
-      id,
-      imageUrl: `/Menu/menu${orderIndex}.jpg`,
-      altText: `Landing menu ${orderIndex}`,
-      orderIndex,
-      isActive: true,
-      createdAt: "",
-      updatedAt: "",
-      altText_i18n: {
-        vi: `Thực đơn ${orderIndex}`,
-        en: `Landing menu ${orderIndex}`,
-      },
-    };
-  }
-);
-
-export function LandingReveal() {
+export function LandingReveal({
+  initialItems = [],
+}: {
+  initialItems?: LandingMenuItem[];
+}) {
   const tHeader = useTranslations("header");
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -67,9 +50,11 @@ export function LandingReveal() {
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isLandingLocked, setIsLandingLocked] = useState(true);
   const closeMobileNav = () => setMobileNavOpen(false);
-  const { data: landingMenuData } = useGetLandingMenuQuery();
+  const { data: landingMenuData } = useGetLandingMenuQuery(undefined, {
+    skip: initialItems.length > 0,
+  });
   const menuItems = useMemo(() => {
-    const items = landingMenuData?.items ?? FALLBACK_LANDING_MENU;
+    const items = (landingMenuData?.items ?? initialItems) as LandingMenuItem[];
     const seen = new Set<string>();
     // Dedupe defensive: avoid duplicated images when data refetches or locale switches.
     return items.filter((item) => {
@@ -131,6 +116,7 @@ export function LandingReveal() {
     setShowCenterLogo(false);
     setNavReady(false);
     setIsNavVisible(false);
+    setIsLandingLocked(true);
 
     // Trở lại tỉ lệ gần với bản gốc, cộng thêm thu nhỏ theo viewport cho responsive
     const baseScale =
@@ -463,6 +449,12 @@ export function LandingReveal() {
     navReady && isNavVisible
       ? "opacity-100 translate-y-0 pointer-events-auto"
       : "opacity-0 -translate-y-6 pointer-events-none";
+
+  useEffect(() => {
+    if (menuImages.length === 0) {
+      setIsLandingLocked(false);
+    }
+  }, [menuImages.length]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
