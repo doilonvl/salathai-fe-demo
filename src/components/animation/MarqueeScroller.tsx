@@ -29,8 +29,217 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const FALLBACK_MARQUEE_IMAGES: MarqueeImage[] = [];
-const FALLBACK_MARQUEE_SLIDES: MarqueeSlide[] = [];
+const FALLBACK_MARQUEE_IMAGES: MarqueeImage[] = [
+  {
+    id: "local-marquee-1",
+    imageUrl: "/Marquee/img-1.jpg",
+    altText: "marquee-1",
+    altText_i18n: { vi: "marquee-1", en: "marquee-1" },
+    orderIndex: 1,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-2",
+    imageUrl: "/Marquee/img-2.jpg",
+    altText: "marquee-2",
+    altText_i18n: { vi: "marquee-2", en: "marquee-2" },
+    orderIndex: 2,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-3",
+    imageUrl: "/Marquee/img-3.jpg",
+    altText: "marquee-3",
+    altText_i18n: { vi: "marquee-3", en: "marquee-3" },
+    orderIndex: 3,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-4",
+    imageUrl: "/Marquee/img-4.jpg",
+    altText: "marquee-4",
+    altText_i18n: { vi: "marquee-4", en: "marquee-4" },
+    orderIndex: 4,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-5",
+    imageUrl: "/Marquee/img-5.jpg",
+    altText: "marquee-5",
+    altText_i18n: { vi: "marquee-5", en: "marquee-5" },
+    orderIndex: 5,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-6",
+    imageUrl: "/Marquee/img-6.jpeg",
+    altText: "marquee-6",
+    altText_i18n: { vi: "marquee-6", en: "marquee-6" },
+    orderIndex: 6,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-7",
+    imageUrl: "/Marquee/img-7.jpg",
+    altText: "marquee-7",
+    altText_i18n: { vi: "marquee-7", en: "marquee-7" },
+    orderIndex: 7,
+    isPinned: true,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-8",
+    imageUrl: "/Marquee/img-8.png",
+    altText: "marquee-8",
+    altText_i18n: { vi: "marquee-8", en: "marquee-8" },
+    orderIndex: 8,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-9",
+    imageUrl: "/Marquee/img-9.jpg",
+    altText: "marquee-9",
+    altText_i18n: { vi: "marquee-9", en: "marquee-9" },
+    orderIndex: 9,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-10",
+    imageUrl: "/Marquee/img-10.jpg",
+    altText: "marquee-10",
+    altText_i18n: { vi: "marquee-10", en: "marquee-10" },
+    orderIndex: 10,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-11",
+    imageUrl: "/Marquee/img-11.jpg",
+    altText: "marquee-11",
+    altText_i18n: { vi: "marquee-11", en: "marquee-11" },
+    orderIndex: 11,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-12",
+    imageUrl: "/Marquee/img-12.png",
+    altText: "marquee-12",
+    altText_i18n: { vi: "marquee-12", en: "marquee-12" },
+    orderIndex: 12,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+  {
+    id: "local-marquee-13",
+    imageUrl: "/Marquee/img-13.png",
+    altText: "marquee-13",
+    altText_i18n: { vi: "marquee-13", en: "marquee-13" },
+    orderIndex: 13,
+    isPinned: false,
+    isActive: true,
+    createdAt: "",
+    updatedAt: "",
+  },
+];
+const FALLBACK_MARQUEE_SLIDES: MarqueeSlide[] = [
+  {
+    id: "fallback-slide-1",
+    tag: "Warm up",
+    tag_i18n: { vi: "Warm up", en: "Warm up" },
+    text: "Khai v ¯< nh §1 nhAÿng Ž` ¯Ÿ Ž`A­nh th ¯cc v ¯< giA­c.",
+    text_i18n: {
+      vi: "Khai v ¯< nh §1 nhAÿng Ž` ¯Ÿ Ž`A­nh th ¯cc v ¯< giA­c.",
+      en: "Light starters to wake up your palate.",
+    },
+    imageUrl:
+      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447128/salathai/marquee-slides/slide-4.jpg",
+    orderIndex: 1,
+    isActive: true,
+    createdAt: "2025-12-11T10:04:16.095Z",
+    updatedAt: "2025-12-11T10:04:16.095Z",
+  },
+  {
+    id: "fallback-slide-2",
+    tag: "Signature",
+    tag_i18n: { vi: "Signature", en: "Signature" },
+    text: "CA­c mA3n signature v ¯>i h’ø’­ng v ¯< Ž` §úc tr’øng.",
+    text_i18n: {
+      vi: "CA­c mA3n signature v ¯>i h’ø’­ng v ¯< Ž` §úc tr’øng.",
+      en: "Signature dishes with our distinctive flavors.",
+    },
+    imageUrl:
+      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447127/salathai/marquee-slides/slide-1.jpg",
+    orderIndex: 2,
+    isActive: true,
+    createdAt: "2025-12-11T09:59:12.270Z",
+    updatedAt: "2025-12-11T10:01:14.865Z",
+  },
+  {
+    id: "fallback-slide-3",
+    tag: "Refresh",
+    tag_i18n: { vi: "Refresh", en: "Refresh" },
+    text: "MA3n nh §1, t’ø’­i mA­t cho bu ¯i chi ¯?u.",
+    text_i18n: {
+      vi: "MA3n nh §1, t’ø’­i mA­t cho bu ¯i chi ¯?u.",
+      en: "Light, refreshing bites for the afternoon.",
+    },
+    imageUrl:
+      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447127/salathai/marquee-slides/slide-2.jpg",
+    orderIndex: 3,
+    isActive: true,
+    createdAt: "2025-12-11T10:02:15.818Z",
+    updatedAt: "2025-12-11T10:02:15.818Z",
+  },
+  {
+    id: "fallback-slide-4",
+    tag: "Dessert",
+    tag_i18n: { vi: "Dessert", en: "Dessert" },
+    text: "K §¨t thA§c ng ¯?t ngAÿo v ¯>i cA­c mA3n trA­ng mi ¯Øng.",
+    text_i18n: {
+      vi: "K §¨t thA§c ng ¯?t ngAÿo v ¯>i cA­c mA3n trA­ng mi ¯Øng.",
+      en: "Sweet endings to finish your meal.",
+    },
+    imageUrl:
+      "https://res.cloudinary.com/dz2mipnax/image/upload/v1765447129/salathai/marquee-slides/slide-7.jpg",
+    orderIndex: 4,
+    isActive: true,
+    createdAt: "2025-12-11T10:04:51.284Z",
+    updatedAt: "2025-12-11T10:04:51.284Z",
+  },
+];
 
 function pickLocalized(
   value: { vi?: string; en?: string } | undefined,
@@ -70,7 +279,13 @@ export function MarqueeScroller({
   }, []);
 
   const marqueeItems = useMemo(() => {
-    const items = (marqueeImagesData?.items ?? initialImages) as MarqueeImage[];
+    const items = (
+      marqueeImagesData?.items?.length
+        ? marqueeImagesData.items
+        : initialImages.length
+        ? initialImages
+        : FALLBACK_MARQUEE_IMAGES
+    ) as MarqueeImage[];
     if (!isMobile) {
       return items.map((item, idx) => ({
         ...item,
@@ -119,9 +334,13 @@ export function MarqueeScroller({
     return Math.min(6, marqueeItems.length - 1);
   }, [marqueeItems]);
   const slides = useMemo(() => {
-    const items = (marqueeSlidesData?.items ??
-      initialSlides ??
-      FALLBACK_MARQUEE_SLIDES) as MarqueeSlide[];
+    const items = (
+      marqueeSlidesData?.items?.length
+        ? marqueeSlidesData.items
+        : initialSlides.length
+        ? initialSlides
+        : FALLBACK_MARQUEE_SLIDES
+    ) as MarqueeSlide[];
     const localized = items.map((item) => ({
       ...item,
       tag: pickLocalized(item.tag_i18n, locale, item.tag),
@@ -156,33 +375,25 @@ export function MarqueeScroller({
     const shell = containerRef.current;
     if (!shell) return;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    const skipLenis = reduceMotion || window.innerWidth < 768;
-
-    const lenis = skipLenis ? null : new Lenis();
-    const onTick = (time: number) => lenis?.raf(time * 1000);
-
-    if (lenis) {
-      ScrollTrigger.scrollerProxy(document.body, {
-        scrollTop(value) {
-          return arguments.length ? lenis.scrollTo(value ?? 0) : lenis.scroll;
-        },
-        getBoundingClientRect() {
-          return {
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          };
-        },
-        pinType: document.body.style.transform ? "transform" : "fixed",
-      });
-      lenis.on("scroll", ScrollTrigger.update);
-      gsap.ticker.add(onTick);
-      gsap.ticker.lagSmoothing(0);
-    }
+    const lenis = new Lenis();
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        return arguments.length ? lenis.scrollTo(value ?? 0) : lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+      pinType: document.body.style.transform ? "transform" : "fixed",
+    });
+    const onTick = (time: number) => lenis.raf(time * 1000);
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
 
     const ctx = gsap.context(() => {
       const getColor = (name: string) =>
@@ -352,10 +563,8 @@ export function MarqueeScroller({
 
     return () => {
       ctx.revert();
-      if (lenis) {
-        gsap.ticker.remove(onTick);
-        lenis.destroy();
-      }
+      gsap.ticker.remove(onTick);
+      lenis.destroy();
       pinnedCloneRef.current?.remove();
       flipRef.current?.kill();
     };
