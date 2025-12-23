@@ -1,5 +1,7 @@
+import { getSiteUrl } from "@/lib/env";
+
 export function GET() {
-  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const baseUrl = getSiteUrl();
 
   const content = [
     "User-agent: *",
@@ -15,4 +17,3 @@ export function GET() {
     },
   });
 }
-

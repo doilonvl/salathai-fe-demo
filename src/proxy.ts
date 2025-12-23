@@ -32,6 +32,34 @@ export default async function proxy(req: NextRequest) {
     const refreshToken =
       req.cookies.get("refresh_token")?.value ||
       req.cookies.get("refresh_token_public")?.value;
+    const loginPath = locale === defaultLocale ? "/login" : `/${locale}/login`;
+
+    const redirectToLogin = () => {
+      const url = req.nextUrl.clone();
+      url.pathname = loginPath;
+      url.searchParams.set("next", pathname);
+      const redirectRes = NextResponse.redirect(url);
+      const isProd = process.env.NODE_ENV === "production";
+      const clear = (name: string, httpOnly: boolean) =>
+        redirectRes.cookies.set(name, "", {
+          httpOnly,
+          secure: isProd,
+          sameSite: "lax",
+          path: "/",
+          maxAge: 0,
+        });
+      clear("access_token", true);
+      clear("access_token_public", false);
+      clear("refresh_token", true);
+      clear("refresh_token_public", false);
+      if (!req.cookies.get("NEXT_LOCALE")) {
+        redirectRes.cookies.set("NEXT_LOCALE", locale, {
+          path: "/",
+          sameSite: "lax",
+        });
+      }
+      return redirectRes;
+    };
 
     // Try to refresh on the server if access is missing but refresh is present
     if (!accessToken && refreshToken) {
@@ -96,14 +124,23 @@ export default async function proxy(req: NextRequest) {
       }
     }
 
-    // Redirect only when neither access nor refresh is available or refresh failed
-    if (!accessToken && !refreshToken) {
-      const url = req.nextUrl.clone();
-      const loginPath =
-        locale === defaultLocale ? "/login" : `/${locale}/login`;
-      url.pathname = loginPath;
-      url.searchParams.set("next", pathname);
-      return NextResponse.redirect(url);
+    if (accessToken) {
+      try {
+        const meRes = await fetch(`${req.nextUrl.origin}/api/auth/me`, {
+          method: "GET",
+          headers: {
+            cookie: req.headers.get("cookie") ?? "",
+          },
+          cache: "no-store",
+        });
+        if (!meRes.ok) {
+          return redirectToLogin();
+        }
+      } catch (err) {
+        return redirectToLogin();
+      }
+    } else {
+      return redirectToLogin();
     }
   }
 

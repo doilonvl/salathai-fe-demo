@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { getLocale } from "next-intl/server";
 import { Caladea } from "next/font/google";
+import { getSiteUrl } from "@/lib/env";
 
 const caladea = Caladea({
   subsets: ["latin"],
@@ -10,11 +11,50 @@ const caladea = Caladea({
   variable: "--font-caladea",
 });
 
+const SITE_NAME = "Salathai";
+const SITE_DESCRIPTION =
+  "Salathai - Your gateway to authentic Thai cuisine and culture.";
+const OG_IMAGE_PATH = "/Marquee/slide-1.jpg";
+const siteUrl = getSiteUrl();
+const ogImageUrl = new URL(OG_IMAGE_PATH, siteUrl);
+
 export const metadata: Metadata = {
-  title: { default: "Salathai", template: "%s | Salathai" },
-  description: "Salathai - Your Gateway to Authentic Thai Cuisine and Culture",
+  title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(siteUrl),
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: siteUrl,
+    siteName: SITE_NAME,
+    type: "website",
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} Thai cuisine`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [ogImageUrl],
+  },
   icons: {
-    icon: [{ url: "/Logo/Logo1.png", rel: "icon", type: "image/jpeg" }],
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png", sizes: "96x96" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    shortcut: ["/favicon.ico"],
   },
 };
 

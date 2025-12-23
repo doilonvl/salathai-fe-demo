@@ -1,15 +1,85 @@
 import type { LandingMenuItem } from "@/types/landing";
 import type { MarqueeImage, MarqueeSlide } from "@/types/marquee";
+import type { Metadata } from "next";
 import { LandingReveal } from "@/components/animation/LandingReveal";
 import { MarqueeScroller } from "@/components/animation/MarqueeScroller";
 import ScrollStrokePage from "@/components/animation/ScrollStrokePage";
 import { ReservationForm } from "@/components/shared/reservation-form";
+import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
 
 export const revalidate = 300;
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
-  "http://localhost:5001/api/v1";
+const API_BASE = getApiBaseUrl();
+const SITE_NAME = "Salathai";
+const OG_IMAGE_PATH = "/Marquee/slide-1.jpg";
+
+function toAbsoluteUrl(url: string, base: string) {
+  if (!url) return url;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  return new URL(url, base).toString();
+}
+
+function getSeoCopy(locale: string) {
+  if (locale === "en") {
+    return {
+      title: "Authentic Thai Cuisine in Hanoi",
+      description:
+        "Salathai serves authentic Thai cuisine with fresh ingredients, balanced flavors, and a warm dining atmosphere in Hanoi.",
+    };
+  }
+  return {
+    title: "Authentic Thai Cuisine in Hanoi",
+    description:
+      "Salathai serves authentic Thai cuisine with fresh ingredients, balanced flavors, and a warm dining atmosphere in Hanoi.",
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const { title, description } = getSeoCopy(locale);
+  const siteUrl = getSiteUrl();
+  const canonicalPath = locale === "vi" ? "/" : `/${locale}`;
+  const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+  const ogImageUrl = new URL(OG_IMAGE_PATH, siteUrl).toString();
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        vi: new URL("/", siteUrl).toString(),
+        en: new URL("/en", siteUrl).toString(),
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: SITE_NAME,
+      type: "website",
+      locale: locale === "vi" ? "vi_VN" : "en_US",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${SITE_NAME} Thai cuisine`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+  };
+}
 
 async function fetchJson<T>(path: string, revalidateSeconds = 300) {
   const res = await fetch(`${API_BASE}${path}`, {
@@ -59,14 +129,86 @@ async function getMarqueeSSR(): Promise<{
   }
 }
 
-export default async function HomePage() {
+type HomePageProps = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function HomePage({ params }: HomePageProps) {
+  const { locale } = await params;
   const [landingMenu, marquee] = await Promise.all([
     getLandingMenuSSR(),
     getMarqueeSSR(),
   ]);
+  const siteUrl = getSiteUrl();
+  const canonicalPath = locale === "vi" ? "/" : `/${locale}`;
+  const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
+  const ogImageUrl = new URL(OG_IMAGE_PATH, siteUrl).toString();
+
+  const menuItems = landingMenu.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    item: {
+      "@type": "MenuItem",
+      name: item.altText || `Menu item ${index + 1}`,
+      image: toAbsoluteUrl(item.imageUrl, siteUrl),
+    },
+  }));
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: SITE_NAME,
+        alternateName: ["Sala Thai", "SalaThai", "Sala Thai Restaurant"],
+        inLanguage: locale === "vi" ? "vi-VN" : "en-US",
+      },
+      {
+        "@type": "CafeOrCoffeeShop",
+        "@id": `${siteUrl}/#cafe`,
+        name: SITE_NAME,
+        alternateName: ["Sala Thai", "SalaThai"],
+        url: siteUrl,
+        image: ogImageUrl,
+        servesCuisine: "Thai",
+        priceRange: "$$",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: canonicalUrl,
+          },
+        ],
+      },
+      ...(menuItems.length
+        ? [
+            {
+              "@type": "CollectionPage",
+              "@id": `${siteUrl}/#menu`,
+              name: "Menu",
+              url: canonicalUrl,
+              mainEntity: {
+                "@type": "ItemList",
+                itemListElement: menuItems,
+              },
+            },
+          ]
+        : []),
+    ],
+  };
 
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* Landing Reveal */}
       <section>
         <LandingReveal initialItems={landingMenu} />
