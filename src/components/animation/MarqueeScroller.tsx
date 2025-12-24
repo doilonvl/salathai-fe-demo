@@ -346,7 +346,6 @@ export function MarqueeScroller({
       tag: pickLocalized(item.tag_i18n, locale, item.tag),
       text: pickLocalized(item.text_i18n, locale, item.text),
     }));
-    // Ž? §śm b §śo t Ż`i thi Żźu 3 slide Ž` Żź layout  Żn Ž` Ż<nh k Żź c §ś khi admin t §_t b Ż>t.
     if (localized.length >= 3) return localized;
     const padded = [...localized];
     let idx = 0;

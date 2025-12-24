@@ -1,6 +1,6 @@
 ﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { Flip } from "gsap/Flip";
@@ -36,6 +36,7 @@ export function LandingReveal({
   const rotationTweenRef = useRef<gsap.core.Tween | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayImgRef = useRef<HTMLImageElement>(null);
+  const overlayAnimatingRef = useRef(false);
   const selectedImageRef = useRef<string | null>(null);
   const currentIndexRef = useRef<number | null>(null);
   const isReadyRef = useRef(false);
@@ -46,6 +47,7 @@ export function LandingReveal({
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [showCenterLogo, setShowCenterLogo] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [navReady, setNavReady] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isLandingLocked, setIsLandingLocked] = useState(true);
@@ -69,6 +71,54 @@ export function LandingReveal({
     [menuItems]
   );
   const menuImagesSignature = useMemo(() => menuImages.join("|"), [menuImages]);
+
+  const syncOverlayNavPosition = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const overlay = overlayRef.current;
+    const overlayImg = overlayImgRef.current;
+    if (!overlay || !overlayImg) return;
+    const rect = overlayImg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    overlay.style.setProperty("--lr-overlay-left", `${rect.left}px`);
+    overlay.style.setProperty(
+      "--lr-overlay-right",
+      `${Math.max(0, window.innerWidth - rect.right)}px`
+    );
+  }, []);
+
+  const queueOverlaySync = useCallback(() => {
+    if (overlayAnimatingRef.current) return;
+    window.requestAnimationFrame(syncOverlayNavPosition);
+  }, [syncOverlayNavPosition]);
+
+  const finishOverlayAnimation = useCallback(() => {
+    overlayAnimatingRef.current = false;
+    window.requestAnimationFrame(syncOverlayNavPosition);
+  }, [syncOverlayNavPosition]);
+
+  const closeOverlay = useCallback(() => {
+    const overlay = overlayRef.current;
+    const rotation = rotationTweenRef.current;
+    const items = galleryRef.current?.querySelectorAll(".lr-item");
+    selectedImageRef.current = null;
+    currentIndexRef.current = null;
+    overlayAnimatingRef.current = false;
+    setIsOverlayOpen(false);
+    if (overlay) {
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power1.out",
+        onComplete: () => {
+          overlay.classList.add("pointer-events-none");
+        },
+      });
+    }
+    if (items?.length) {
+      gsap.to(items, { scale: 1, duration: 0.2, overwrite: true });
+    }
+    if (rotation) rotation.resume();
+  }, []);
 
   const updateAltTexts = () => {
     const gallery = galleryRef.current;
@@ -124,7 +174,7 @@ export function LandingReveal({
     const vw = container.offsetWidth || window.innerWidth || 1200;
     const viewportScale = Math.min(
       1,
-      Math.max(vw < 640 ? 0.45 : 0.6, vw / 1200)
+      Math.max(vw < 640 ? 0.78 : 0.6, vw / 1200)
     );
     const sizeScale = baseScale * viewportScale;
     const itemWidth = (vw < 640 ? 165 : 175) * sizeScale;
@@ -317,14 +367,22 @@ export function LandingReveal({
           const overlay = overlayRef.current;
           const overlayImg = overlayImgRef.current;
           if (!overlay || !overlayImg) return;
+          overlayAnimatingRef.current = true;
           overlayImg.src = src;
           overlayImg.alt = menuItems[idx]?.altText || "Full menu";
           overlay.classList.remove("pointer-events-none", "opacity-0");
+          setIsOverlayOpen(true);
           gsap.to(overlay, { opacity: 1, duration: 0.2, ease: "power1.out" });
           gsap.fromTo(
             overlayImg,
             { scale: 0.6, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 0.35, ease: "power2.out" }
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.35,
+              ease: "power2.out",
+              onComplete: finishOverlayAnimation,
+            }
           );
         };
 
@@ -451,6 +509,27 @@ export function LandingReveal({
       : "opacity-0 -translate-y-6 pointer-events-none";
 
   useEffect(() => {
+    if (!isOverlayOpen) return;
+    const handleResize = () => queueOverlaySync();
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOverlayOpen, queueOverlaySync]);
+
+  useEffect(() => {
+    if (!isOverlayOpen) return;
+    const handleScroll = () => closeOverlay();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("wheel", handleScroll, { passive: true });
+    window.addEventListener("touchmove", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleScroll);
+      window.removeEventListener("touchmove", handleScroll);
+    };
+  }, [closeOverlay, isOverlayOpen]);
+
+  useEffect(() => {
     if (menuImages.length === 0) {
       setIsLandingLocked(false);
     }
@@ -538,7 +617,7 @@ export function LandingReveal({
     <div
       ref={containerRef}
       id="top"
-      className={`${plusJakarta.variable} ${playfair.variable} landing-reveal relative h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-black`}
+      className={`${plusJakarta.variable} ${playfair.variable} landing-reveal relative h-[100svh] md:h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-black`}
     >
       <style>
         {`
@@ -683,37 +762,21 @@ export function LandingReveal({
       <div
         ref={overlayRef}
         className="pointer-events-none fixed inset-0 z-[999] flex items-center justify-center bg-transparent opacity-0"
-        onClick={() => {
-          const overlay = overlayRef.current;
-          const rotation = rotationTweenRef.current;
-          const items = galleryRef.current?.querySelectorAll(".lr-item");
-          selectedImageRef.current = null;
-          currentIndexRef.current = null;
-          if (overlay) {
-            gsap.to(overlay, {
-              opacity: 0,
-              duration: 0.2,
-              ease: "power1.out",
-              onComplete: () => {
-                overlay.classList.add("pointer-events-none");
-              },
-            });
-          }
-          if (items?.length) {
-            gsap.to(items, { scale: 1, duration: 0.2, overwrite: true });
-          }
-          if (rotation) rotation.resume();
-        }}
+        onClick={closeOverlay}
       >
         <img
           ref={overlayImgRef}
           alt="Full menu"
           className="lr-overlay-img h-auto w-auto max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+          onLoad={() => {
+            if (!isOverlayOpen) return;
+            queueOverlaySync();
+          }}
           onClick={(e) => e.stopPropagation()}
         />
         <button
           type="button"
-          className="lr-nav-btn absolute left-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
+          className="lr-nav-btn lr-nav-btn-prev absolute left-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
           onClick={(e) => {
             e.stopPropagation();
             if (currentIndexRef.current === null || !menuImages.length) return;
@@ -725,10 +788,17 @@ export function LandingReveal({
             if (overlayImgRef.current) {
               const src = menuImages[nextIdx];
               const alt = menuItems[nextIdx]?.altText || "Full menu";
+              overlayAnimatingRef.current = true;
               gsap.fromTo(
                 overlayImgRef.current,
                 { opacity: 0, scale: 0.9 },
-                { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" }
+                {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.25,
+                  ease: "power2.out",
+                  onComplete: finishOverlayAnimation,
+                }
               );
               overlayImgRef.current.src = src;
               overlayImgRef.current.alt = alt;
@@ -739,7 +809,7 @@ export function LandingReveal({
         </button>
         <button
           type="button"
-          className="lr-nav-btn absolute right-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
+          className="lr-nav-btn lr-nav-btn-next absolute right-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
           onClick={(e) => {
             e.stopPropagation();
             if (currentIndexRef.current === null || !menuImages.length) return;
@@ -749,10 +819,17 @@ export function LandingReveal({
             if (overlayImgRef.current) {
               const src = menuImages[nextIdx];
               const alt = menuItems[nextIdx]?.altText || "Full menu";
+              overlayAnimatingRef.current = true;
               gsap.fromTo(
                 overlayImgRef.current,
                 { opacity: 0, scale: 0.9 },
-                { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" }
+                {
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.25,
+                  ease: "power2.out",
+                  onComplete: finishOverlayAnimation,
+                }
               );
               overlayImgRef.current.src = src;
               overlayImgRef.current.alt = alt;

@@ -129,6 +129,7 @@
     system-ui,
     sans-serif
   );
+  --lr-overlay-gap: 30px;
 }
 
 .landing-reveal p,
@@ -207,6 +208,18 @@
 /* Navigation buttons near overlay */
 .lr-nav-btn {
   transition: box-shadow 0.2s ease;
+}
+
+@media (min-width: 901px) {
+  .landing-reveal .lr-nav-btn-prev {
+    left: calc(var(--lr-overlay-left, 1%) - var(--lr-overlay-gap, 18px));
+    transform: translate(-50%, -50%);
+  }
+
+  .landing-reveal .lr-nav-btn-next {
+    right: calc(var(--lr-overlay-right, 1%) - var(--lr-overlay-gap, 18px));
+    transform: translate(50%, -50%);
+  }
 }
 
 @media (max-width: 900px) {
