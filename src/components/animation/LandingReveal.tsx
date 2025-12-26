@@ -8,10 +8,9 @@ import { CustomEase } from "gsap/CustomEase";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
-import { useTranslations } from "next-intl";
 import { useGetLandingMenuQuery } from "@/services/api";
 import type { LandingMenuItem } from "@/types/landing";
+import LandingHeader from "@/components/shared/LandingHeader";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,7 +29,6 @@ export function LandingReveal({
 }: {
   initialItems?: LandingMenuItem[];
 }) {
-  const tHeader = useTranslations("header");
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const rotationTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -44,14 +42,12 @@ export function LandingReveal({
   const initializedRef = useRef(false);
   const lastMenuSignatureRef = useRef<string | null>(null);
   const buildIdRef = useRef(0);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [showCenterLogo, setShowCenterLogo] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [navReady, setNavReady] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(false);
   const [isLandingLocked, setIsLandingLocked] = useState(true);
-  const closeMobileNav = () => setMobileNavOpen(false);
   const { data: landingMenuData } = useGetLandingMenuQuery(undefined, {
     skip: initialItems.length > 0,
   });
@@ -633,116 +629,11 @@ export function LandingReveal({
           html, body { overflow-x: hidden; }
         `}
       </style>
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-4 md:px-8 pt-4 md:pt-6 pb-2 transition-all duration-300 ease-out ${navVisibilityClass}`}
-      >
-        <style>
-          {`
-            .nav-pill {
-              background: rgba(255,255,255,0.9);
-              border: 1px solid rgba(0,0,0,0.08);
-            }
-          `}
-        </style>
-        {(() => {
-          const navPill =
-            "nav-pill inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase text-neutral-900 shadow-sm backdrop-blur transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-black/10";
-          return (
-            <>
-              {/* Desktop nav */}
-              <div className="hidden md:flex items-center gap-3">
-                <div className="lr-nav-item">
-                  <a href="#top" className={navPill}>
-                    {tHeader("home")}
-                  </a>
-                </div>
-              </div>
-              <div className="hidden md:flex items-center gap-3">
-                <div className="lr-nav-item">
-                  <button
-                    type="button"
-                    onClick={() => setShowReservationModal(true)}
-                    className={navPill}
-                  >
-                    {tHeader("reservations")}
-                  </button>
-                </div>
-                <div className="lr-nav-item">
-                  <LanguageSwitcher className={navPill} />
-                </div>
-              </div>
-
-              {/* Mobile nav trigger */}
-              <div className="flex md:hidden w-full justify-between items-center">
-                <div className="lr-nav-item">
-                  <a href="#top" className={navPill}>
-                    {tHeader("home")}
-                  </a>
-                </div>
-                <button
-                  type="button"
-                  aria-label="Toggle menu"
-                  className="lr-nav-item nav-pill inline-flex flex-col items-center justify-center gap-1 rounded-full px-3 py-2 text-xs font-semibold uppercase text-neutral-900 shadow-sm backdrop-blur transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-black/10"
-                  onClick={() => setMobileNavOpen((v) => !v)}
-                >
-                  <span className="block h-[2px] w-6 bg-neutral-800 rounded-sm"></span>
-                  <span className="block h-[2px] w-6 bg-neutral-800 rounded-sm"></span>
-                  <span className="block h-[2px] w-6 bg-neutral-800 rounded-sm"></span>
-                </button>
-              </div>
-            </>
-          );
-        })()}
-      </nav>
-      {/* Mobile sidebar */}
-      <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${
-          mobileNavOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <div
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-          onClick={closeMobileNav}
-        />
-        <div
-          className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-[radial-gradient(circle_at_30%_20%,#fff6e9_0%,#ffe1c6_50%,#f0c1a2_100%)] shadow-2xl transition-transform duration-300 ${
-            mobileNavOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="flex items-center justify-between px-4 py-4 border-b border-black/10">
-            <span className="text-sm font-semibold uppercase tracking-wide text-neutral-900">
-              Menu
-            </span>
-          </div>
-          <div className="flex flex-col gap-3 px-4 py-6">
-            <a
-              href="#top"
-              onClick={closeMobileNav}
-              className="nav-pill inline-flex items-center justify-between rounded-full px-4 py-3 text-sm font-semibold uppercase text-neutral-900 shadow-sm backdrop-blur hover:shadow-md"
-            >
-              {tHeader("home")}
-            </a>
-            <button
-              type="button"
-              onClick={() => {
-                setShowReservationModal(true);
-                closeMobileNav();
-              }}
-              className="nav-pill inline-flex items-center justify-between rounded-full px-4 py-3 text-sm font-semibold uppercase text-neutral-900 shadow-sm backdrop-blur hover:shadow-md"
-            >
-              {tHeader("reservations")}
-            </button>
-            <div
-              className="nav-pill inline-flex w-full items-center justify-between rounded-full px-3 py-2 text-sm font-semibold text-neutral-900 shadow-sm backdrop-blur"
-              onClick={closeMobileNav}
-            >
-              <LanguageSwitcher className="w-full text-left" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <LandingHeader
+        visibilityClass={navVisibilityClass}
+        homeHref="#top"
+        onOpenReservation={() => setShowReservationModal(true)}
+      />
       <div className="lr-loader absolute left-1/2 bottom-[15%] h-5 w-10 -translate-x-1/2 -translate-y-1/2 text-center">
         <p className="lr-loader-number block translate-y-5">0</p>
       </div>

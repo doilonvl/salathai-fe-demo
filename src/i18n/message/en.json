@@ -19,7 +19,8 @@
   "header": {
     "home": "Home",
     "reservations": "Reservations",
-    "contact": "Contact"
+    "contact": "Contact",
+    "showcase": "Showcase"
   },
   "languageSwitcher": {
     "ariaLabel": "Change language"
@@ -45,6 +46,46 @@
       "fri": "Friday",
       "sat": "Saturday",
       "sun": "Sunday"
+    }
+  },
+  "showcase": {
+    "labels": {
+      "type": "Type",
+      "field": "Category",
+      "date": "Year"
+    },
+    "cta": "Book a table",
+    "footerLeft": "Salathai Showcase",
+    "footerRight": "[ Click to browse ]",
+    "slides": {
+      "signature": {
+        "title": "Mango Sticky Rice",
+        "description": "Sweet coconut sticky rice with ripe mango slices.",
+        "type": "Dessert",
+        "field": "Sweet",
+        "date": "2025"
+      },
+      "greenCurry": {
+        "title": "Spicy Seafood Salad",
+        "description": "Fresh seafood tossed with herbs, chili, and lime dressing.",
+        "type": "Salad",
+        "field": "Spicy",
+        "date": "2024"
+      },
+      "somTum": {
+        "title": "Som Tum (Papaya Salad)",
+        "description": "Shredded green papaya, tomato, long beans, and lime-chili dressing.",
+        "type": "Salad",
+        "field": "Fresh",
+        "date": "2023"
+      },
+      "mangoSticky": {
+        "title": "Pad Thai Shrimp",
+        "description": "Rice noodles stir-fried with tamarind, shrimp, bean sprouts, and peanuts.",
+        "type": "Signature",
+        "field": "Main",
+        "date": "2025"
+      }
     }
   },
   "reservation": {

@@ -228,7 +228,10 @@ export default async function HomePage({ params }: HomePageProps) {
       </section>
 
       {/* Reservation form */}
-      <section className="mb-10 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0">
+      <section
+        id="reservation"
+        className="mb-10 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0"
+      >
         <div className="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto">
           <ReservationForm />
         </div>

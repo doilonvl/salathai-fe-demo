@@ -19,7 +19,8 @@
   "header": {
     "home": "Trang chủ",
     "reservations": "Đặt bàn",
-    "contact": "Liên hệ"
+    "contact": "Liên hệ",
+    "showcase": "Showcase"
   },
   "languageSwitcher": {
     "ariaLabel": "Thay đổi ngôn ngữ"
@@ -45,6 +46,46 @@
       "fri": "Thứ Sáu",
       "sat": "Thứ Bảy",
       "sun": "Chủ Nhật"
+    }
+  },
+  "showcase": {
+    "labels": {
+      "type": "Loại",
+      "field": "Nhóm",
+      "date": "Năm"
+    },
+    "cta": "Đặt bàn ngay",
+    "footerLeft": "Salathai Showcase",
+    "footerRight": "[ Nhấn để xem tiếp ]",
+    "slides": {
+      "signature": {
+        "title": "Xôi xoài cốt dừa",
+        "description": "Nếp dẻo, xoài chín vàng, rưới cốt dừa thơm mịn.",
+        "type": "Tráng miệng",
+        "field": "Ngọt dịu",
+        "date": "2025"
+      },
+      "greenCurry": {
+        "title": "Gỏi hải sản cay",
+        "description": "Hải sản tươi trộn rau thơm, ớt và nước mắm chua cay.",
+        "type": "Gỏi",
+        "field": "Cay",
+        "date": "2024"
+      },
+      "somTum": {
+        "title": "Gỏi đu đủ Som Tum",
+        "description": "Đu đủ bào sợi, cà chua, đậu đũa, vị chua cay mặn ngọt.",
+        "type": "Gỏi",
+        "field": "Tươi mát",
+        "date": "2023"
+      },
+      "mangoSticky": {
+        "title": "Pad Thai tôm",
+        "description": "Bánh phở xào me, tôm tươi, giá và lạc rang.",
+        "type": "Đặc trưng",
+        "field": "Món chính",
+        "date": "2025"
+      }
     }
   },
   "reservation": {
