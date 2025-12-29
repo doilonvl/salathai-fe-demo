@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { LandingReveal } from "@/components/animation/LandingReveal";
 import { MarqueeScroller } from "@/components/animation/MarqueeScroller";
 import ScrollStrokePage from "@/components/animation/ScrollStrokePage";
+import SocialEmbeds from "@/components/social/SocialEmbeds";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
 
@@ -235,6 +236,10 @@ export default async function HomePage({ params }: HomePageProps) {
         <div className="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto">
           <ReservationForm />
         </div>
+      </section>
+
+      <section className="mb-16 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0">
+        <SocialEmbeds />
       </section>
     </main>
   );
