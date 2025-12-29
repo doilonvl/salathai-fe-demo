@@ -217,7 +217,7 @@ export function FooterExplosion({
           {resolvedTitle}
         </h1>
         <a
-          href="https://www.google.com/maps/search/?api=1&query=20%20Duong%20Thanh%2C%20Hoan%20Kiem%2C%20Hanoi%2C%20Vietnam"
+          href="https://www.google.com/maps/place/SalaThai/@21.0322739,105.8464717,17z/data=!4m15!1m8!3m7!1s0x3135abbde1aa3907:0x627468645376f2a6!2zMjAgUC4gxJDGsOG7nW5nIFRow6BuaCwgQ-G7rWEgxJDDtG5nLCBIb8OgbiBLaeG6v20sIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!3b1!8m2!3d21.0322739!4d105.8464717!16s%2Fg%2F11j0vvwl41!3m5!1s0x3135ab14cf45d9c9:0x3609bf2b7bb2d4e8!8m2!3d21.0322739!4d105.8464717!16s%2Fg%2F11jsg8f_7d?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D"
           target="_blank"
           rel="noreferrer"
           className="text-base md:text-lg text-white/80 underline-offset-4 hover:text-amber-200/90 hover:underline"
