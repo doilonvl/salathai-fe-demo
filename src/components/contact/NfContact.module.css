@@ -79,7 +79,7 @@
 .copy h4 {
   font-size: 3rem;
   font-weight: 500;
-  line-height: 0.9;
+  line-height: 1.05;
 }
 
 .copy p,
@@ -115,6 +115,11 @@
 .char,
 .char > span {
   display: inline-block;
+}
+
+.wordBreakable {
+  display: inline;
+  word-break: break-all;
 }
 
 @media (max-width: 1000px) {

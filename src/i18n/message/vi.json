@@ -20,7 +20,7 @@
     "home": "Trang chủ",
     "reservations": "Đặt bàn",
     "contact": "Liên hệ",
-    "showcase": "Showcase"
+    "showcase": "Món đặc trưng"
   },
   "languageSwitcher": {
     "ariaLabel": "Thay đổi ngôn ngữ"
@@ -55,7 +55,7 @@
       "date": "Năm"
     },
     "cta": "Đặt bàn ngay",
-    "footerLeft": "Salathai Showcase",
+    "footerLeft": "Món đặc trưng Salathai",
     "footerRight": "[ Nhấn để xem tiếp ]",
     "slides": {
       "signature": {

@@ -15,8 +15,10 @@ const SUPPORTED_LOCALES: Locale[] = ["vi", "en"];
 
 export default function LanguageSwitcher({
   className,
+  onLocaleChange,
 }: {
   className?: string;
+  onLocaleChange?: (locale: Locale) => void;
 }) {
   const t = useTranslations("languageSwitcher");
   const router = useRouter();
@@ -67,7 +69,10 @@ export default function LanguageSwitcher({
   }, [searchParams]);
 
   const goLocale = (target: Locale) => {
-    if (target === locale) return;
+    if (target === locale) {
+      setIsOpen(false);
+      return;
+    }
 
     const hrefBase = { pathname };
     const hrefWithQuery = queryObject
@@ -85,10 +90,11 @@ export default function LanguageSwitcher({
       }, 0);
     }
     setIsOpen(false);
+    onLocaleChange?.(target);
   };
 
   const flagByLocale: Record<Locale, { label: string; flag: string }> = {
-    vi: { label: "Tiếng Việt", flag: "/Flag/vn.png" },
+    vi: { label: "Ti\u1ebfng Vi\u1ec7t", flag: "/Flag/vn.png" },
     en: { label: "English", flag: "/Flag/usa.png" },
   };
 
@@ -147,3 +153,4 @@ export default function LanguageSwitcher({
     </div>
   );
 }
+

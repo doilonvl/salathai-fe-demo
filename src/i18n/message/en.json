@@ -20,7 +20,7 @@
     "home": "Home",
     "reservations": "Reservations",
     "contact": "Contact",
-    "showcase": "Showcase"
+    "showcase": "Signature"
   },
   "languageSwitcher": {
     "ariaLabel": "Change language"
@@ -55,7 +55,7 @@
       "date": "Year"
     },
     "cta": "Book a table",
-    "footerLeft": "Salathai Showcase",
+    "footerLeft": "Salathai Signature",
     "footerRight": "[ Click to browse ]",
     "slides": {
       "signature": {

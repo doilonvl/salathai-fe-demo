@@ -33,6 +33,7 @@ type ScrambleOptions = {
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
 const DEFAULTS = { duration: 0.25, charDelay: 50, stagger: 50 };
 const CHAR_SELECTOR = `.${styles.char} > span`;
+const BREAKABLE_WORD_MIN = 18;
 
 function splitToChars(element: HTMLElement): ScrambleInstance {
   const original = element.dataset.nfOriginalText ?? element.textContent ?? "";
@@ -52,7 +53,10 @@ function splitToChars(element: HTMLElement): ScrambleInstance {
     }
 
     const word = document.createElement("span");
-    word.className = styles.word;
+    const isBreakable = part.length >= BREAKABLE_WORD_MIN || part.includes("@");
+    word.className = isBreakable
+      ? `${styles.word} ${styles.wordBreakable}`
+      : styles.word;
 
     for (const ch of part) {
       const charWrap = document.createElement("span");
@@ -70,6 +74,7 @@ function splitToChars(element: HTMLElement): ScrambleInstance {
   element.appendChild(fragment);
 
   wordSpans.forEach((word) => {
+    if (word.classList.contains(styles.wordBreakable)) return;
     const { width } = word.getBoundingClientRect();
     if (width > 0) {
       word.style.width = `${width}px`;
@@ -86,6 +91,29 @@ function splitToChars(element: HTMLElement): ScrambleInstance {
   };
 
   return { element, chars, revert };
+}
+
+function updateWordWidths(element: HTMLElement) {
+  const words = Array.from(
+    element.querySelectorAll<HTMLSpanElement>(`.${styles.word}`)
+  );
+  if (!words.length) return;
+
+  words.forEach((word) => {
+    if (word.classList.contains(styles.wordBreakable)) {
+      word.style.width = "";
+      return;
+    }
+    word.style.width = "auto";
+  });
+
+  words.forEach((word) => {
+    if (word.classList.contains(styles.wordBreakable)) return;
+    const { width } = word.getBoundingClientRect();
+    if (width > 0) {
+      word.style.width = `${width}px`;
+    }
+  });
 }
 
 function scrambleChar(
@@ -237,8 +265,26 @@ export default function NfContact() {
       instances.push(instance);
     });
 
+    const updateAllWordWidths = () => {
+      elements.forEach((el) => updateWordWidths(el));
+    };
+
+    let resizeRaf: number | null = null;
+    const handleResize = () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(updateAllWordWidths);
+    };
+
+    updateAllWordWidths();
+    window.addEventListener("resize", handleResize);
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(updateAllWordWidths);
+    }
+
     return () => {
       instances.forEach((instance) => instance?.revert());
+      window.removeEventListener("resize", handleResize);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
     };
   }, []);
 
@@ -253,7 +299,7 @@ export default function NfContact() {
         loop
         playsInline
       >
-        <source src="/contact/contact-hero.mp4" type="video/mp4" />
+        <source src="/contact/contact-hero2.mp4" type="video/mp4" />
       </video>
 
       <div className={styles.copy}>

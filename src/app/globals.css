@@ -132,6 +132,10 @@
   --lr-overlay-gap: 30px;
 }
 
+.landing-reveal .nav-pill {
+  font-family: inherit;
+}
+
 .landing-reveal p,
 .landing-reveal a {
   text-decoration: none;

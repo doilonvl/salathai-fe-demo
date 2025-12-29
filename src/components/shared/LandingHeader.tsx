@@ -194,12 +194,10 @@ export default function LandingHeader({
             >
               {tHeader("showcase")}
             </a>
-            <div
-              className="nav-pill inline-flex w-full items-center justify-between rounded-full px-3 py-2 text-sm font-semibold text-neutral-900 shadow-sm backdrop-blur"
-              onClick={closeMobileNav}
-            >
-              <LanguageSwitcher className="w-full text-left" />
-            </div>
+            <LanguageSwitcher
+              className="w-full justify-between px-4 py-3 text-sm h-auto"
+              onLocaleChange={closeMobileNav}
+            />
           </div>
         </div>
       </div>
