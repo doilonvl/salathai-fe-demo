@@ -35,6 +35,7 @@
     "copyName": "Salathai",
     "copyLocation": "Hà Nội • Việt Nam",
     "copySince": "Từ 2015",
+    "privacyLink": "Chính sách bảo mật",
     "hoursTitle": "Giờ hoạt động",
     "openStatus": "Đang mở cửa",
     "updatedLabel": "Cập nhật gần đây",
@@ -136,5 +137,166 @@
     "description": "Trang bạn đang tìm không tồn tại hoặc đã được di chuyển.",
     "ctaHome": "Về trang chủ",
     "hint": "Kiểm tra lại đường dẫn hoặc quay về trang chủ."
+  },
+  "privacy": {
+    "metaTitle": "Chính sách bảo mật | SalaThai",
+    "metaDescription": "Tìm hiểu cách SalaThai thu thập, sử dụng và bảo vệ dữ liệu khi bạn truy cập salathai.com.vn hoặc liên hệ đặt bàn.",
+    "title": "Chính sách bảo mật",
+    "tagline": "Chúng tôi bảo vệ thông tin của bạn khi bạn truy cập salathai.com.vn hoặc liên hệ đặt bàn, hỏi thông tin menu hay sự kiện.",
+    "updated": "Cập nhật lần cuối: 02/12/2025",
+    "heroHighlights": [
+      "Không bán dữ liệu",
+      "Mục đích rõ ràng",
+      "Bạn toàn quyền kiểm soát",
+      "Bảo mật nhiều lớp"
+    ],
+    "sectionEyebrow": "Bảo mật tại SalaThai",
+    "quickPoints": [
+      {
+        "title": "Mục đích rõ ràng",
+        "description": "Chúng tôi chỉ thu thập thông tin cần thiết để phản hồi, xác nhận đặt bàn/đặt món và cải thiện trải nghiệm.",
+        "icon": "ShieldCheck"
+      },
+      {
+        "title": "Không bán dữ liệu",
+        "description": "Chúng tôi không bán thông tin cá nhân. Việc chia sẻ (nếu có) chỉ với nhà cung cấp hỗ trợ vận hành.",
+        "icon": "FileSearch"
+      },
+      {
+        "title": "Bạn toàn quyền kiểm soát",
+        "description": "Bạn có thể yêu cầu xem, chỉnh sửa, xóa dữ liệu hoặc rút lại đồng ý bất kỳ lúc nào.",
+        "icon": "UserCheck"
+      },
+      {
+        "title": "Bảo mật nhiều lớp",
+        "description": "Giới hạn truy cập nội bộ và áp dụng biện pháp kỹ thuật, tổ chức để giảm rủi ro.",
+        "icon": "LockKeyhole"
+      }
+    ],
+    "sections": [
+      {
+        "id": "scope",
+        "title": "1. Phạm vi & đối tượng áp dụng",
+        "summary": "Chính sách này áp dụng cho mọi thông tin SalaThai thu thập khi bạn tương tác với chúng tôi.",
+        "items": [
+          "Áp dụng khi bạn truy cập salathai.com.vn, điền form liên hệ/đặt bàn, gọi điện, email, nhắn tin mạng xã hội hoặc trao đổi trực tiếp tại nhà hàng.",
+          "Khi sử dụng website hoặc cung cấp thông tin, bạn đồng ý với các điều khoản trong chính sách này."
+        ],
+        "icon": "Globe2"
+      },
+      {
+        "id": "data",
+        "title": "2. Thông tin chúng tôi thu thập",
+        "items": [
+          "Thông tin bạn cung cấp: họ tên, email, số điện thoại, nội dung yêu cầu, thông tin đặt bàn/đặt món, phản hồi hoặc đánh giá.",
+          "Thông tin kỹ thuật tự động: địa chỉ IP, trình duyệt, thiết bị, hệ điều hành, trang truy cập/thoát, thời gian xem trang và thao tác cơ bản.",
+          "Cookie và công nghệ tương tự để ghi nhớ tùy chọn và đo lường hiệu quả website."
+        ],
+        "icon": "Sparkles"
+      },
+      {
+        "id": "use",
+        "title": "3. Mục đích sử dụng dữ liệu",
+        "items": [
+          "Phản hồi yêu cầu, gửi xác nhận và theo dõi đặt bàn hoặc dịch vụ.",
+          "Cải thiện nội dung, tốc độ và trải nghiệm trên salathai.com.vn.",
+          "Gửi thông tin quan trọng (ví dụ: thay đổi giờ mở cửa, cập nhật menu, xác nhận đặt bàn).",
+          "Phát hiện và ngăn chặn gian lận hoặc lạm dụng hệ thống."
+        ],
+        "icon": "Bell"
+      },
+      {
+        "id": "cookies",
+        "title": "4. Cookies & công nghệ theo dõi",
+        "items": [
+          "Chúng tôi dùng cookie để ghi nhớ tùy chọn, đo lường tương tác và tối ưu hiệu suất website.",
+          "Bạn có thể tắt cookie trong cài đặt trình duyệt; một số tính năng có thể bị hạn chế khi cookie bị tắt."
+        ],
+        "icon": "Cookie"
+      },
+      {
+        "id": "sharing",
+        "title": "5. Chia sẻ thông tin",
+        "items": [
+          "Chúng tôi không bán dữ liệu cá nhân cho bên thứ ba.",
+          "Có thể chia sẻ với nhà cung cấp dịch vụ (lưu trữ web, phân tích, thanh toán, công cụ marketing) để vận hành và cải thiện website.",
+          "Có thể chia sẻ với đối tác hoặc nhà thầu liên quan đến đặt bàn/dịch vụ khi cần thiết, với cam kết bảo mật.",
+          "Tuân thủ yêu cầu của cơ quan có thẩm quyền khi pháp luật yêu cầu."
+        ],
+        "icon": "FileSearch"
+      },
+      {
+        "id": "security",
+        "title": "6. Bảo mật dữ liệu",
+        "items": [
+          "Áp dụng biện pháp kỹ thuật và tổ chức để ngăn truy cập, thay đổi hoặc tiết lộ trái phép.",
+          "Giới hạn quyền truy cập nội bộ đối với dữ liệu cá nhân dựa trên vai trò và nhu cầu công việc.",
+          "Dù nỗ lực bảo mật, không có phương thức nào an toàn tuyệt đối trên Internet."
+        ],
+        "icon": "Shield"
+      },
+      {
+        "id": "retention",
+        "title": "7. Lưu trữ dữ liệu",
+        "items": [
+          "Chỉ lưu trữ dữ liệu trong thời gian cần thiết để đáp ứng mục đích thu thập.",
+          "Xóa hoặc ẩn danh dữ liệu khi bạn yêu cầu, trừ khi pháp luật yêu cầu lưu giữ lâu hơn."
+        ],
+        "icon": "CheckCircle2"
+      },
+      {
+        "id": "rights",
+        "title": "8. Quyền của bạn",
+        "items": [
+          "Yêu cầu truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân.",
+          "Rút lại đồng ý hoặc phản đối một số hoạt động xử lý.",
+          "Gửi yêu cầu qua thông tin liên hệ bên dưới; chúng tôi phản hồi trong thời gian hợp lý."
+        ],
+        "icon": "UserCheck"
+      },
+      {
+        "id": "links",
+        "title": "9. Liên kết bên thứ ba",
+        "items": [
+          "Website có thể chứa liên kết tới dịch vụ/website của bên khác.",
+          "Chúng tôi không chịu trách nhiệm về nội dung hay chính sách bảo mật của các website đó. Vui lòng xem chính sách riêng của họ."
+        ],
+        "icon": "Globe2"
+      },
+      {
+        "id": "children",
+        "title": "10. Quyền riêng tư của trẻ em",
+        "items": [
+          "Website không hướng tới trẻ em dưới 13 tuổi và chúng tôi không cố ý thu thập dữ liệu từ nhóm này.",
+          "Nếu bạn cho rằng chúng tôi có dữ liệu của trẻ em, hãy liên hệ để chúng tôi xóa sớm nhất có thể."
+        ],
+        "icon": "ShieldCheck"
+      },
+      {
+        "id": "changes",
+        "title": "11. Cập nhật chính sách",
+        "items": [
+          "Chúng tôi có thể cập nhật chính sách này và sẽ đăng tải tại trang hiện tại.",
+          "Khuyến khích bạn xem lại định kỳ. Ngày cập nhật gần nhất: 02/12/2025."
+        ],
+        "icon": "Bell"
+      }
+    ],
+    "contact": {
+      "eyebrow": "Cần hỗ trợ?",
+      "title": "Liên hệ SalaThai",
+      "description": "Nếu bạn có câu hỏi hoặc muốn thực hiện quyền riêng tư, vui lòng liên hệ qua:",
+      "address": "20 Đường Thành, Hoàn Kiếm, Hà Nội",
+      "phone": "0868 555 057",
+      "email": "salathaivietnam@gmail.com"
+    },
+    "rightsTitle": "Thực hiện quyền riêng tư",
+    "rightsCopy": "Chúng tôi phản hồi trong thời gian hợp lý (thường 1-2 ngày làm việc) và có thể xác minh danh tính để bảo vệ dữ liệu.",
+    "rightsBullets": [
+      "Yêu cầu bản sao dữ liệu cá nhân bạn đã cung cấp.",
+      "Yêu cầu chỉnh sửa thông tin không chính xác hoặc thiếu.",
+      "Yêu cầu xóa dữ liệu, trừ khi phải lưu giữ theo quy định pháp luật.",
+      "Rút lại đồng ý với email/tin nhắn không cần thiết."
+    ]
   }
 }

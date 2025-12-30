@@ -4,6 +4,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 type ParticleConfig = {
   gravity: number;
@@ -244,6 +245,14 @@ export function FooterExplosion({
           <p>{copyName}</p>
           <p>{copyLocation}</p>
           <p className="md:text-right">{copySince}</p>
+        </div>
+        <div className="mt-3 text-xs text-white/60">
+          <Link
+            href="/privacy-policy"
+            className="underline-offset-4 hover:text-amber-200/90 hover:underline"
+          >
+            {t("privacyLink")}
+          </Link>
         </div>
       </div>
       <div ref={containerRef} className="cg-explosion-container" />

@@ -35,6 +35,7 @@
     "copyName": "Salathai",
     "copyLocation": "Hanoi • Vietnam",
     "copySince": "Since 2015",
+    "privacyLink": "Privacy policy",
     "hoursTitle": "Opening hours",
     "openStatus": "Open now",
     "updatedLabel": "Last updated recently",
@@ -136,5 +137,166 @@
     "description": "The path you accessed may have been deleted or does not exist.",
     "ctaHome": "Go to Home",
     "hint": "Check the URL again or try searching for other content."
+  },
+  "privacy": {
+    "metaTitle": "Privacy Policy | SalaThai",
+    "metaDescription": "Learn how SalaThai collects, uses, and protects your data when you visit salathai.com.vn or contact us.",
+    "title": "Privacy Policy",
+    "tagline": "We protect your information when you browse salathai.com.vn or reach out for table reservations, menu inquiries, or event support.",
+    "updated": "Last updated: Dec 2, 2025",
+    "heroHighlights": [
+      "No data selling",
+      "Clear purpose",
+      "Your control",
+      "Security first"
+    ],
+    "sectionEyebrow": "Privacy at SalaThai",
+    "quickPoints": [
+      {
+        "title": "Clear purpose",
+        "description": "We only collect what we need to respond to you, confirm reservations, and improve your experience.",
+        "icon": "ShieldCheck"
+      },
+      {
+        "title": "No selling data",
+        "description": "We never sell personal data. Sharing, when needed, is limited to vetted providers that help us operate.",
+        "icon": "FileSearch"
+      },
+      {
+        "title": "Your control",
+        "description": "You may request access, corrections, deletion, or withdraw consent at any time.",
+        "icon": "UserCheck"
+      },
+      {
+        "title": "Layered security",
+        "description": "Restricted internal access plus technical and organizational safeguards to reduce risk.",
+        "icon": "LockKeyhole"
+      }
+    ],
+    "sections": [
+      {
+        "id": "scope",
+        "title": "1. Scope & applicability",
+        "summary": "This policy covers information we collect whenever you interact with SalaThai.",
+        "items": [
+          "Applies when you visit salathai.com.vn, submit contact or reservation forms, call, email, message us on social channels, or speak with us at the restaurant.",
+          "By using the site or sharing information, you agree to the terms in this policy."
+        ],
+        "icon": "Globe2"
+      },
+      {
+        "id": "data",
+        "title": "2. Information we collect",
+        "items": [
+          "Information you provide: name, email, phone number, inquiry details, reservation information, feedback, or reviews.",
+          "Technical data collected automatically: IP address, browser, device, operating system, entry/exit pages, time on page, and basic interactions.",
+          "Cookies and similar technologies to remember preferences and measure site performance."
+        ],
+        "icon": "Sparkles"
+      },
+      {
+        "id": "use",
+        "title": "3. How we use your information",
+        "items": [
+          "Respond to inquiries, send confirmations, and follow up on reservations or services.",
+          "Improve content, speed, reliability, and experience on salathai.com.vn.",
+          "Send important updates (for example: opening hours changes, menu updates, or reservation confirmations).",
+          "Detect and prevent fraud or misuse of our systems."
+        ],
+        "icon": "Bell"
+      },
+      {
+        "id": "cookies",
+        "title": "4. Cookies & tracking",
+        "items": [
+          "We use cookies to remember preferences, measure engagement, and optimize site performance.",
+          "You can disable cookies in your browser. Some features may be limited when cookies are turned off."
+        ],
+        "icon": "Cookie"
+      },
+      {
+        "id": "sharing",
+        "title": "5. Sharing your information",
+        "items": [
+          "We do not sell personal data to third parties.",
+          "We may share data with service providers (hosting, analytics, payment, marketing tools) to run and improve the site.",
+          "We may share with partners or contractors related to your reservation/service when necessary, under confidentiality obligations.",
+          "We comply with lawful requests from authorities when required."
+        ],
+        "icon": "FileSearch"
+      },
+      {
+        "id": "security",
+        "title": "6. Data security",
+        "items": [
+          "We apply technical and organizational measures to prevent unauthorized access, alteration, or disclosure.",
+          "Internal access to personal data is limited based on role and business need.",
+          "While we strive for security, no method of transmission or storage is absolutely secure."
+        ],
+        "icon": "Shield"
+      },
+      {
+        "id": "retention",
+        "title": "7. Data retention",
+        "items": [
+          "We keep data only as long as needed to fulfill the purposes for which it was collected.",
+          "We delete or anonymize data upon request unless a longer retention period is required by law."
+        ],
+        "icon": "CheckCircle2"
+      },
+      {
+        "id": "rights",
+        "title": "8. Your rights",
+        "items": [
+          "Request access to, correction of, or deletion of your personal data.",
+          "Withdraw consent or object to certain processing activities.",
+          "Submit a request via the contact details below; we respond within a reasonable time."
+        ],
+        "icon": "UserCheck"
+      },
+      {
+        "id": "links",
+        "title": "9. Third-party links",
+        "items": [
+          "Our site may link to external websites or services.",
+          "We are not responsible for their content or privacy practices. Please review their policies separately."
+        ],
+        "icon": "Globe2"
+      },
+      {
+        "id": "children",
+        "title": "10. Children's privacy",
+        "items": [
+          "Our site is not intended for children under 13, and we do not knowingly collect data from them.",
+          "If you believe we hold data about a child, please contact us so we can remove it promptly."
+        ],
+        "icon": "ShieldCheck"
+      },
+      {
+        "id": "changes",
+        "title": "11. Changes to this policy",
+        "items": [
+          "We may update this policy and will post the latest version on this page.",
+          "We encourage you to review it periodically. Last updated: Dec 2, 2025."
+        ],
+        "icon": "Bell"
+      }
+    ],
+    "contact": {
+      "eyebrow": "Need help?",
+      "title": "Talk to SalaThai",
+      "description": "If you have questions or want to exercise your privacy rights, please reach us via:",
+      "address": "20 Duong Thanh, Hoan Kiem, Ha Noi",
+      "phone": "0868 555 057",
+      "email": "salathaivietnam@gmail.com"
+    },
+    "rightsTitle": "Exercising your rights",
+    "rightsCopy": "We respond within a reasonable timeframe (typically within 1-2 business days) and may verify your identity to protect your data.",
+    "rightsBullets": [
+      "Request a copy of the personal data you shared with us.",
+      "Ask for corrections to inaccurate or incomplete information.",
+      "Request deletion unless we must retain it to meet legal obligations.",
+      "Withdraw consent for non-essential emails or messages."
+    ]
   }
 }

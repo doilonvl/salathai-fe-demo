@@ -15,6 +15,10 @@ export const pathnames = {
     vi: "/admin/marquee-slides",
     en: "/admin/marquee-slides",
   },
+  "/privacy-policy": {
+    vi: "/chinhsach",
+    en: "/privacy-policy",
+  },
 } as const;
 
 export const { Link, useRouter, usePathname, redirect, getPathname } =
