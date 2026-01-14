@@ -15,6 +15,10 @@ type ReservationFormProps = {
 };
 
 const NAME_REGEX = /^[\p{L}][\p{L}\s'.-]*$/u;
+const OPENING_HOURS = {
+  start: "10:00",
+  end: "22:00",
+};
 
 function buildReservationSchema(t: ReturnType<typeof useTranslations>) {
   return z
@@ -73,6 +77,33 @@ function buildReservationSchema(t: ReturnType<typeof useTranslations>) {
           message: t("validation.timeInvalid"),
         });
         return;
+      }
+
+      const timeMinutes = timeToMinutes(values.reservationTime);
+      const openingStartMinutes = timeToMinutes(OPENING_HOURS.start);
+      const openingEndMinutes = timeToMinutes(OPENING_HOURS.end);
+      if (
+        timeMinutes === null ||
+        openingStartMinutes === null ||
+        openingEndMinutes === null
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["reservationTime"],
+          message: t("validation.timeInvalid"),
+        });
+        return;
+      }
+
+      if (
+        timeMinutes < openingStartMinutes ||
+        timeMinutes > openingEndMinutes
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["reservationTime"],
+          message: t("validation.timeOutsideHours"),
+        });
       }
 
       const now = new Date();
@@ -139,10 +170,29 @@ function formatDateInput(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-function formatTimeInput(date: Date) {
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
+function timeToMinutes(value: string) {
+  const [hourString, minuteString] = value.split(":");
+  if (!hourString || !minuteString) return null;
+  const hour = Number(hourString);
+  const minute = Number(minuteString);
+  if (
+    Number.isNaN(hour) ||
+    Number.isNaN(minute) ||
+    hour < 0 ||
+    hour > 23 ||
+    minute < 0 ||
+    minute > 59
+  ) {
+    return null;
+  }
+  return hour * 60 + minute;
+}
+
+function minutesToTime(totalMinutes: number) {
+  const clamped = Math.max(0, Math.min(23 * 60 + 59, totalMinutes));
+  const hours = Math.floor(clamped / 60);
+  const minutes = clamped % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
 export function ReservationForm({
@@ -179,12 +229,23 @@ export function ReservationForm({
   const watchDate = watch("reservationDate");
 
   useEffect(() => {
-    if (watchDate !== defaultDate) {
+    const openingStartMinutes = timeToMinutes(OPENING_HOURS.start);
+    const openingEndMinutes = timeToMinutes(OPENING_HOURS.end);
+    if (openingStartMinutes === null || openingEndMinutes === null) {
       setMinSelectableTime(undefined);
       return;
     }
+
+    if (watchDate !== defaultDate) {
+      setMinSelectableTime(OPENING_HOURS.start);
+      return;
+    }
+
     const now = new Date();
-    setMinSelectableTime(formatTimeInput(now));
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    const minMinutes = Math.max(openingStartMinutes, nowMinutes);
+    const boundedMinMinutes = Math.min(minMinutes, openingEndMinutes);
+    setMinSelectableTime(minutesToTime(boundedMinMinutes));
   }, [watchDate, defaultDate]);
 
   const isBusy = isSubmitting || isLoading;
@@ -342,6 +403,7 @@ export function ReservationForm({
                   name="reservationTime"
                   type="time"
                   min={minSelectableTime}
+                  max={OPENING_HOURS.end}
                   className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
                   aria-invalid={Boolean(errors.reservationTime)}
                 />
@@ -399,7 +461,9 @@ export function ReservationForm({
               <p className="font-semibold text-neutral-900">
                 {t("openingHourLabel")}
               </p>
-              <p>10:00 - 22:00</p>
+              <p>
+                {OPENING_HOURS.start} - {OPENING_HOURS.end}
+              </p>
             </div>
             <div className="min-w-0 rounded-xl border border-neutral-200/70 bg-white px-4 py-3">
               <p className="font-semibold text-neutral-900">

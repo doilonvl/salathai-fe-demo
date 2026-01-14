@@ -129,6 +129,7 @@
       "timeRequired": "Select a time",
       "timeInvalid": "Time is not valid.",
       "timePast": "Please choose a time in the present or future.",
+      "timeOutsideHours": "Please choose a time between 10:00 and 22:00.",
       "noteMax": "Notes must be 400 characters or fewer"
     }
   },
