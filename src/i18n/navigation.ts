@@ -3,6 +3,10 @@ import { locales, defaultLocale } from "./request";
 
 export const pathnames = {
   "/": "/",
+  "/menu": {
+    vi: "/menu",
+    en: "/menu",
+  },
   "/admin": {
     vi: "/admin",
     en: "/admin",

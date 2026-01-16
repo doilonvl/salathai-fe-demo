@@ -1,6 +1,7 @@
 ﻿/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
 import { gsap } from "gsap";
 import { Flip } from "gsap/Flip";
@@ -10,6 +11,7 @@ import { ReservationForm } from "@/components/shared/reservation-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetLandingMenuQuery } from "@/services/api";
 import type { LandingMenuItem } from "@/types/landing";
+import type { Locale } from "@/types/content";
 import LandingHeader from "@/components/shared/LandingHeader";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -23,6 +25,20 @@ const playfair = Playfair_Display({
   weight: ["600", "700"],
   variable: "--font-landing-display",
 });
+
+type MenuPreviewItem = Pick<
+  LandingMenuItem,
+  "imageUrl" | "altText" | "altText_i18n"
+>;
+
+const FALLBACK_MOBILE_MENU: MenuPreviewItem[] = [
+  { imageUrl: "/Menu/menu1.jpg", altText: "Menu preview 1" },
+  { imageUrl: "/Menu/menu2.jpg", altText: "Menu preview 2" },
+  { imageUrl: "/Menu/menu3.jpg", altText: "Menu preview 3" },
+  { imageUrl: "/Menu/menu4.jpg", altText: "Menu preview 4" },
+  { imageUrl: "/Menu/menu5.jpg", altText: "Menu preview 5" },
+  { imageUrl: "/Menu/menu6.jpg", altText: "Menu preview 6" },
+];
 
 export function LandingReveal({
   initialItems = [],
@@ -47,10 +63,13 @@ export function LandingReveal({
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [navReady, setNavReady] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(false);
-  const [isLandingLocked, setIsLandingLocked] = useState(true);
+  const [, setIsLandingLocked] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const locale = useLocale() as Locale;
   const { data: landingMenuData } = useGetLandingMenuQuery(undefined, {
     skip: initialItems.length > 0,
   });
+  const tMarquee = useTranslations("home.marquee");
   const menuItems = useMemo(() => {
     const items = (landingMenuData?.items ?? initialItems) as LandingMenuItem[];
     const seen = new Set<string>();
@@ -67,6 +86,25 @@ export function LandingReveal({
     [menuItems]
   );
   const menuImagesSignature = useMemo(() => menuImages.join("|"), [menuImages]);
+  const mobileMenu = useMemo<MenuPreviewItem[]>(
+    () => (menuItems.length ? menuItems : FALLBACK_MOBILE_MENU),
+    [menuItems]
+  );
+  const mobileHero = mobileMenu[0] || FALLBACK_MOBILE_MENU[0];
+  const mobileGridItems = mobileMenu.slice(1, 7);
+  const getLocalizedAlt = useCallback(
+    (item: MenuPreviewItem | undefined, fallback = "Menu") => {
+      if (!item) return fallback;
+      const baseAlt = item.altText || fallback;
+      const i18nAlt = item.altText_i18n;
+      if (!i18nAlt) return baseAlt;
+      if (locale === "en") {
+        return i18nAlt.en || i18nAlt.vi || baseAlt;
+      }
+      return i18nAlt.vi || i18nAlt.en || baseAlt;
+    },
+    [locale]
+  );
 
   const syncOverlayNavPosition = useCallback(() => {
     if (typeof window === "undefined") return;
@@ -131,6 +169,23 @@ export function LandingReveal({
   };
 
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    setNavReady(true);
+    setIsNavVisible(true);
+    setIsLandingLocked(false);
+    setShowCenterLogo(false);
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) return;
     if (!menuImages.length) return;
 
     gsap.registerPlugin(CustomEase, Flip);
@@ -453,7 +508,7 @@ export function LandingReveal({
       rotationTweenRef.current?.kill();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuImagesSignature]);
+  }, [isMobile, menuImagesSignature]);
 
   useEffect(() => {
     // Update translated alt text without rebuilding the gallery.
@@ -462,7 +517,7 @@ export function LandingReveal({
   }, [menuItems]);
 
   useEffect(() => {
-    if (!navReady) return;
+    if (isMobile || !navReady) return;
     lastScrollYRef.current = window.scrollY;
 
     const isMarqueeInView = () => {
@@ -497,7 +552,7 @@ export function LandingReveal({
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isNavVisible, navReady]);
+  }, [isMobile, isNavVisible, navReady]);
 
   const navVisibilityClass =
     navReady && isNavVisible
@@ -535,85 +590,34 @@ export function LandingReveal({
     if (typeof document === "undefined") return;
     const body = document.body;
     const html = document.documentElement;
-
     const prevBodyOverflow = body.style.overflow;
     const prevHtmlOverflow = html.style.overflow;
 
-    const blockScroll = (e: Event) => {
-      if (!isLandingLocked || showReservationModal) return true;
-      e.preventDefault();
-      e.stopPropagation();
-      return false;
-    };
-
-    const blockKeys = (e: KeyboardEvent) => {
-      if (!isLandingLocked || showReservationModal) return;
-      const keys = [
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-        "PageUp",
-        "PageDown",
-        "Home",
-        "End",
-        " ",
-      ];
-      if (keys.includes(e.key)) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    };
-
-    const forceTop = () => {
-      if (isLandingLocked && !showReservationModal) {
-        window.scrollTo({ top: 0 });
-      }
-    };
-
-    const applyLock = () => {
+    if (showReservationModal) {
       html.classList.add("lr-lock");
       body.classList.add("lr-lock");
       body.style.overflow = "hidden";
       html.style.overflow = "hidden";
-      window.scrollTo({ top: 0 });
-      window.addEventListener("wheel", blockScroll, { passive: false });
-      window.addEventListener("touchmove", blockScroll, { passive: false });
-      document.addEventListener("wheel", blockScroll, { passive: false });
-      document.addEventListener("touchmove", blockScroll, { passive: false });
-      window.addEventListener("keydown", blockKeys, { passive: false });
-      window.addEventListener("scroll", forceTop, { passive: false });
-      document.addEventListener("scroll", forceTop, { passive: false });
-    };
-
-    const removeLock = () => {
+    } else {
       html.classList.remove("lr-lock");
       body.classList.remove("lr-lock");
       body.style.overflow = prevBodyOverflow || "";
       html.style.overflow = prevHtmlOverflow || "";
-      window.removeEventListener("wheel", blockScroll);
-      window.removeEventListener("touchmove", blockScroll);
-      document.removeEventListener("wheel", blockScroll);
-      document.removeEventListener("touchmove", blockScroll);
-      window.removeEventListener("keydown", blockKeys);
-      window.removeEventListener("scroll", forceTop);
-      document.removeEventListener("scroll", forceTop);
-    };
-
-    if (showReservationModal || isLandingLocked) {
-      applyLock();
-    } else {
-      removeLock();
     }
 
-    return removeLock;
-  }, [showReservationModal, isLandingLocked]);
+    return () => {
+      html.classList.remove("lr-lock");
+      body.classList.remove("lr-lock");
+      body.style.overflow = prevBodyOverflow || "";
+      html.style.overflow = prevHtmlOverflow || "";
+    };
+  }, [showReservationModal]);
 
   return (
     <div
       ref={containerRef}
       id="top"
-      className={`${plusJakarta.variable} ${playfair.variable} landing-reveal relative h-[100svh] md:h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-black`}
+      className={`${plusJakarta.variable} ${playfair.variable} landing-reveal relative min-h-0 md:min-h-[100svh] md:h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-black`}
     >
       <style>
         {`
@@ -634,102 +638,152 @@ export function LandingReveal({
         homeHref="#top"
         onOpenReservation={() => setShowReservationModal(true)}
       />
-      <div className="lr-loader absolute left-1/2 bottom-[15%] h-5 w-10 -translate-x-1/2 -translate-y-1/2 text-center">
-        <p className="lr-loader-number block translate-y-5">0</p>
-      </div>
+      {isMobile ? (
+        <div className="relative z-10 flex min-h-[100svh] flex-col pb-6">
+          <div className="relative h-[70svh] w-full overflow-hidden bg-neutral-900 text-white">
+            <img
+              src={mobileHero?.imageUrl}
+              alt={getLocalizedAlt(mobileHero, "Salathai")}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
+            <div className="absolute bottom-4 left-4 right-10 max-w-[72%] space-y-2">
+              <p className="text-[10px] uppercase tracking-[0.35em] text-white/70">
+                Salathai
+              </p>
+              <h1 className="text-2xl font-semibold leading-tight text-white">
+                Authentic Thai Cuisine
+              </h1>
+              <p className="text-xs text-white/80 line-clamp-2">
+                {tMarquee("intro")}
+              </p>
+            </div>
+          </div>
 
-      <div ref={galleryRef} className="lr-gallery absolute inset-0"></div>
-
-      {showCenterLogo && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <img
-            src="/Logo/Logo1.png"
-            alt="Salathai logo"
-            className="lr-center-logo h-10 w-10 md:h-12 md:w-12 rounded-full object-contain opacity-85 drop-shadow-lg"
-          />
+          <div className="relative z-20 -mt-12 px-3">
+            <div className="grid grid-cols-3 gap-2">
+              {mobileGridItems.map((item, idx) => (
+                <div
+                  key={`${item.imageUrl}-${idx}`}
+                  className="relative aspect-square overflow-hidden bg-neutral-100 shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
+                  aria-label={getLocalizedAlt(item, `Menu ${idx + 1}`)}
+                  role="img"
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt={getLocalizedAlt(item, "Menu preview")}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  <span className="absolute bottom-2 left-2 right-2 text-[9px] font-semibold uppercase tracking-[0.25em] text-white line-clamp-2">
+                    {getLocalizedAlt(item, "Menu")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      )}
+      ) : (
+        <>
+          <div className="lr-loader absolute left-1/2 bottom-[15%] h-5 w-10 -translate-x-1/2 -translate-y-1/2 text-center">
+            <p className="lr-loader-number block translate-y-5">0</p>
+          </div>
 
-      <div
-        ref={overlayRef}
-        className="pointer-events-none fixed inset-0 z-[999] flex items-center justify-center bg-transparent opacity-0"
-        onClick={closeOverlay}
-      >
-        <img
-          ref={overlayImgRef}
-          alt="Full menu"
-          className="lr-overlay-img h-auto w-auto max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
-          onLoad={() => {
-            if (!isOverlayOpen) return;
-            queueOverlaySync();
-          }}
-          onClick={(e) => e.stopPropagation()}
-        />
-        <button
-          type="button"
-          className="lr-nav-btn lr-nav-btn-prev absolute left-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (currentIndexRef.current === null || !menuImages.length) return;
-            const nextIdx =
-              (currentIndexRef.current - 1 + menuImages.length) %
-              menuImages.length;
-            currentIndexRef.current = nextIdx;
-            selectedImageRef.current = menuImages[nextIdx];
-            if (overlayImgRef.current) {
-              const src = menuImages[nextIdx];
-              const alt = menuItems[nextIdx]?.altText || "Full menu";
-              overlayAnimatingRef.current = true;
-              gsap.fromTo(
-                overlayImgRef.current,
-                { opacity: 0, scale: 0.9 },
-                {
-                  opacity: 1,
-                  scale: 1,
-                  duration: 0.25,
-                  ease: "power2.out",
-                  onComplete: finishOverlayAnimation,
+          <div ref={galleryRef} className="lr-gallery absolute inset-0"></div>
+
+          {showCenterLogo && (
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <img
+                src="/Logo/Logo1.png"
+                alt="Salathai logo"
+                className="lr-center-logo h-10 w-10 md:h-12 md:w-12 rounded-full object-contain opacity-85 drop-shadow-lg"
+              />
+            </div>
+          )}
+
+          <div
+            ref={overlayRef}
+            className="pointer-events-none fixed inset-0 z-[999] flex items-center justify-center bg-transparent opacity-0"
+            onClick={closeOverlay}
+          >
+            <img
+              ref={overlayImgRef}
+              alt="Full menu"
+              className="lr-overlay-img h-auto w-auto max-h-[90vh] max-w-[90vw] object-contain rounded-lg shadow-2xl"
+              onLoad={() => {
+                if (!isOverlayOpen) return;
+                queueOverlaySync();
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              type="button"
+              className="lr-nav-btn lr-nav-btn-prev absolute left-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (currentIndexRef.current === null || !menuImages.length) return;
+                const nextIdx =
+                  (currentIndexRef.current - 1 + menuImages.length) %
+                  menuImages.length;
+                currentIndexRef.current = nextIdx;
+                selectedImageRef.current = menuImages[nextIdx];
+                if (overlayImgRef.current) {
+                  const src = menuImages[nextIdx];
+                  const alt = menuItems[nextIdx]?.altText || "Full menu";
+                  overlayAnimatingRef.current = true;
+                  gsap.fromTo(
+                    overlayImgRef.current,
+                    { opacity: 0, scale: 0.9 },
+                    {
+                      opacity: 1,
+                      scale: 1,
+                      duration: 0.25,
+                      ease: "power2.out",
+                      onComplete: finishOverlayAnimation,
+                    }
+                  );
+                  overlayImgRef.current.src = src;
+                  overlayImgRef.current.alt = alt;
                 }
-              );
-              overlayImgRef.current.src = src;
-              overlayImgRef.current.alt = alt;
-            }
-          }}
-        >
-          {"<"}
-        </button>
-        <button
-          type="button"
-          className="lr-nav-btn lr-nav-btn-next absolute right-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (currentIndexRef.current === null || !menuImages.length) return;
-            const nextIdx = (currentIndexRef.current + 1) % menuImages.length;
-            currentIndexRef.current = nextIdx;
-            selectedImageRef.current = menuImages[nextIdx];
-            if (overlayImgRef.current) {
-              const src = menuImages[nextIdx];
-              const alt = menuItems[nextIdx]?.altText || "Full menu";
-              overlayAnimatingRef.current = true;
-              gsap.fromTo(
-                overlayImgRef.current,
-                { opacity: 0, scale: 0.9 },
-                {
-                  opacity: 1,
-                  scale: 1,
-                  duration: 0.25,
-                  ease: "power2.out",
-                  onComplete: finishOverlayAnimation,
+              }}
+            >
+              {"<"}
+            </button>
+            <button
+              type="button"
+              className="lr-nav-btn lr-nav-btn-next absolute right-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (currentIndexRef.current === null || !menuImages.length) return;
+                const nextIdx = (currentIndexRef.current + 1) % menuImages.length;
+                currentIndexRef.current = nextIdx;
+                selectedImageRef.current = menuImages[nextIdx];
+                if (overlayImgRef.current) {
+                  const src = menuImages[nextIdx];
+                  const alt = menuItems[nextIdx]?.altText || "Full menu";
+                  overlayAnimatingRef.current = true;
+                  gsap.fromTo(
+                    overlayImgRef.current,
+                    { opacity: 0, scale: 0.9 },
+                    {
+                      opacity: 1,
+                      scale: 1,
+                      duration: 0.25,
+                      ease: "power2.out",
+                      onComplete: finishOverlayAnimation,
+                    }
+                  );
+                  overlayImgRef.current.src = src;
+                  overlayImgRef.current.alt = alt;
                 }
-              );
-              overlayImgRef.current.src = src;
-              overlayImgRef.current.alt = alt;
-            }
-          }}
-        >
-          {">"}
-        </button>
-      </div>
+              }}
+            >
+              {">"}
+            </button>
+          </div>
+        </>
+      )}
 
       <AnimatePresence mode="wait">
         {showReservationModal && (

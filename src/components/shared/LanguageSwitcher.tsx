@@ -94,7 +94,7 @@ export default function LanguageSwitcher({
   };
 
   const flagByLocale: Record<Locale, { label: string; flag: string }> = {
-    vi: { label: "Ti\u1ebfng Vi\u1ec7t", flag: "/Flag/vn.png" },
+    vi: { label: "Tiếng Việt", flag: "/Flag/vn.png" },
     en: { label: "English", flag: "/Flag/usa.png" },
   };
 
@@ -109,17 +109,15 @@ export default function LanguageSwitcher({
         aria-label={t("ariaLabel")}
       >
         <Globe className="h-4 w-4" />
-        <span className="flex items-center gap-1.5">
-          <img
-            src={flagByLocale[locale]?.flag}
-            alt={flagByLocale[locale]?.label}
-            className="h-4 w-6 rounded-[3px] object-cover"
-            loading="lazy"
-            style={{ width: "1.5rem", height: "1rem" }}
-          />
-          <span className="font-semibold leading-none">
-            {flagByLocale[locale]?.label}
-          </span>
+        <img
+          src={flagByLocale[locale]?.flag}
+          alt={flagByLocale[locale]?.label}
+          className="h-4 w-6 rounded-[3px] object-cover"
+          loading="lazy"
+          style={{ width: "1.5rem", height: "1rem" }}
+        />
+        <span className="text-[11px] font-semibold uppercase">
+          {locale}
         </span>
         <ChevronDown className="h-4 w-4 opacity-75" />
       </button>

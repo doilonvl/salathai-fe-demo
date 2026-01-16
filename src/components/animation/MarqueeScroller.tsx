@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 import Lenis from "lenis";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { useLocale, useTranslations } from "next-intl";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import type { Locale } from "@/types/content";
 import {
   useGetMarqueeImagesQuery,
@@ -263,6 +264,8 @@ export function MarqueeScroller({
   const locale = useLocale() as Locale;
   const t = useTranslations("home.marquee");
   const [isMobile, setIsMobile] = useState(false);
+  const [hasMeasuredViewport, setHasMeasuredViewport] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { data: marqueeImagesData } = useGetMarqueeImagesQuery(undefined, {
     skip: initialImages.length > 0,
   });
@@ -272,7 +275,10 @@ export function MarqueeScroller({
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
-    const update = () => setIsMobile(mq.matches);
+    const update = () => {
+      setIsMobile(mq.matches);
+      setHasMeasuredViewport(true);
+    };
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
@@ -326,7 +332,7 @@ export function MarqueeScroller({
         item.altText || `marquee-${idx + 1}`
       ),
     }));
-  }, [locale, marqueeImagesData]);
+  }, [isMobile, locale, marqueeImagesData]);
   const pinnedIndex = useMemo(() => {
     if (!marqueeItems.length) return -1;
     const idx = marqueeItems.findIndex((item) => item.isPinned);
@@ -370,9 +376,16 @@ export function MarqueeScroller({
   const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!slides.length) return;
+    if (activeIndex >= slides.length) {
+      setActiveIndex(0);
+    }
+  }, [activeIndex, slides.length]);
+
+  useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger, Flip);
     const shell = containerRef.current;
-    if (!shell) return;
+    if (!shell || !hasMeasuredViewport || isMobile) return;
 
     const lenis = new Lenis();
     ScrollTrigger.scrollerProxy(document.body, {
@@ -567,7 +580,34 @@ export function MarqueeScroller({
       pinnedCloneRef.current?.remove();
       flipRef.current?.kill();
     };
-  }, [maxImageShift, maxTranslate, marqueeItems.length, slides.length]);
+  }, [
+    hasMeasuredViewport,
+    isMobile,
+    maxImageShift,
+    maxTranslate,
+    marqueeItems.length,
+    slides.length,
+  ]);
+
+  const safeIndex = slides.length
+    ? Math.min(activeIndex, slides.length - 1)
+    : 0;
+  const isFirst = safeIndex === 0;
+  const isLast = slides.length ? safeIndex === slides.length - 1 : true;
+  const translatePercent = slides.length
+    ? (safeIndex * 100) / slides.length
+    : 0;
+  const stackHeight = slides.length ? `${slides.length * 100}%` : "100%";
+  const slideHeight = slides.length ? `${100 / slides.length}%` : "100%";
+
+  const handlePrev = () => {
+    if (!slides.length) return;
+    setActiveIndex((prev) => Math.max(0, prev - 1));
+  };
+  const handleNext = () => {
+    if (!slides.length) return;
+    setActiveIndex((prev) => Math.min(slides.length - 1, prev + 1));
+  };
 
   return (
     <div
@@ -578,61 +618,141 @@ export function MarqueeScroller({
         ["--wjy-dark" as string]: "#0e0b09",
       }}
     >
-      <section className="wjy-hero">
-        <h1>{t("intro")}</h1>
-      </section>
+      <div className="md:hidden">
+        <section className="wjy-mobile-journey">
+          <div className="wjy-mobile-copy">
+            <h3 className="wjy-mobile-intro">{t("intro")}</h3>
+            <div className="wjy-mobile-row">
+              <div className="wjy-mobile-actions">
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  disabled={isFirst}
+                  className="wjy-mobile-btn wjy-mobile-btn--light"
+                  aria-label="Previous"
+                >
+                  <ChevronUp className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={isLast}
+                  className="wjy-mobile-btn wjy-mobile-btn--dark"
+                  aria-label="Next"
+                >
+                  <ChevronDown className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="wjy-mobile-info">
+                <div
+                  className="wjy-mobile-info-stack"
+                  style={{
+                    height: stackHeight,
+                    transform: `translateY(-${translatePercent}%)`,
+                  }}
+                >
+                  {slides.map((slide, index) => (
+                    <div
+                      key={slide.id ?? slide.imageUrl}
+                      className="wjy-mobile-info-slide"
+                      style={{ height: slideHeight }}
+                    >
+                      <span className="wjy-mobile-count">
+                        {String(index + 1).padStart(2, "0")} /{" "}
+                        {String(slides.length).padStart(2, "0")}
+                      </span>
+                      <h1 className="wjy-mobile-title">{slide.tag}</h1>
+                      <h2 className="wjy-mobile-text">{slide.text}</h2>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <h3 className="wjy-mobile-outro">{t("outro")}</h3>
+          </div>
+          <div className="wjy-mobile-image">
+            <div
+              className="wjy-mobile-image-stack"
+              style={{
+                height: stackHeight,
+                transform: `translateY(-${translatePercent}%)`,
+              }}
+            >
+              {slides.map((slide) => (
+                <div
+                  key={slide.id ?? slide.imageUrl}
+                  className="wjy-mobile-image-slide"
+                  style={{ height: slideHeight }}
+                >
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.tag || "Slide"}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
-      <section className="wjy-marquee">
-        <div className="wjy-marquee-wrapper">
-          <div className="wjy-marquee-images">
-            {marqueeItems.map((item, idx) => (
+      <div className="hidden md:block">
+        <section className="wjy-hero">
+          <h1>{t("intro")}</h1>
+        </section>
+
+        <section className="wjy-marquee">
+          <div className="wjy-marquee-wrapper">
+            <div className="wjy-marquee-images">
+              {marqueeItems.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className={`wjy-marquee-img${
+                    idx === pinnedIndex ? " pin" : ""
+                  }`}
+                >
+                  <img src={item.imageUrl} alt={item.altText} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="wjy-horizontal">
+          <div
+            className="wjy-horizontal-wrapper"
+            style={{
+              ["--wjy-slide-count" as string]: totalPanels,
+            }}
+          >
+            <div className="wjy-horizontal-slide wjy-horizontal-spacer" />
+            {slides.map((slide, idx) => (
               <div
-                key={item.id}
-                className={`wjy-marquee-img${
-                  idx === pinnedIndex ? " pin" : ""
-                }`}
+                key={slide.id ?? slide.imageUrl}
+                className="wjy-horizontal-slide"
               >
-                <img src={item.imageUrl} alt={item.altText} />
+                <div className="wjy-slide-tag">{slide.tag}</div>
+                <div className="col text">
+                  <h3>{slide.text}</h3>
+                </div>
+                <div className="col image">
+                  <img
+                    src={slide.imageUrl}
+                    alt={slide.tag || `slide-${idx + 1}`}
+                  />
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+          <div className="wjy-progress">
+            <div ref={progressRef} className="bar" />
+          </div>
+        </section>
 
-      <section className="wjy-horizontal">
-        <div
-          className="wjy-horizontal-wrapper"
-          style={{
-            ["--wjy-slide-count" as string]: totalPanels,
-          }}
-        >
-          <div className="wjy-horizontal-slide wjy-horizontal-spacer" />
-          {slides.map((slide, idx) => (
-            <div
-              key={slide.id ?? slide.imageUrl}
-              className="wjy-horizontal-slide"
-            >
-              <div className="wjy-slide-tag">{slide.tag}</div>
-              <div className="col text">
-                <h3>{slide.text}</h3>
-              </div>
-              <div className="col image">
-                <img
-                  src={slide.imageUrl}
-                  alt={slide.tag || `slide-${idx + 1}`}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="wjy-progress">
-          <div ref={progressRef} className="bar" />
-        </div>
-      </section>
-
-      <section className="wjy-outro">
-        <h1>{t("outro")}</h1>
-      </section>
+        <section className="wjy-outro">
+          <h1>{t("outro")}</h1>
+        </section>
+      </div>
     </div>
   );
 }

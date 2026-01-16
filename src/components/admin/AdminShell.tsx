@@ -12,6 +12,7 @@ import {
   Boxes,
   ChevronsLeft,
   ChevronsRight,
+  FileText,
   Images,
   LayoutDashboard,
   LogOut,
@@ -33,7 +34,8 @@ const NAV_ITEMS: NavItem[] = [
     icon: Images,
     slug: "marquee-slides",
   },
-  { key: "products", label: "Products", icon: Boxes, slug: "products" },
+  { key: "blogs", label: "Blogs", icon: FileText, slug: "blogs" },
+  // { key: "products", label: "Products", icon: Boxes, slug: "products" },
 ];
 
 export default function AdminShell({

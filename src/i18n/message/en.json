@@ -18,9 +18,54 @@
   },
   "header": {
     "home": "Home",
+    "menu": "Menu",
+    "blog": "Blog",
     "reservations": "Reservations",
     "contact": "Contact",
     "showcase": "Signature"
+  },
+  "blog": {
+    "metaTitle": "Blog | Salathai",
+    "metaDescription": "News, stories, and updates from Salathai.",
+    "title": "Blog",
+    "subtitle": "Stories, menu insights, and events from Salathai.",
+    "tagLabel": "Tag:",
+    "emptyTitle": "No posts yet",
+    "emptyBody": "We are preparing new stories. Check back soon.",
+    "noCover": "No cover image",
+    "pageLabel": "Page {page} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "latestTitle": "Latest",
+    "empty": "No posts yet.",
+    "backToBlog": "Back to blog",
+    "updatedLabel": "Updated",
+    "byLabel": "By",
+    "viewsLabel": "views",
+    "tocTitle": "On this page"
+  },
+  "menuPage": {
+    "title": "Menu",
+    "subtitle": "Tap any page to zoom in for details.",
+    "hint": "15 pages",
+    "pageLabel": "Page",
+    "tapHint": "Tap",
+    "prev": "Prev",
+    "next": "Next",
+    "close": "Close",
+    "categories": {
+      "all": "All",
+      "vegetable": "Vegetables",
+      "hotpot": "Thai Hotpot",
+      "soup": "Soup",
+      "main": "Main dishes",
+      "noodlesRice": "Noodles & Rice",
+      "vegetarian": "Vegetarian",
+      "curry": "Curry",
+      "salad": "Salad",
+      "bottledDrinks": "Bottled drinks",
+      "drinkDessert": "Drinks & Dessert"
+    }
   },
   "languageSwitcher": {
     "ariaLabel": "Change language"

@@ -18,9 +18,54 @@
   },
   "header": {
     "home": "Trang chủ",
+    "menu": "Thực đơn",
+    "blog": "Blog",
     "reservations": "Đặt bàn",
     "contact": "Liên hệ",
     "showcase": "Món đặc trưng"
+  },
+  "blog": {
+    "metaTitle": "Blog | Salathai",
+    "metaDescription": "Tin tức và cập nhật từ Salathai.",
+    "title": "Blog",
+    "subtitle": "Chia sẻ, món ăn, và sự kiện từ Salathai.",
+    "tagLabel": "Chủ đề:",
+    "emptyTitle": "Chưa có bài viết",
+    "emptyBody": "Chúng tôi đang chuẩn bị nội dung mới. Vui lòng quay lại sau.",
+    "noCover": "Chưa có ảnh bìa",
+    "pageLabel": "Trang {page} / {total}",
+    "previous": "Trước",
+    "next": "Sau",
+    "latestTitle": "Mới nhất",
+    "empty": "Chưa có bài viết.",
+    "backToBlog": "Quay lại blog",
+    "updatedLabel": "Cập nhật",
+    "byLabel": "Bởi",
+    "viewsLabel": "lượt xem",
+    "tocTitle": "Mục lục"
+  },
+  "menuPage": {
+    "title": "Thực đơn",
+    "subtitle": "Chạm để phóng to chi tiết.",
+    "hint": "15 trang",
+    "pageLabel": "Trang",
+    "tapHint": "Chạm",
+    "prev": "Trước",
+    "next": "Sau",
+    "close": "Đóng",
+    "categories": {
+      "all": "Tất cả",
+      "vegetable": "Rau củ",
+      "hotpot": "Lẩu Thái",
+      "soup": "Súp",
+      "main": "Món chính",
+      "noodlesRice": "Mì & Cơm",
+      "vegetarian": "Món chay",
+      "curry": "Cà ri",
+      "salad": "Gỏi",
+      "bottledDrinks": "Nước đóng chai",
+      "drinkDessert": "Đồ uống & tráng miệng"
+    }
   },
   "languageSwitcher": {
     "ariaLabel": "Thay đổi ngôn ngữ"

@@ -229,7 +229,8 @@
 @media (max-width: 900px) {
   .landing-reveal nav {
     gap: 10px;
-    padding: 12px;
+    padding: 12px 14px;
+    align-items: center;
   }
   .landing-reveal .lr-nav-item p {
     font-size: 11px;
@@ -250,9 +251,9 @@
 
 @media (max-width: 640px) {
   .landing-reveal nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
   }
   .landing-reveal .lr-nav-items {
     display: flex;
