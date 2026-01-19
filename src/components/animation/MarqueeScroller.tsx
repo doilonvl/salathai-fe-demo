@@ -437,7 +437,7 @@ export function MarqueeScroller({
                     <h1 className="wjy-mobile-title md:text-4xl">
                       {slide.tag}
                     </h1>
-                    <h2 className="text-stone-900 font-serif lowercase italic text-base md:text-5xl">
+                    <h2 className="wjy-mobile-text text-stone-900 font-serif lowercase italic text-base md:text-5xl">
                       {slide.text}
                     </h2>
                   </div>

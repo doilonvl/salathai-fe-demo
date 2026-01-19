@@ -151,6 +151,11 @@
   max-width: 100%;
 }
 
+.wjy-horizontal-slide .col h3 {
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
 .wjy-horizontal-slide .col img {
   height: auto;
   max-height: 70vh;
@@ -284,7 +289,7 @@
 .wjy-mobile-info {
   position: relative;
   overflow: hidden;
-  height: clamp(150px, 18svh, 200px);
+  height: clamp(190px, 22svh, 260px);
 }
 
 .wjy-mobile-info-stack {
@@ -298,6 +303,7 @@
   display: grid;
   gap: 0.3rem;
   align-content: center;
+  overflow: hidden;
 }
 
 .wjy-mobile-count {
@@ -312,12 +318,14 @@
   color: #1d1814;
   font-weight: 600;
   letter-spacing: -0.03em;
+  line-height: 1.25;
 }
 
 .wjy-shell .wjy-mobile-text {
   font-size: 1.05rem;
   font-weight: 500;
   color: #5f554c;
+  line-height: 1.45;
 }
 
 .wjy-shell .wjy-mobile-outro {
