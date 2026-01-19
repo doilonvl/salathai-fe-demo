@@ -227,7 +227,7 @@ function scrambleIn(
 }
 
 export default function NfContact() {
-  const rootRef = useRef<HTMLElement | null>(null);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const tHeader = useTranslations("header");
   const tFooter = useTranslations("footer");

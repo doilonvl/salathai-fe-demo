@@ -518,10 +518,9 @@ export default function NfWorkSlider() {
                   X
                 </button>
                 <ScrollArea className="h-full reservation-scroll">
-                  <ReservationForm
-                    variant="modal"
-                    onSuccess={() => setShowReservationModal(false)}
-                  />
+                <ReservationForm
+                  onSuccess={() => setShowReservationModal(false)}
+                />
                 </ScrollArea>
               </div>
             </motion.div>
