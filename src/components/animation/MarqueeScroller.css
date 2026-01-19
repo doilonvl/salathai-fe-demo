@@ -3,7 +3,7 @@
   --wjy-dark: #0e0b09;
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: auto;
   background-color: var(--wjy-light);
   will-change: background-color;
   color: var(--wjy-dark);
@@ -227,14 +227,14 @@
 }
 
 .wjy-mobile-journey {
-  padding: 1.5rem 1.25rem 2.5rem;
+  padding: 1rem 1.25rem 1.5rem;
   display: grid;
   gap: 1.5rem;
 }
 
 .wjy-mobile-copy {
   display: grid;
-  gap: 0.6rem;
+  gap: 0.4rem;
 }
 
 .wjy-shell .wjy-mobile-intro {
@@ -284,7 +284,7 @@
 .wjy-mobile-info {
   position: relative;
   overflow: hidden;
-  height: clamp(190px, 24svh, 250px);
+  height: clamp(150px, 18svh, 200px);
 }
 
 .wjy-mobile-info-stack {

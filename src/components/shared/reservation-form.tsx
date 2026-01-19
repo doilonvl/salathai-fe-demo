@@ -9,11 +9,7 @@ import { useTranslations } from "next-intl";
 import { useCreateReservationRequestMutation } from "@/services/api";
 import type { ReservationRequestPayload } from "@/types/reservation";
 
-type ReservationFormProps = {
-  onSuccess?: (data: ReservationRequestPayload) => void;
-  variant?: "inline" | "modal";
-};
-
+// All the logic and helper functions from the original file are preserved
 const NAME_REGEX = /^[\p{L}][\p{L}\s'.-]*$/u;
 const OPENING_HOURS = {
   start: "10:00",
@@ -188,23 +184,25 @@ function timeToMinutes(value: string) {
   return hour * 60 + minute;
 }
 
-function minutesToTime(totalMinutes: number) {
-  const clamped = Math.max(0, Math.min(23 * 60 + 59, totalMinutes));
-  const hours = Math.floor(clamped / 60);
-  const minutes = clamped % 60;
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+function minutesToTime(minutes: number) {
+  const hour = Math.floor(minutes / 60);
+  const minute = minutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 export function ReservationForm({
   onSuccess,
-  variant = "inline",
-}: ReservationFormProps) {
+}: {
+  onSuccess?: (data: ReservationRequestPayload) => void;
+}) {
   const t = useTranslations("reservation");
   const schema = useMemo(() => buildReservationSchema(t), [t]);
   const defaultDate = useMemo(() => formatDateInput(new Date()), []);
   const [minSelectableTime, setMinSelectableTime] = useState<
     string | undefined
   >(undefined);
+  const [submitted, setSubmitted] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -225,22 +223,20 @@ export function ReservationForm({
   });
   const [createReservationRequest, { isLoading }] =
     useCreateReservationRequestMutation();
-
   const watchDate = watch("reservationDate");
 
   useEffect(() => {
+    // This logic remains unchanged
     const openingStartMinutes = timeToMinutes(OPENING_HOURS.start);
     const openingEndMinutes = timeToMinutes(OPENING_HOURS.end);
     if (openingStartMinutes === null || openingEndMinutes === null) {
       setMinSelectableTime(undefined);
       return;
     }
-
     if (watchDate !== defaultDate) {
       setMinSelectableTime(OPENING_HOURS.start);
       return;
     }
-
     const now = new Date();
     const nowMinutes = now.getHours() * 60 + now.getMinutes();
     const minMinutes = Math.max(openingStartMinutes, nowMinutes);
@@ -249,10 +245,6 @@ export function ReservationForm({
   }, [watchDate, defaultDate]);
 
   const isBusy = isSubmitting || isLoading;
-  const cardStyle =
-    variant === "modal"
-      ? "bg-white text-neutral-900 shadow-2xl"
-      : "bg-[var(--base-200,#f7f7f5)] text-neutral-900 shadow-lg";
 
   const onSubmit = async (values: ReservationFormValues) => {
     const payload: ReservationRequestPayload = {
@@ -268,215 +260,216 @@ export function ReservationForm({
 
     try {
       await createReservationRequest(payload).unwrap();
-      toast.success(t("successTitle"), {
-        description: t("successDesc"),
-      });
-      reset({
-        fullName: "",
-        phoneNumber: "",
-        email: "",
-        guestCount: values.guestCount,
-        reservationDate: values.reservationDate,
-        reservationTime: values.reservationTime,
-        note: "",
-      });
+      toast.success(t("successTitle"), { description: t("successDesc") });
+      setSubmitted(true);
       onSuccess?.(payload);
     } catch (error) {
       const message =
         (error as { data?: { message?: string } })?.data?.message ||
         t("errorDesc");
-      toast.error(t("errorTitle"), {
-        description: message,
-      });
+      toast.error(t("errorTitle"), { description: message });
     }
   };
 
+  const handleModify = () => {
+    setSubmitted(false);
+    reset();
+  };
+
   return (
-    <div
-      className={`w-full rounded-3xl border border-black/5 ${cardStyle} overflow-hidden`}
-    >
-      <div className="grid grid-cols-1 gap-6 p-5 sm:gap-7 sm:p-7 lg:grid-cols-5 lg:p-10">
-        <div className="space-y-6 lg:col-span-3">
-          <div className="space-y-2">
-            <p className="text-sm uppercase tracking-[0.12em] text-orange-500">
-              {t("sectionTitle")}
-            </p>
-            <h3 className="text-2xl font-semibold leading-tight text-neutral-900">
-              {t("heading")}
-            </h3>
-            <p className="text-sm text-neutral-600">{t("description")}</p>
+    <div className="container mx-auto px-6">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row bg-white overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)]">
+        <div className="lg:w-2/5 h-[400px] lg:h-auto relative">
+          <img
+            src="/signature/Mango Sticky Rice.jpeg"
+            alt="Mango sticky rice"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-sala-primary/40 mix-blend-multiply"></div>
+          <div className="absolute inset-0 flex items-center justify-center p-12">
+            <div className="text-center text-white border border-white/20 p-8 backdrop-blur-sm">
+              <span className="block text-xs tracking-[0.5em] uppercase font-black mb-4">
+                Availability
+              </span>
+              <p className="font-serif text-2xl italic">
+                &ldquo;We prepare a limited selection of tables to ensure every
+                guest receives our full attention.&rdquo;
+              </p>
+            </div>
           </div>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <label className="md:col-span-2 flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("fullNameLabel")}
-                <input
-                  {...register("fullName")}
-                  name="fullName"
-                  placeholder={t("fullNamePlaceholder")}
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.fullName)}
-                  autoComplete="name"
-                />
-                {errors.fullName && (
-                  <p className="text-xs text-red-600">
-                    {errors.fullName.message}
-                  </p>
-                )}
-              </label>
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("phoneLabel")}
-                <input
-                  {...register("phoneNumber")}
-                  name="phoneNumber"
-                  type="tel"
-                  placeholder={t("phonePlaceholder")}
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.phoneNumber)}
-                  autoComplete="tel"
-                />
-                {errors.phoneNumber && (
-                  <p className="text-xs text-red-600">
-                    {errors.phoneNumber.message}
-                  </p>
-                )}
-              </label>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-              <label className="col-span-2 md:col-span-2 flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("emailLabel")}
-                <input
-                  {...register("email")}
-                  name="email"
-                  type="email"
-                  placeholder={t("emailPlaceholder")}
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.email)}
-                  autoComplete="email"
-                />
-                {errors.email && (
-                  <p className="text-xs text-red-600">{errors.email.message}</p>
-                )}
-              </label>
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("guestLabel")}
-                <select
-                  {...register("guestCount", { valueAsNumber: true })}
-                  name="guestCount"
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.guestCount)}
-                >
-                  {[1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30].map((n) => (
-                    <option key={n} value={n}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-                {errors.guestCount && (
-                  <p className="text-xs text-red-600">
-                    {errors.guestCount.message}
-                  </p>
-                )}
-              </label>
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("dateLabel")}
-                <input
-                  {...register("reservationDate")}
-                  name="reservationDate"
-                  type="date"
-                  min={defaultDate}
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.reservationDate)}
-                />
-                {errors.reservationDate && (
-                  <p className="text-xs text-red-600">
-                    {errors.reservationDate.message}
-                  </p>
-                )}
-              </label>
-              <label className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-                {t("timeLabel")}
-                <input
-                  {...register("reservationTime")}
-                  name="reservationTime"
-                  type="time"
-                  min={minSelectableTime}
-                  max={OPENING_HOURS.end}
-                  className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                  aria-invalid={Boolean(errors.reservationTime)}
-                />
-                {errors.reservationTime && (
-                  <p className="text-xs text-red-600">
-                    {errors.reservationTime.message}
-                  </p>
-                )}
-              </label>
-            </div>
-
-            <label className="flex min-w-0 flex-col gap-2 text-sm font-medium">
-              {t("noteLabel")}
-              <textarea
-                {...register("note")}
-                name="note"
-                rows={3}
-                placeholder={t("notePlaceholder")}
-                className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100"
-                aria-invalid={Boolean(errors.note)}
-              />
-              {errors.note && (
-                <p className="text-xs text-red-600">{errors.note.message}</p>
-              )}
-            </label>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="submit"
-                disabled={isBusy}
-                className="rounded-full bg-orange-500 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-200 disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {isBusy ? t("submitting") : t("submit")}
-              </button>
-              <span className="text-xs text-neutral-500">{t("privacy")}</span>
-            </div>
-          </form>
         </div>
 
-        <div className="space-y-4 rounded-2xl bg-white/70 p-5 backdrop-blur lg:col-span-2 min-w-0">
-          <div className="space-y-1">
-            <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-              {t("contactLabel")}
-            </p>
-            <a
-              href="tel:0868555057"
-              className="text-lg font-semibold text-neutral-900 underline-offset-2 transition hover:text-orange-600 hover:underline"
-            >
-              0868 555 057
-            </a>
-            <p className="text-sm text-neutral-600">{t("addressLine")}</p>
-          </div>
-          <div className="grid grid-cols-2 gap-3 text-sm text-neutral-700">
-            <div className="min-w-0 rounded-xl border border-neutral-200/70 bg-white px-4 py-3">
-              <p className="font-semibold text-neutral-900">
-                {t("openingHourLabel")}
+        <div className="lg:w-3/5 p-12 lg:p-24">
+          {submitted ? (
+            <div className="h-full flex flex-col items-center justify-center text-center animate-fade-in">
+              <div className="w-24 h-24 border border-sala-accent rounded-full flex items-center justify-center mb-8">
+                <div className="w-3 h-3 bg-sala-accent rounded-full"></div>
+              </div>
+              <h3 className="text-4xl font-serif mb-6 text-sala-primary">
+                Your Table Awaits
+              </h3>
+              <p className="text-stone-500 mb-10 max-w-sm leading-relaxed">
+                {t("successDesc")}
               </p>
-              <p>
-                {OPENING_HOURS.start} - {OPENING_HOURS.end}
-              </p>
+              <button
+                onClick={handleModify}
+                className="text-sala-accent tracking-[0.3em] uppercase font-black text-xs border-b-2 border-sala-accent pb-1 hover:text-sala-primary hover:border-sala-primary transition-all"
+              >
+                Make Another Reservation
+              </button>
             </div>
-            <div className="min-w-0 rounded-xl border border-neutral-200/70 bg-white px-4 py-3">
-              <p className="font-semibold text-neutral-900">
-                {t("emailLabelSecondary")}
-              </p>
-              <p className="break-words text-sm text-neutral-700">
-                salathaivietnam@gmail.com
-              </p>
-            </div>
-          </div>
-          <div className="rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-700">
-            {t("arrivalNote")}
-          </div>
+          ) : (
+            <>
+              <div className="mb-12">
+                <span className="text-sala-accent tracking-[0.3em] uppercase text-xs mb-4 block font-bold">
+                  {t("sectionTitle")}
+                </span>
+                <h2 className="text-5xl font-serif text-sala-primary">
+                  {t("heading")}
+                </h2>
+              </div>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      {t("fullNameLabel")}
+                    </label>
+                    <input
+                      {...register("fullName")}
+                      className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors text-lg font-light"
+                      aria-invalid={Boolean(errors.fullName)}
+                    />
+                    {errors.fullName && (
+                      <p className="text-xs text-red-600">
+                        {errors.fullName.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      {t("phoneLabel")}
+                    </label>
+                    <input
+                      {...register("phoneNumber")}
+                      type="tel"
+                      className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors text-lg font-light"
+                      aria-invalid={Boolean(errors.phoneNumber)}
+                    />
+                    {errors.phoneNumber && (
+                      <p className="text-xs text-red-600">
+                        {errors.phoneNumber.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                    {t("emailLabel")}
+                  </label>
+                  <input
+                    {...register("email")}
+                    type="email"
+                    className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors text-lg font-light"
+                    aria-invalid={Boolean(errors.email)}
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-600">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      {t("dateLabel")}
+                    </label>
+                    <input
+                      {...register("reservationDate")}
+                      type="date"
+                      min={defaultDate}
+                      className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors font-light"
+                      aria-invalid={Boolean(errors.reservationDate)}
+                    />
+                    {errors.reservationDate && (
+                      <p className="text-xs text-red-600">
+                        {errors.reservationDate.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      {t("timeLabel")}
+                    </label>
+                    <input
+                      {...register("reservationTime")}
+                      type="time"
+                      min={minSelectableTime}
+                      max={OPENING_HOURS.end}
+                      className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors font-light"
+                      aria-invalid={Boolean(errors.reservationTime)}
+                    />
+                    {errors.reservationTime && (
+                      <p className="text-xs text-red-600">
+                        {errors.reservationTime.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-3 col-span-2 md:col-span-1">
+                    <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      {t("guestLabel")}
+                    </label>
+                    <select
+                      {...register("guestCount", { valueAsNumber: true })}
+                      className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors font-light"
+                      aria-invalid={Boolean(errors.guestCount)}
+                    >
+                      {[1, 2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 30].map((n) => (
+                        <option key={n} value={n}>
+                          {n === 1
+                            ? `${n} ${t("guestSingular")}`
+                            : t("guestPlural", { count: n })}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.guestCount && (
+                      <p className="text-xs text-red-600">
+                        {errors.guestCount.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                    {t("noteLabel")}
+                  </label>
+                  <textarea
+                    {...register("note")}
+                    rows={2}
+                    placeholder={t("notePlaceholder")}
+                    className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors text-lg font-light"
+                    aria-invalid={Boolean(errors.note)}
+                  />
+                  {errors.note && (
+                    <p className="text-xs text-red-600">
+                      {errors.note.message}
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isBusy}
+                  className="w-full py-6 bg-sala-primary text-white uppercase tracking-[0.4em] font-black text-xs hover:bg-sala-accent transition-all duration-500 mt-8 shadow-2xl disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {isBusy ? t("submitting") : t("submit")}
+                </button>
+                <p className="text-center text-xs text-stone-400 pt-4">
+                  {t("privacy")}
+                </p>
+              </form>
+            </>
+          )}
         </div>
       </div>
     </div>

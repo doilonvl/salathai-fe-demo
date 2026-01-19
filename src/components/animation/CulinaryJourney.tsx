@@ -99,7 +99,8 @@ export function CulinaryJourney({
   useEffect(() => {
     if (!slides.length) return;
     if (activeIndex >= slides.length) {
-      setActiveIndex(0);
+      // Use queueMicrotask to avoid synchronous setState in effect
+      queueMicrotask(() => setActiveIndex(0));
     }
   }, [activeIndex, slides.length]);
 
@@ -152,9 +153,9 @@ export function CulinaryJourney({
 
           <div className="order-1 md:order-2">
             <div className="flex flex-col gap-5">
-              <p className="text-sm text-neutral-500 md:text-base">
+              {/* <p className="text-sm text-neutral-500 md:text-base">
                 {t("intro")}
-              </p>
+              </p> */}
               <div className="flex items-start gap-4">
                 <div className="flex flex-col items-center gap-2 pt-1">
                   <button

@@ -41,6 +41,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --font-serif: var(--font-playfair-display);
 }
 
 :root {
@@ -76,6 +77,10 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  /* New custom colors for Salathai theme */
+  --sala-primary: oklch(0.2 0.03 265);
+  --sala-accent: oklch(0.6 0.2 25);
 }
 
 .dark {
@@ -110,6 +115,10 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+
+  /* New custom colors for Salathai theme */
+  --sala-primary: oklch(0.9 0.03 265); /* A lighter primary for dark mode */
+  --sala-accent: oklch(0.6 0.2 25);
 }
 
 @layer base {
@@ -118,6 +127,34 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Salathai utilities */
+@layer utilities {
+  .bg-sala-primary {
+    background-color: var(--sala-primary);
+  }
+  .bg-sala-accent {
+    background-color: var(--sala-accent);
+  }
+  .text-sala-primary {
+    color: var(--sala-primary);
+  }
+  .text-sala-accent {
+    color: var(--sala-accent);
+  }
+  .border-sala-primary {
+    border-color: var(--sala-primary);
+  }
+  .border-sala-accent {
+    border-color: var(--sala-accent);
+  }
+  .hover\:text-sala-accent:hover {
+    color: var(--sala-accent);
+  }
+  .hover\:border-sala-accent:hover {
+    border-color: var(--sala-accent);
   }
 }
 
@@ -320,4 +357,23 @@
   transform: translateX(-50%);
   will-change: transform;
   object-fit: cover;
+}
+
+/* Reservation modal scrollbar only on hover */
+.reservation-scroll [data-slot="scroll-area-scrollbar"] {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.reservation-scroll:hover [data-slot="scroll-area-scrollbar"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.reservation-scroll [data-slot="scroll-area-scrollbar"][data-orientation="vertical"] {
+  position: absolute;
+  right: 6px;
+  top: 10px;
+  bottom: 10px;
 }

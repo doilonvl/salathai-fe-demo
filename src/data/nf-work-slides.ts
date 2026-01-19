@@ -1,22 +1,22 @@
 export const nfWorkSlides = [
   {
-    key: "signature",
-    image: "/Marquee/img-1.jpg",
+    key: "padThai",
+    image: "/signature/Pad Thai Noodles.jpeg",
+    route: "/#reservation",
+  },
+  {
+    key: "redCurry",
+    image: "/signature/Red curry.jpeg",
     route: "/#reservation",
   },
   {
     key: "greenCurry",
-    image: "/Marquee/img-3.jpg",
-    route: "/#reservation",
-  },
-  {
-    key: "somTum",
-    image: "/Marquee/img-4.jpg",
+    image: "/signature/Thai Green Curry.jpeg",
     route: "/#reservation",
   },
   {
     key: "mangoSticky",
-    image: "/Marquee/img-5.jpg",
+    image: "/signature/Mango Sticky Rice.jpeg",
     route: "/#reservation",
   },
 ];

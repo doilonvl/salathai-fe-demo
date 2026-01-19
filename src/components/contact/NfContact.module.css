@@ -4,7 +4,12 @@
   --nf-contact-tone-300: #5b5c57;
   --nf-contact-tone-400: #e3e4d8;
   --nf-contact-tone-500: #fe0100;
-  --nf-contact-font: var(--font-caladea, "Times New Roman", serif);
+  --nf-contact-font: var(
+    --font-playfair-display,
+    "Playfair Display",
+    "Times New Roman",
+    serif
+  );
 
   position: relative;
   width: 100%;

@@ -10,7 +10,6 @@ import { nfWorkSlides } from "@/data/nf-work-slides";
 import { scrambleIn, scrambleOut, scrambleVisible } from "@/lib/nf-scramble";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import LandingHeader from "@/components/shared/LandingHeader";
 
 const vertexShader = `
   varying vec2 vUv;
@@ -446,7 +445,6 @@ export default function NfWorkSlider() {
 
   return (
     <div className="nf-work">
-      <LandingHeader onOpenReservation={() => setShowReservationModal(true)} />
       <div className="nf-work__slider" onClick={onSliderClick}>
         <canvas ref={canvasRef} className="nf-work__canvas" />
 
@@ -511,19 +509,21 @@ export default function NfWorkSlider() {
               exit={{ opacity: 0, y: -60 }}
               transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
             >
-              <button
-                type="button"
-                onClick={() => setShowReservationModal(false)}
-                className="absolute right-3 top-3 z-[1201] inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-lg transition hover:bg-neutral-800 focus:outline-none"
-              >
-                X
-              </button>
-              <ScrollArea className="h-full rounded-3xl">
-                <ReservationForm
-                  variant="modal"
-                  onSuccess={() => setShowReservationModal(false)}
-                />
-              </ScrollArea>
+              <div className="relative h-full rounded-3xl bg-white overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowReservationModal(false)}
+                  className="absolute right-4 top-4 z-[1201] inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-lg transition hover:bg-neutral-800 focus:outline-none"
+                >
+                  X
+                </button>
+                <ScrollArea className="h-full reservation-scroll">
+                  <ReservationForm
+                    variant="modal"
+                    onSuccess={() => setShowReservationModal(false)}
+                  />
+                </ScrollArea>
+              </div>
             </motion.div>
           </motion.div>
         )}

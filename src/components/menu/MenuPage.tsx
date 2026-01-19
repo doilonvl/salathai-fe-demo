@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
-import LandingHeader from "@/components/shared/LandingHeader";
+
 import type { Locale } from "@/i18n/request";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -29,24 +29,30 @@ type MenuCategory = {
   indices: number[];
 };
 
-// Update indices to match the real sections in the menu images.
+// Merged categories for a more compact view as requested
 const MENU_CATEGORIES: MenuCategory[] = [
-  { id: "vegetable", labelKey: "categories.vegetable", indices: [1] },
-  { id: "hotpot", labelKey: "categories.hotpot", indices: [2] },
-  { id: "soup", labelKey: "categories.soup", indices: [3] },
-  { id: "main", labelKey: "categories.main", indices: [4, 5, 6, 7] },
-  { id: "noodlesRice", labelKey: "categories.noodlesRice", indices: [8, 9] },
-  { id: "vegetarian", labelKey: "categories.vegetarian", indices: [10] },
-  { id: "curry", labelKey: "categories.curry", indices: [11] },
-  { id: "salad", labelKey: "categories.salad", indices: [12, 13] },
-  { id: "bottledDrinks", labelKey: "categories.bottledDrinks", indices: [14] },
-  { id: "drinkDessert", labelKey: "categories.drinkDessert", indices: [15] },
+  { id: "appetizers", labelKey: "categories.appetizers", indices: [3, 12, 13] }, // Was: Soup, Salad
+  { id: "main", labelKey: "categories.main", indices: [4, 5, 6, 7, 11] }, // Was: Main, Curry
+  {
+    id: "noodlesRiceHotpot",
+    labelKey: "categories.noodlesRiceHotpot",
+    indices: [2, 8, 9],
+  }, // Was: Hotpot, Noodles & Rice
+  {
+    id: "vegetarian",
+    labelKey: "categories.vegetarian",
+    indices: [1, 10],
+  }, // Was: Vegetable, Vegetarian
+  {
+    id: "drinksDessert",
+    labelKey: "categories.drinksDessert",
+    indices: [14, 15],
+  }, // Was: Bottled Drinks, Drink & Dessert
 ];
 
 export default function MenuPage() {
   const tMenu = useTranslations("menuPage");
   const locale = useLocale() as Locale;
-  const localePrefix = locale === "vi" ? "" : `/${locale}`;
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState("all");
 
@@ -116,20 +122,18 @@ export default function MenuPage() {
   }, [activeIndex]);
 
   return (
-    <section
-      className={`${plusJakarta.className} relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_at_50%_20%,#fff6e9_0%,#ffe9d2_35%,#f7d8c3_60%,#f0c8af_100%)] text-neutral-900`}
+    <div
+      className={`${plusJakarta.className} relative min-h-screen w-full overflow-hidden bg-white text-neutral-900`}
     >
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="absolute -left-24 top-16 h-48 w-48 rounded-full bg-white/50 blur-3xl" />
-        <div className="absolute -right-32 bottom-10 h-64 w-64 rounded-full bg-[#f7c8a7]/40 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 opacity-50">
+        <div className="absolute -left-24 top-16 h-48 w-48 rounded-full bg-amber-100/50 blur-3xl" />
+        <div className="absolute -right-32 bottom-10 h-64 w-64 rounded-full bg-orange-100/40 blur-3xl" />
       </div>
-
-      <LandingHeader reservationHref={`${localePrefix}/#reservation`} />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-16 pt-24 md:pt-28">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-neutral-600">
+            <p className="text-xs uppercase tracking-[0.35em] text-amber-600">
               Salathai
             </p>
             <h1
@@ -143,34 +147,34 @@ export default function MenuPage() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2">
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
           {categoryTabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
               onClick={() => setActiveCategory(tab.id)}
-              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs uppercase tracking-[0.25em] transition ${
+              className={`inline-flex items-baseline justify-center gap-2 px-8 py-3 text-[10px] tracking-widest uppercase font-black transition-all duration-300 border ${
                 activeCategory === tab.id
-                  ? "border-neutral-900 bg-neutral-900 text-white shadow-md"
-                  : "border-white/70 bg-white/70 text-neutral-700 shadow-sm backdrop-blur"
+                  ? "bg-neutral-900 border-neutral-900 text-white shadow-md"
+                  : "bg-transparent text-stone-600 border-stone-300 hover:border-sala-accent hover:text-sala-accent"
               }`}
             >
               {tab.label}
               <span
-                className={`rounded-full px-2 py-0.5 text-[10px] tracking-[0.2em] ${
+                className={`font-mono font-normal transition-colors ${
                   activeCategory === tab.id
-                    ? "bg-white/20 text-white"
-                    : "bg-neutral-900/10 text-neutral-600"
+                    ? "text-stone-300"
+                    : "text-stone-400 group-hover:text-sala-accent"
                 }`}
               >
-                {tab.items.length}
+                ({tab.items.length})
               </span>
             </button>
           ))}
         </div>
 
         {visibleSections.map((section) => (
-          <div key={section.id} className="mt-10">
+          <div key={section.id} className="mt-12">
             <div className="flex items-baseline justify-between gap-4">
               <h2 className={`${playfair.className} text-2xl text-neutral-900`}>
                 {section.label}
@@ -186,7 +190,7 @@ export default function MenuPage() {
                     key={item.src}
                     type="button"
                     onClick={() => setActiveIndex(index)}
-                    className="group relative overflow-hidden rounded-3xl border border-white/70 bg-white/70 text-left shadow-lg backdrop-blur transition-transform duration-300 hover:-translate-y-1"
+                    className="group relative overflow-hidden rounded-2xl border border-neutral-200/70 bg-white text-left shadow-lg transition-shadow duration-300 hover:shadow-2xl"
                   >
                     <div className="aspect-[3/4] overflow-hidden">
                       <img
@@ -258,6 +262,6 @@ export default function MenuPage() {
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

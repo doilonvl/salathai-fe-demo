@@ -7,6 +7,8 @@ import ScrollStrokePage from "@/components/animation/ScrollStrokePage";
 import SocialEmbeds from "@/components/social/SocialEmbeds";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
+import NewHero from "@/components/shared/NewHero";
+import NewMenu from "@/components/shared/NewMenu";
 
 export const revalidate = 300;
 
@@ -167,14 +169,15 @@ export default async function HomePage({ params }: HomePageProps) {
         inLanguage: locale === "vi" ? "vi-VN" : "en-US",
       },
       {
-        "@type": "CafeOrCoffeeShop",
-        "@id": `${siteUrl}/#cafe`,
+        "@type": "Restaurant",
+        "@id": `${siteUrl}/#restaurant`,
         name: SITE_NAME,
         alternateName: ["Sala Thai", "SalaThai"],
         url: siteUrl,
-        image: ogImageUrl,
+        image: new URL(OG_IMAGE_PATH, siteUrl).toString(),
         servesCuisine: "Thai",
         priceRange: "$$",
+        acceptsReservations: "True",
       },
       {
         "@type": "BreadcrumbList",
@@ -210,35 +213,28 @@ export default async function HomePage({ params }: HomePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      {/* Landing Reveal */}
-      <section>
-        <LandingReveal initialItems={landingMenu} />
-      </section>
+      
+      <NewHero />
+      <NewMenu />
 
-      {/* Marquee scroller */}
-      <section>
+      <section className="py-16 md:py-24">
         <MarqueeScroller
           initialImages={marquee.images}
           initialSlides={marquee.slides}
         />
       </section>
 
-      {/* Stroke svg */}
-      <section>
+      {/* Hidden Stroke svg */}
+      <section className="hidden">
         <ScrollStrokePage />
       </section>
 
-      {/* Reservation form */}
-      <section
-        id="reservation"
-        className="mb-10 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0"
-      >
-        <div className="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto">
-          <ReservationForm />
-        </div>
+      {/* Reservation form - Now with new styles */}
+      <section id="reservation" className="py-16 md:py-32">
+        <ReservationForm />
       </section>
 
-      <section className="mb-16 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0">
+      <section className="py-16 mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-0">
         <SocialEmbeds />
       </section>
     </main>

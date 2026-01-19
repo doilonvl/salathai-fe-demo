@@ -4,7 +4,12 @@
   --nf-work-tone-300: #5b5c57;
   --nf-work-tone-400: #b5161f;
   --nf-work-tone-500: #8f1017;
-  --nf-work-font: var(--font-caladea, "Times New Roman", serif);
+  --nf-work-font: var(
+    --font-playfair-display,
+    "Playfair Display",
+    "Times New Roman",
+    serif
+  );
 
   position: relative;
   width: 100%;

@@ -1,0 +1,58 @@
+import type { Dish } from "@/types/new-menu";
+
+export const NEW_MENU_DATA: Dish[] = [
+  {
+    id: 1,
+    name: "Tom Yum Goong",
+    category: "Soups",
+    price: 18.50,
+    description: "A classic spicy and sour soup with shrimp, mushrooms, lemongrass, and galangal.",
+    spiciness: 4,
+    image: "/Menu/menu1.jpg",
+  },
+  {
+    id: 2,
+    name: "Pad Thai",
+    category: "Noodles",
+    price: 22.00,
+    description: "Stir-fried rice noodles with tofu, shrimp, peanuts, and bean sprouts in a tangy sauce.",
+    spiciness: 2,
+    image: "/Menu/menu2.jpg",
+  },
+  {
+    id: 3,
+    name: "Green Curry",
+    category: "Curries",
+    price: 25.00,
+    description: "Spicy green curry with chicken, coconut milk, bamboo shoots, and Thai basil.",
+    spiciness: 5,
+    image: "/Menu/menu3.jpg",
+  },
+  {
+    id: 4,
+    name: "Massaman Curry",
+    category: "Curries",
+    price: 26.50,
+    description: "A rich, mild curry with beef, potatoes, onions, and peanuts.",
+    spiciness: 1,
+    image: "/Menu/menu4.jpg",
+  },
+  {
+    id: 5,
+    name: "Mango Sticky Rice",
+    category: "Desserts",
+    price: 12.00,
+    description: "Sweet sticky rice with fresh mango slices and a drizzle of coconut cream.",
+    spiciness: 0,
+    image: "/Menu/menu5.jpg",
+  },
+  {
+    id: 6,
+    name: "Som Tum",
+    category: "Salads",
+    price: 15.00,
+    description: "Spicy green papaya salad with peanuts, tomatoes, and long beans.",
+    spiciness: 3,
+    image: "/Menu/menu6.jpg",
+  },
+];

@@ -67,9 +67,10 @@ export default function SocialEmbeds() {
   }, []);
 
   const resolvedFbWidth = fbWidth ?? DEFAULT_FB_WIDTH;
+  const resolvedFbHeight = resolvedFbWidth <= 420 ? 320 : FB_BASIC_HEIGHT;
   const fbSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(
     FACEBOOK_PAGE
-  )}&tabs=&width=${resolvedFbWidth}&height=${FB_BASIC_HEIGHT}&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false`;
+  )}&tabs=&width=${resolvedFbWidth}&height=${resolvedFbHeight}&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false`;
 
   return (
     <div className="w-full">
@@ -87,7 +88,7 @@ export default function SocialEmbeds() {
         >
           <div
             className="relative overflow-hidden"
-            style={{ height: FB_BASIC_HEIGHT }}
+            style={{ height: resolvedFbHeight }}
           >
             <iframe
               title="SalaThai Facebook"

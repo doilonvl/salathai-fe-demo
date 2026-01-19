@@ -1,13 +1,9 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import gsap from "gsap";
-import { ReservationForm } from "@/components/shared/reservation-form";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useNfPixelatedVideo } from "@/components/effects/useNfPixelatedVideo";
-import LandingHeader from "@/components/shared/LandingHeader";
 import styles from "./NfContact.module.css";
 
 type ScrambleSpan = HTMLSpanElement & {
@@ -238,7 +234,6 @@ export default function NfContact() {
   const tReservation = useTranslations("reservation");
   const contactEmail = "salathaivietnam@gmail.com";
   const openingHours = "10:00 - 22:00";
-  const [showReservationModal, setShowReservationModal] = useState(false);
 
   useNfPixelatedVideo(rootRef, videoRef, styles.canvas);
 
@@ -289,8 +284,7 @@ export default function NfContact() {
   }, []);
 
   return (
-    <section className={styles.root} ref={rootRef} data-nav-theme="dark">
-      <LandingHeader onOpenReservation={() => setShowReservationModal(true)} />
+    <div className={styles.root} ref={rootRef} data-nav-theme="dark">
       <video
         ref={videoRef}
         className={styles.video}
@@ -328,42 +322,7 @@ export default function NfContact() {
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {showReservationModal && (
-          <motion.div
-            key="reservation-overlay"
-            className="fixed inset-0 z-[1200] flex items-center justify-center bg-black/60 backdrop-blur-sm px-3 py-4 sm:px-4"
-            onClick={() => setShowReservationModal(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-          >
-            <motion.div
-              className="relative w-full max-w-3xl md:max-w-4xl h-[90vh] max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, y: 80 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -60 }}
-              transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
-            >
-              <button
-                type="button"
-                onClick={() => setShowReservationModal(false)}
-                className="absolute right-3 top-3 z-[1201] inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-lg transition hover:bg-neutral-800 focus:outline-none"
-              >
-                X
-              </button>
-              <ScrollArea className="h-full rounded-3xl">
-                <ReservationForm
-                  variant="modal"
-                  onSuccess={() => setShowReservationModal(false)}
-                />
-              </ScrollArea>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
+
+    </div>
   );
 }

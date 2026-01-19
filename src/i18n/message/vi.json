@@ -14,6 +14,41 @@
     "marquee": {
       "intro": "Salathai mở hành trình ẩm thực Thái hiện đại: nguyên liệu tươi, gia vị cân bằng và không gian ấm áp cho mọi cuộc hẹn.",
       "outro": "Gặp gỡ Salathai: nơi hương lá chanh, cà ri và than lửa hòa cùng câu chuyện mỗi tối."
+    },
+    "signature": {
+      "title": "Khám phá món đặc trưng",
+      "padThai": {
+        "name": "Pad Thái xào hải sản",
+        "description": "Bánh phở xào với tôm, đậu phụ, giá đỗ trong sốt me đậm đà, ăn kèm lạc rang và ớt khô."
+      },
+      "redCurry": {
+        "name": "Cà ri đỏ bò",
+        "description": "Cà ri đỏ nấu với nước cốt dừa, thịt gà hoặc bò, măng, và lá chanh Thái thơm lừng."
+      },
+      "steamedTilapia": {
+        "name": "Cá diêu hồng hấp chanh",
+        "description": "Cá diêu hồng tươi hấp với chanh, tỏi, và ớt, mang lại vị chua cay hài hòa."
+      },
+      "greenCurry": {
+        "name": "Cà ri xanh",
+        "description": "Cà ri xanh cay nồng nấu cùng thịt gà, măng tre, và lá húng quế Thái."
+      },
+      "shrimpCake": {
+        "name": "Chả tôm chiên",
+        "description": "Chả tôm giòn rụm làm từ tôm tươi xay nhuyễn, ăn kèm sốt mận ngọt."
+      },
+      "tomYum": {
+        "name": "Súp Tom Yum",
+        "description": "Súp chua cay nổi tiếng với tôm, nấm, sả, và lá chanh."
+      },
+      "mangoSticky": {
+        "name": "Xôi xoài",
+        "description": "Nếp dẻo thơm nước cốt dừa, ăn kèm xoài chín và mè rang."
+      }
+    },
+    "hero": {
+      "ctaPrimary": "Khám phá món đặc trưng",
+      "ctaSecondary": "Đặt bàn"
     }
   },
   "header": {
@@ -55,16 +90,11 @@
     "close": "Đóng",
     "categories": {
       "all": "Tất cả",
-      "vegetable": "Rau củ",
-      "hotpot": "Lẩu Thái",
-      "soup": "Súp",
+      "appetizers": "Khai vị",
       "main": "Món chính",
-      "noodlesRice": "Mì & Cơm",
-      "vegetarian": "Món chay",
-      "curry": "Cà ri",
-      "salad": "Gỏi",
-      "bottledDrinks": "Nước đóng chai",
-      "drinkDessert": "Đồ uống & tráng miệng"
+      "noodlesRiceHotpot": "Mì, Cơm & Lẩu",
+      "vegetarian": "Món chay & Rau",
+      "drinksDessert": "Đồ uống & Tráng miệng"
     }
   },
   "languageSwitcher": {
@@ -104,32 +134,32 @@
     "footerLeft": "Món đặc trưng Salathai",
     "footerRight": "[ Nhấn để xem tiếp ]",
     "slides": {
-      "signature": {
-        "title": "Xôi xoài cốt dừa",
-        "description": "Nếp dẻo, xoài chín vàng, rưới cốt dừa thơm mịn.",
-        "type": "Tráng miệng",
-        "field": "Ngọt dịu",
+      "padThai": {
+        "title": "Pad Thai tôm",
+        "description": "Bánh phở xào me với tôm, giá đỗ và đậu phộng rang.",
+        "type": "Đặc trưng",
+        "field": "Món chính",
+        "date": "2025"
+      },
+      "redCurry": {
+        "title": "Cà ri đỏ bò",
+        "description": "Cà ri đỏ bò thơm nấu nước cốt dừa, măng và thảo mộc.",
+        "type": "Đặc trưng",
+        "field": "Cà ri",
         "date": "2025"
       },
       "greenCurry": {
-        "title": "Gỏi hải sản cay",
-        "description": "Hải sản tươi trộn rau thơm, ớt và nước mắm chua cay.",
-        "type": "Gỏi",
-        "field": "Cay",
+        "title": "Cà ri xanh",
+        "description": "Cà ri xanh thơm cay với thảo mộc Thái, nước cốt dừa và húng quế.",
+        "type": "Đặc trưng",
+        "field": "Cà ri",
         "date": "2024"
       },
-      "somTum": {
-        "title": "Gỏi đu đủ Som Tum",
-        "description": "Đu đủ bào sợi, cà chua, đậu đũa, vị chua cay mặn ngọt.",
-        "type": "Gỏi",
-        "field": "Tươi mát",
-        "date": "2023"
-      },
       "mangoSticky": {
-        "title": "Pad Thai tôm",
-        "description": "Bánh phở xào me, tôm tươi, giá và lạc rang.",
-        "type": "Đặc trưng",
-        "field": "Món chính",
+        "title": "Xôi xoài",
+        "description": "Nếp dẻo thơm nước cốt dừa, ăn kèm xoài chín và mè rang.",
+        "type": "Tráng miệng",
+        "field": "Ngọt đầu",
         "date": "2025"
       }
     }
@@ -145,6 +175,8 @@
     "emailLabel": "Email (nhận xác nhận)",
     "emailPlaceholder": "salathaivietnam@gmail.com",
     "guestLabel": "Số khách",
+    "guestSingular": "khách",
+    "guestPlural": "{count} khách",
     "dateLabel": "Ngày",
     "timeLabel": "Giờ (24h)",
     "noteLabel": "Ghi chú thêm",

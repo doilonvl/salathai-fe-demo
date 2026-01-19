@@ -11,7 +11,7 @@ import type { Blog } from "@/types/blog";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import BlogListMotion from "@/components/blog/BlogListMotion";
-import LandingHeader from "@/components/shared/LandingHeader";
+
 
 const BASE_URL = getSiteUrl();
 const DEFAULT_OG_IMAGE = `${BASE_URL}/Marquee/slide-4.jpg`;
@@ -114,42 +114,40 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
   const hasNext = page * limit < total;
 
   return (
-    <main className="relative overflow-hidden bg-slate-50/70">
+    <div className="relative overflow-hidden bg-white">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_60%),radial-gradient(circle_at_bottom_left,rgba(251,191,36,0.08),transparent_55%),radial-gradient(circle_at_top_right,rgba(14,116,144,0.08),transparent_50%)]"
+        className="pointer-events-none absolute inset-0"
         aria-hidden
       />
-      <LandingHeader />
       <BlogListMotion>
         <div className="relative z-10 mx-auto max-w-6xl px-4 pb-16 pt-24 md:px-6 md:pt-28 lg:px-8">
-          <section className="relative overflow-hidden rounded-3xl border border-white/60 bg-white/85 p-8 shadow-[0_30px_80px_-60px_rgba(15,23,42,0.6)] md:p-10">
-            <div
-              className="absolute inset-0 bg-[linear-gradient(120deg,rgba(15,23,42,0.7),rgba(15,23,42,0.25)),url('/Marquee/slide-4.jpg')] bg-cover bg-center"
-              aria-hidden
-            />
-            <div className="relative">
-              <p
-                data-hero
-                className="text-[11px] font-semibold uppercase tracking-[0.35em] text-amber-200/90"
-              >
-                Salathai
-              </p>
+          <section className="relative overflow-hidden rounded-3xl border border-neutral-200/60 bg-white shadow-lg shadow-neutral-200/50">
+            <div className="absolute inset-0">
+              <Image
+                src="/Logo/landing-logo.jpg"
+                alt="Salathai"
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
+            <div className="relative p-8 md:p-10">
               <h1
                 data-hero
-                className="mt-3 text-3xl font-semibold text-white md:text-4xl"
+                className="text-3xl font-semibold text-neutral-900 md:text-4xl"
               >
                 {t("title")}
               </h1>
               <p
                 data-hero
-                className="mt-3 max-w-2xl text-sm text-white/85 md:text-base"
+                className="mt-3 max-w-2xl text-sm text-neutral-700/85 md:text-base"
               >
                 {t("subtitle")}
               </p>
               {tag ? (
                 <div
                   data-hero
-                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-200/70 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/20 px-3 py-1 text-xs font-semibold text-amber-500"
                 >
                   {t("tagLabel")} {tag}
                 </div>
@@ -160,11 +158,11 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
           <section className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
             <div className="space-y-6">
               {items.length === 0 ? (
-                <Card className="p-6">
-                  <h2 className="text-lg font-semibold text-neutral-900">
+                <Card className="p-6 bg-white">
+                  <h2 className="text-lg font-semibold text-neutral-800">
                     {t("emptyTitle")}
                   </h2>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className="mt-2 text-sm text-neutral-500">
                     {t("emptyBody")}
                   </p>
                 </Card>
@@ -190,13 +188,13 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
                       <Card
                         key={item._id}
                         data-card
-                        className="group overflow-hidden rounded-3xl border border-slate-200/70 bg-white/95 p-0 shadow-[0_30px_70px_-60px_rgba(15,23,42,0.6)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_35px_90px_-60px_rgba(15,23,42,0.75)]"
+                        className="group overflow-hidden rounded-3xl border border-neutral-200/80 bg-white p-0 shadow-lg shadow-neutral-200/50 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/60"
                       >
                         <Link
                           href={detailHref}
                           className="block overflow-hidden"
                         >
-                          <div className="relative aspect-[4/3] w-full bg-muted">
+                          <div className="relative aspect-[4/3] w-full bg-white">
                             {cover ? (
                               <Image
                                 src={cover}
@@ -214,16 +212,16 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
                         </Link>
                         <div className="space-y-2 px-4 pb-4">
                           <Link href={detailHref}>
-                            <h2 className="text-lg font-semibold leading-snug text-neutral-900 line-clamp-2">
+                            <h2 className="text-lg font-semibold leading-snug text-neutral-800 line-clamp-2">
                               {title}
                             </h2>
                           </Link>
                           {excerpt ? (
-                            <p className="text-sm leading-relaxed text-neutral-600 line-clamp-3">
+                            <p className="text-sm leading-relaxed text-neutral-500 line-clamp-3">
                               {excerpt}
                             </p>
                           ) : null}
-                          <div className="text-xs text-neutral-500">
+                          <div className="text-xs text-neutral-400">
                             {dateLabel}
                           </div>
                         </div>
@@ -236,7 +234,7 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
               {items.length > 0 ? (
                 <div
                   data-pagination
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/70 bg-white/90 px-4 py-3 text-sm shadow-sm"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/70 bg-white px-4 py-3 text-sm shadow-sm"
                 >
                   <span className="text-muted-foreground">
                     {t("pageLabel", {
@@ -270,7 +268,7 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
             </div>
 
             <aside className="space-y-4">
-              <div className="rounded-3xl border border-slate-200/70 bg-white/90 p-5 shadow-[0_20px_60px_-45px_rgba(15,23,42,0.4)]">
+              <div className="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-[0_20px_60px_-45px_rgba(15,23,42,0.4)]">
                 <p
                   data-hero
                   className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-600/80"
@@ -294,9 +292,9 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
                           key={item._id}
                           href={detailHref}
                           data-latest-item
-                          className="flex items-center gap-3 rounded-2xl border border-transparent p-2 transition hover:border-slate-200/70 hover:bg-muted/40"
+                          className="flex items-center gap-3 rounded-2xl border border-transparent p-2 transition hover:border-slate-200/70 hover:bg-white"
                         >
-                          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-muted">
+                          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white">
                             {cover ? (
                               <Image
                                 src={cover}
@@ -328,6 +326,6 @@ export default async function BlogPage({ params, searchParams }: PageParams) {
           </section>
         </div>
       </BlogListMotion>
-    </main>
+    </div>
   );
 }

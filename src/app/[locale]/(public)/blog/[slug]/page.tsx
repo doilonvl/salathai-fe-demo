@@ -25,7 +25,6 @@ import { Card } from "@/components/ui/card";
 import BlogDetailMotion from "@/components/blog/BlogDetailMotion";
 import BlogLocaleBridge from "@/components/blog/BlogLocaleBridge";
 import BlogTocPanel from "@/components/blog/BlogTocPanel";
-import LandingHeader from "@/components/shared/LandingHeader";
 
 const BASE_URL = getSiteUrl();
 const DEFAULT_OG_IMAGE = `${BASE_URL}/Marquee/slide-4.jpg`;
@@ -147,17 +146,12 @@ export default async function BlogDetailPage({ params }: PageParams) {
   }
 
   return (
-    <main className="relative overflow-hidden bg-slate-50/70">
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),transparent_60%),radial-gradient(circle_at_top_right,rgba(15,118,110,0.08),transparent_55%),radial-gradient(circle_at_bottom_left,rgba(251,191,36,0.08),transparent_55%)]"
-        aria-hidden
-      />
-      <LandingHeader />
+    <main className="relative overflow-hidden bg-white">
       <BlogDetailMotion>
         <div className="relative z-10 mx-auto max-w-6xl px-4 pb-16 pt-24 md:px-6 md:pt-28 lg:px-8">
           <BlogLocaleBridge slug={blog.slug} slugI18n={blog.slug_i18n} />
           <BlogViewTracker blogId={blog._id} />
-          <section className="relative overflow-hidden rounded-3xl border border-white/30 bg-neutral-900 text-white shadow-[0_35px_90px_-60px_rgba(15,23,42,0.8)]">
+          <section className="relative overflow-hidden rounded-3xl border border-neutral-200/60 bg-white shadow-lg shadow-neutral-200/50">
             {cover ? (
               <Image
                 src={cover}
@@ -168,32 +162,31 @@ export default async function BlogDetailPage({ params }: PageParams) {
                 className="object-cover"
               />
             ) : null}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
             <div className="relative space-y-4 px-6 py-10 md:px-10 md:py-14">
               <Link
                 href={buildListHref(locale)}
                 data-hero
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur"
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-300/70 bg-neutral-200/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-800 backdrop-blur"
               >
                 {t("backToBlog")}
               </Link>
               <h1
                 data-hero
-                className="max-w-3xl text-3xl font-semibold leading-tight md:text-4xl"
+                className="max-w-3xl text-3xl font-semibold leading-tight text-neutral-900 md:text-4xl"
               >
                 {title}
               </h1>
               {excerpt ? (
                 <p
                   data-hero
-                  className="max-w-2xl text-sm text-white/85 md:text-base"
+                  className="max-w-2xl text-sm text-neutral-700 md:text-base"
                 >
                   {excerpt}
                 </p>
               ) : null}
               <div
                 data-hero
-                className="flex flex-wrap items-center gap-4 text-xs text-white/80"
+                className="flex flex-wrap items-center gap-4 text-xs text-neutral-600"
               >
                 {dateLabel ? (
                   <span>

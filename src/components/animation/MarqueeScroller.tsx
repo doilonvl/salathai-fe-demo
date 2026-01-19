@@ -245,7 +245,7 @@ const FALLBACK_MARQUEE_SLIDES: MarqueeSlide[] = [
 function pickLocalized(
   value: { vi?: string; en?: string } | undefined,
   locale: Locale,
-  fallback = ""
+  fallback = "",
 ) {
   if (!value) return fallback;
   if (locale === "en") {
@@ -289,8 +289,8 @@ export function MarqueeScroller({
       marqueeImagesData?.items?.length
         ? marqueeImagesData.items
         : initialImages.length
-        ? initialImages
-        : FALLBACK_MARQUEE_IMAGES
+          ? initialImages
+          : FALLBACK_MARQUEE_IMAGES
     ) as MarqueeImage[];
     if (!isMobile) {
       return items.map((item, idx) => ({
@@ -298,7 +298,7 @@ export function MarqueeScroller({
         altText: pickLocalized(
           item.altText_i18n,
           locale,
-          item.altText || `marquee-${idx + 1}`
+          item.altText || `marquee-${idx + 1}`,
         ),
       }));
     }
@@ -314,7 +314,7 @@ export function MarqueeScroller({
       const half = Math.floor(limit / 2); // 3 when limit=6
       const start = Math.max(
         0,
-        Math.min(items.length - limit, centerIdx - (half - 2))
+        Math.min(items.length - limit, centerIdx - (half - 2)),
       );
       const end = start + limit;
       subset = items.slice(start, end);
@@ -329,7 +329,7 @@ export function MarqueeScroller({
       altText: pickLocalized(
         item.altText_i18n,
         locale,
-        item.altText || `marquee-${idx + 1}`
+        item.altText || `marquee-${idx + 1}`,
       ),
     }));
   }, [isMobile, locale, marqueeImagesData]);
@@ -344,8 +344,8 @@ export function MarqueeScroller({
       marqueeSlidesData?.items?.length
         ? marqueeSlidesData.items
         : initialSlides.length
-        ? initialSlides
-        : FALLBACK_MARQUEE_SLIDES
+          ? initialSlides
+          : FALLBACK_MARQUEE_SLIDES
     ) as MarqueeSlide[];
     const localized = items.map((item) => ({
       ...item,
@@ -382,213 +382,6 @@ export function MarqueeScroller({
     }
   }, [activeIndex, slides.length]);
 
-  useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger, Flip);
-    const shell = containerRef.current;
-    if (!shell || !hasMeasuredViewport || isMobile) return;
-
-    const lenis = new Lenis();
-    ScrollTrigger.scrollerProxy(document.body, {
-      scrollTop(value) {
-        return arguments.length ? lenis.scrollTo(value ?? 0) : lenis.scroll;
-      },
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
-      },
-      pinType: document.body.style.transform ? "transform" : "fixed",
-    });
-    const onTick = (time: number) => lenis.raf(time * 1000);
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add(onTick);
-    gsap.ticker.lagSmoothing(0);
-
-    const ctx = gsap.context(() => {
-      const getColor = (name: string) =>
-        getComputedStyle(shell).getPropertyValue(name).trim();
-
-      const lightColor = getColor("--wjy-light") || "#edf1e8";
-      const darkColor = getColor("--wjy-dark") || "#101010";
-      const mix = (c1: string, c2: string, f: number) =>
-        gsap.utils.interpolate(c1, c2, f);
-
-      // Marquee subtle drift
-      gsap.to(".wjy-marquee-images", {
-        scrollTrigger: {
-          trigger: ".wjy-marquee",
-          start: "top bottom",
-          end: "top top",
-          scrub: true,
-          onUpdate: (self) => {
-            const xPosition = -75 + self.progress * 25;
-            gsap.set(".wjy-marquee-images", { x: `${xPosition}%` });
-          },
-        },
-      });
-
-      const getPinnedImg = () =>
-        containerRef.current?.querySelector(
-          ".wjy-marquee-img.pin img"
-        ) as HTMLImageElement | null;
-
-      const createPinnedClone = () => {
-        if (pinnedCloneRef.current) return;
-        const original = getPinnedImg();
-        if (!original) return;
-
-        const rect = original.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const clone = original.cloneNode(true) as HTMLImageElement;
-        clone.classList.add("wjy-fixed-clone");
-
-        gsap.set(clone, {
-          position: "fixed",
-          left: centerX - original.offsetWidth / 2,
-          top: centerY - original.offsetHeight / 2,
-          width: original.offsetWidth,
-          height: original.offsetHeight,
-          rotate: "-5deg",
-          transformOrigin: "center center",
-          zIndex: 100,
-          pointerEvents: "none",
-        });
-
-        document.body.appendChild(clone);
-        gsap.set(original, { opacity: 0 });
-        pinnedCloneRef.current = clone;
-      };
-
-      const removePinnedClone = () => {
-        pinnedCloneRef.current?.remove();
-        pinnedCloneRef.current = null;
-        const original = getPinnedImg();
-        if (original) gsap.set(original, { opacity: 1 });
-      };
-
-      // Pin horizontal section
-      ScrollTrigger.create({
-        trigger: ".wjy-horizontal",
-        start: "top top",
-        end: () => `+=${window.innerHeight * 5}`,
-        pin: true,
-      });
-
-      // Clone pin image when entering marquee
-      ScrollTrigger.create({
-        trigger: ".wjy-marquee",
-        start: "top top",
-        onEnter: createPinnedClone,
-        onEnterBack: createPinnedClone,
-        onLeaveBack: removePinnedClone,
-      });
-
-      // Prepare Flip
-      ScrollTrigger.create({
-        trigger: ".wjy-horizontal",
-        start: "top 50%",
-        end: () => `+=${window.innerHeight * 5.5}`,
-        onEnter: () => {
-          if (pinnedCloneRef.current && !flipRef.current) {
-            const state = Flip.getState(pinnedCloneRef.current);
-
-            gsap.set(pinnedCloneRef.current, {
-              position: "fixed",
-              left: 0,
-              top: 0,
-              width: "100%",
-              height: "100svh",
-              rotate: 0,
-              transformOrigin: "center center",
-            });
-
-            flipRef.current = Flip.from(state, {
-              duration: 1,
-              ease: "none",
-              paused: true,
-            });
-          }
-        },
-        onLeaveBack: () => {
-          flipRef.current?.kill();
-          flipRef.current = null;
-          gsap.set(shell, { backgroundColor: lightColor });
-          gsap.set(".wjy-horizontal-wrapper", { x: "0%" });
-        },
-      });
-
-      // Drive progress
-      ScrollTrigger.create({
-        trigger: ".wjy-horizontal",
-        start: "top 50%",
-        end: () => `+=${window.innerHeight * 5.5}`,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const horizontalProgressRaw = (progress - 0.2) / 0.75;
-          const horizontalProgress = Math.min(
-            Math.max(horizontalProgressRaw, 0),
-            1
-          );
-
-          // Background fade
-          if (progress <= 0.05) {
-            const newBg = mix(lightColor, darkColor, progress / 0.05);
-            gsap.set(shell, { backgroundColor: newBg });
-          } else {
-            gsap.set(shell, { backgroundColor: darkColor });
-          }
-
-          // Flip play
-          if (progress <= 0.2) {
-            flipRef.current?.progress(progress / 0.2);
-          } else if (progress <= 0.95) {
-            flipRef.current?.progress(1);
-            const wrapperTranslateX = -maxTranslate * horizontalProgress;
-            const imageTranslateX = -maxImageShift * horizontalProgress;
-
-            gsap.set(".wjy-horizontal-wrapper", {
-              x: `${wrapperTranslateX}%`,
-            });
-            if (pinnedCloneRef.current) {
-              gsap.set(pinnedCloneRef.current, { x: `${imageTranslateX}%` });
-            }
-          } else {
-            flipRef.current?.progress(1);
-            if (pinnedCloneRef.current)
-              gsap.set(pinnedCloneRef.current, { x: `-${maxImageShift}%` });
-            gsap.set(".wjy-horizontal-wrapper", { x: `-${maxTranslate}%` });
-          }
-
-          if (progressRef.current) {
-            gsap.set(progressRef.current, {
-              width: `${horizontalProgress * 100}%`,
-            });
-          }
-        },
-      });
-    }, containerRef);
-
-    return () => {
-      ctx.revert();
-      gsap.ticker.remove(onTick);
-      lenis.destroy();
-      pinnedCloneRef.current?.remove();
-      flipRef.current?.kill();
-    };
-  }, [
-    hasMeasuredViewport,
-    isMobile,
-    maxImageShift,
-    maxTranslate,
-    marqueeItems.length,
-    slides.length,
-  ]);
-
   const safeIndex = slides.length
     ? Math.min(activeIndex, slides.length - 1)
     : 0;
@@ -618,59 +411,64 @@ export function MarqueeScroller({
         ["--wjy-dark" as string]: "#0e0b09",
       }}
     >
-      <div className="md:hidden">
-        <section className="wjy-mobile-journey">
-          <div className="wjy-mobile-copy">
-            <h3 className="wjy-mobile-intro">{t("intro")}</h3>
-            <div className="wjy-mobile-row">
-              <div className="wjy-mobile-actions">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  disabled={isFirst}
-                  className="wjy-mobile-btn wjy-mobile-btn--light"
-                  aria-label="Previous"
-                >
-                  <ChevronUp className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  disabled={isLast}
-                  className="wjy-mobile-btn wjy-mobile-btn--dark"
-                  aria-label="Next"
-                >
-                  <ChevronDown className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="wjy-mobile-info">
-                <div
-                  className="wjy-mobile-info-stack"
-                  style={{
-                    height: stackHeight,
-                    transform: `translateY(-${translatePercent}%)`,
-                  }}
-                >
-                  {slides.map((slide, index) => (
-                    <div
-                      key={slide.id ?? slide.imageUrl}
-                      className="wjy-mobile-info-slide"
-                      style={{ height: slideHeight }}
-                    >
-                      <span className="wjy-mobile-count">
-                        {String(index + 1).padStart(2, "0")} /{" "}
-                        {String(slides.length).padStart(2, "0")}
-                      </span>
-                      <h1 className="wjy-mobile-title">{slide.tag}</h1>
-                      <h2 className="wjy-mobile-text">{slide.text}</h2>
-                    </div>
-                  ))}
-                </div>
+      <div className="mx-auto w-full md:w-[80%]">
+        <section className="wjy-mobile-journey md:grid md:grid-cols-2 md:gap-12 md:items-center">
+          <div className="wjy-mobile-copy md:flex md:flex-col md:justify-center md:space-y-6">
+            
+
+            <div className="wjy-mobile-info md:h-auto">
+              <div
+                className="wjy-mobile-info-stack"
+                style={{
+                  height: stackHeight,
+                  transform: `translateY(-${translatePercent}%)`,
+                }}
+              >
+                {slides.map((slide, index) => (
+                  <div
+                    key={slide.id ?? slide.imageUrl}
+                    className="wjy-mobile-info-slide md:space-y-3"
+                    style={{ height: slideHeight }}
+                  >
+                    <span className="wjy-mobile-count">
+                      {String(index + 1).padStart(2, "0")} /{" "}
+                      {String(slides.length).padStart(2, "0")}
+                    </span>
+                    <h1 className="wjy-mobile-title md:text-4xl">
+                      {slide.tag}
+                    </h1>
+                    <h2 className="text-stone-900 font-serif lowercase italic text-base md:text-5xl">
+                      {slide.text}
+                    </h2>
+                  </div>
+                ))}
               </div>
             </div>
+
             <h3 className="wjy-mobile-outro">{t("outro")}</h3>
+
+            <div className="wjy-mobile-actions pt-4 md:flex md:flex-row md:gap-4">
+              <button
+                type="button"
+                onClick={handlePrev}
+                disabled={isFirst}
+                className="wjy-mobile-btn wjy-mobile-btn--light"
+                aria-label="Up"
+              >
+                <ChevronUp className="h-5 w-5 md:h-6 md:w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={isLast}
+                className="wjy-mobile-btn wjy-mobile-btn--dark"
+                aria-label="Down"
+              >
+                <ChevronDown className="h-5 w-5 md:h-6 md:w-6" />
+              </button>
+            </div>
           </div>
-          <div className="wjy-mobile-image">
+          <div className="wjy-mobile-image mt-6 md:mt-0">
             <div
               className="wjy-mobile-image-stack"
               style={{
@@ -696,10 +494,8 @@ export function MarqueeScroller({
         </section>
       </div>
 
-      <div className="hidden md:block">
-        <section className="wjy-hero">
-          <h1>{t("intro")}</h1>
-        </section>
+      <div className="hidden">
+        
 
         <section className="wjy-marquee">
           <div className="wjy-marquee-wrapper">

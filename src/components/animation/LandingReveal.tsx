@@ -722,7 +722,8 @@ export function LandingReveal({
               className="lr-nav-btn lr-nav-btn-prev absolute left-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
               onClick={(e) => {
                 e.stopPropagation();
-                if (currentIndexRef.current === null || !menuImages.length) return;
+                if (currentIndexRef.current === null || !menuImages.length)
+                  return;
                 const nextIdx =
                   (currentIndexRef.current - 1 + menuImages.length) %
                   menuImages.length;
@@ -755,8 +756,10 @@ export function LandingReveal({
               className="lr-nav-btn lr-nav-btn-next absolute right-[1%] top-1/2 -translate-y-1/2 rounded-full bg-white/90 px-2.5 py-2 text-xs md:text-sm font-semibold text-black shadow"
               onClick={(e) => {
                 e.stopPropagation();
-                if (currentIndexRef.current === null || !menuImages.length) return;
-                const nextIdx = (currentIndexRef.current + 1) % menuImages.length;
+                if (currentIndexRef.current === null || !menuImages.length)
+                  return;
+                const nextIdx =
+                  (currentIndexRef.current + 1) % menuImages.length;
                 currentIndexRef.current = nextIdx;
                 selectedImageRef.current = menuImages[nextIdx];
                 if (overlayImgRef.current) {
@@ -804,19 +807,20 @@ export function LandingReveal({
               exit={{ opacity: 0, y: -60 }}
               transition={{ duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }}
             >
-              <button
-                type="button"
-                onClick={() => setShowReservationModal(false)}
-                className="absolute right-3 top-3 z-[1201] inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-lg transition hover:bg-neutral-800 focus:outline-none"
-              >
-                X
-              </button>
-              <ScrollArea className="h-full rounded-3xl">
-                <ReservationForm
-                  variant="modal"
-                  onSuccess={() => setShowReservationModal(false)}
-                />
-              </ScrollArea>
+              <div className="relative h-full rounded-3xl bg-white overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowReservationModal(false)}
+                  className="absolute right-4 top-4 z-[1201] inline-flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900/80 text-white shadow-lg transition hover:bg-neutral-800 focus:outline-none"
+                >
+                  X
+                </button>
+                <ScrollArea className="h-full reservation-scroll">
+                  <ReservationForm
+                    onSuccess={() => setShowReservationModal(false)}
+                  />
+                </ScrollArea>
+              </div>
             </motion.div>
           </motion.div>
         )}

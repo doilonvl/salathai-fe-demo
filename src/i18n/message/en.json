@@ -14,6 +14,41 @@
     "marquee": {
       "intro": "Salathai opens a modern Thai culinary journey: fresh ingredients, balanced spices, and a cozy space for every meetup.",
       "outro": "Meet Salathai: where kaffir lime, curries, and charcoal fire weave every night's stories."
+    },
+    "signature": {
+      "title": "Explore signature dishes",
+      "padThai": {
+        "name": "Pad Thai with seafood",
+        "description": "Stir-fried rice noodles with shrimp, tofu, and bean sprouts in a tangy tamarind sauce, topped with crushed peanuts and chili."
+      },
+      "redCurry": {
+        "name": "Red Beef Curry Bowl",
+        "description": "Red curry cooked with coconut milk, chicken or beef, bamboo shoots, and fragrant kaffir lime leaves."
+      },
+      "steamedTilapia": {
+        "name": "Steamed red Tilapia with Lemon",
+        "description": "Fresh tilapia steamed with lemon, garlic, and chili, offering a harmonious blend of sour and spicy flavors."
+      },
+      "greenCurry": {
+        "name": "Green Curry",
+        "description": "Aromatic and spicy green curry cooked with chicken, Thai eggplant, and sweet basil leaves."
+      },
+      "shrimpCake": {
+        "name": "Fried Shrimp Cake",
+        "description": "Crispy cakes made from freshly ground shrimp, served with a sweet plum sauce."
+      },
+      "tomYum": {
+        "name": "Tom Yum Soup",
+        "description": "The famous hot and sour soup with shrimp, mushrooms, lemongrass, and kaffir lime leaves."
+      },
+      "mangoSticky": {
+        "name": "Mango sticky rice",
+        "description": "Sweet coconut sticky rice paired with ripe mango slices and toasted sesame."
+      }
+    },
+    "hero": {
+      "ctaPrimary": "Explore signature dishes",
+      "ctaSecondary": "Reserve a table"
     }
   },
   "header": {
@@ -55,16 +90,11 @@
     "close": "Close",
     "categories": {
       "all": "All",
-      "vegetable": "Vegetables",
-      "hotpot": "Thai Hotpot",
-      "soup": "Soup",
-      "main": "Main dishes",
-      "noodlesRice": "Noodles & Rice",
-      "vegetarian": "Vegetarian",
-      "curry": "Curry",
-      "salad": "Salad",
-      "bottledDrinks": "Bottled drinks",
-      "drinkDessert": "Drinks & Dessert"
+      "appetizers": "Appetizers",
+      "main": "Main Courses",
+      "noodlesRiceHotpot": "Noodles, Rice & Hotpot",
+      "vegetarian": "Vegetarian & Veggies",
+      "drinksDessert": "Drinks & Desserts"
     }
   },
   "languageSwitcher": {
@@ -104,32 +134,32 @@
     "footerLeft": "Salathai Signature",
     "footerRight": "[ Click to browse ]",
     "slides": {
-      "signature": {
-        "title": "Mango Sticky Rice",
-        "description": "Sweet coconut sticky rice with ripe mango slices.",
-        "type": "Dessert",
-        "field": "Sweet",
-        "date": "2025"
-      },
-      "greenCurry": {
-        "title": "Spicy Seafood Salad",
-        "description": "Fresh seafood tossed with herbs, chili, and lime dressing.",
-        "type": "Salad",
-        "field": "Spicy",
-        "date": "2024"
-      },
-      "somTum": {
-        "title": "Som Tum (Papaya Salad)",
-        "description": "Shredded green papaya, tomato, long beans, and lime-chili dressing.",
-        "type": "Salad",
-        "field": "Fresh",
-        "date": "2023"
-      },
-      "mangoSticky": {
-        "title": "Pad Thai Shrimp",
+      "padThai": {
+        "title": "Pad Thai shrimp",
         "description": "Rice noodles stir-fried with tamarind, shrimp, bean sprouts, and peanuts.",
         "type": "Signature",
         "field": "Main",
+        "date": "2025"
+      },
+      "redCurry": {
+        "title": "Red curry",
+        "description": "Creamy red curry with coconut milk, bamboo shoots, and fragrant herbs.",
+        "type": "Signature",
+        "field": "Curry",
+        "date": "2025"
+      },
+      "greenCurry": {
+        "title": "Green curry",
+        "description": "Aromatic green curry with Thai herbs, coconut milk, and sweet basil.",
+        "type": "Signature",
+        "field": "Curry",
+        "date": "2024"
+      },
+      "mangoSticky": {
+        "title": "Mango sticky rice",
+        "description": "Sweet coconut sticky rice paired with ripe mango slices.",
+        "type": "Dessert",
+        "field": "Sweet",
         "date": "2025"
       }
     }
@@ -145,6 +175,8 @@
     "emailLabel": "Email (for confirmation)",
     "emailPlaceholder": "you@example.com",
     "guestLabel": "Guests",
+    "guestSingular": "guest",
+    "guestPlural": "{count} guests",
     "dateLabel": "Date",
     "timeLabel": "Time (24h)",
     "noteLabel": "Additional notes",

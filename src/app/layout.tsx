@@ -1,15 +1,21 @@
 import Providers from "@/provider";
 import "./globals.css";
 import type { Metadata } from "next";
-import { getLocale } from "next-intl/server";
-import { Caladea } from "next/font/google";
-import { getSiteUrl } from "@/lib/env";
 import Script from "next/script";
+import { getLocale } from "next-intl/server";
+import { Bai_Jamjuree, Playfair_Display } from "next/font/google";
+import { getSiteUrl } from "@/lib/env";
 
-const caladea = Caladea({
-  subsets: ["latin"],
+const baiJamjuree = Bai_Jamjuree({
+  subsets: ["latin", "vietnamese"],
   weight: ["400", "700"],
-  variable: "--font-caladea",
+  variable: "--font-bai-jamjuree",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair-display",
 });
 
 const SITE_NAME = "Salathai";
@@ -67,7 +73,11 @@ export default async function RootLayout({
 }) {
   const locale = await getLocale();
   return (
-    <html lang={locale} suppressHydrationWarning className={caladea.variable}>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+      className={`${baiJamjuree.variable} ${playfairDisplay.variable}`}
+    >
       <body>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}

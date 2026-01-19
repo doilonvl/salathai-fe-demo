@@ -1,6 +1,5 @@
-import NfWorkSlider from "@/components/work/NfWorkSlider";
-import "@/styles/nf-work.css";
+import { redirect } from "next/navigation";
 
 export default function WorkPage() {
-  return <NfWorkSlider />;
+  redirect("/signature");
 }

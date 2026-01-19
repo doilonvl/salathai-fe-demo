@@ -62,7 +62,7 @@ export default function LandingHeader({
   const blogHref = `${localePrefix}/blog`;
   const menuHref = `${localePrefix}/menu`;
   const contactHref = `${localePrefix}/contact`;
-  const showcaseHref = `${localePrefix}/showcase`;
+  const showcaseHref = `${localePrefix}/signature`;
   const resolvedReservationHref =
     reservationHref ?? `${localePrefix}/#reservation`;
 
