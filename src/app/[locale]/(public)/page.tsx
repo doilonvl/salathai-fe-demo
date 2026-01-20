@@ -84,13 +84,25 @@ export async function generateMetadata({
   };
 }
 
-async function fetchJson<T>(path: string, revalidateSeconds = 300) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    next: { revalidate: revalidateSeconds },
-    cache: "force-cache",
-  });
-  if (!res.ok) throw new Error(`Failed to fetch ${path}`);
-  return res.json() as Promise<T>;
+async function fetchJson<T>(
+  path: string,
+  revalidateSeconds = 300,
+  timeoutMs = 8000
+) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      next: { revalidate: revalidateSeconds },
+      cache: "force-cache",
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error(`Failed to fetch ${path}`);
+    return res.json() as Promise<T>;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function getLandingMenuSSR(): Promise<LandingMenuItem[]> {
