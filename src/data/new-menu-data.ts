@@ -8,7 +8,7 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 18.50,
     description: "A classic spicy and sour soup with shrimp, mushrooms, lemongrass, and galangal.",
     spiciness: 4,
-    image: "/Menu/menu1.jpg",
+    image: "/NewMenu/menu-01-soup.png",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 22.00,
     description: "Stir-fried rice noodles with tofu, shrimp, peanuts, and bean sprouts in a tangy sauce.",
     spiciness: 2,
-    image: "/Menu/menu2.jpg",
+    image: "/NewMenu/menu-02-salad-1.png",
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 25.00,
     description: "Spicy green curry with chicken, coconut milk, bamboo shoots, and Thai basil.",
     spiciness: 5,
-    image: "/Menu/menu3.jpg",
+    image: "/NewMenu/menu-03-salad-2.png",
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 26.50,
     description: "A rich, mild curry with beef, potatoes, onions, and peanuts.",
     spiciness: 1,
-    image: "/Menu/menu4.jpg",
+    image: "/NewMenu/menu-04-main-dish-1.png",
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 12.00,
     description: "Sweet sticky rice with fresh mango slices and a drizzle of coconut cream.",
     spiciness: 0,
-    image: "/Menu/menu5.jpg",
+    image: "/NewMenu/menu-05-main-dish-2.png",
   },
   {
     id: 6,
@@ -53,6 +53,6 @@ export const NEW_MENU_DATA: Dish[] = [
     price: 15.00,
     description: "Spicy green papaya salad with peanuts, tomatoes, and long beans.",
     spiciness: 3,
-    image: "/Menu/menu6.jpg",
+    image: "/NewMenu/menu-06-main-dish-3.png",
   },
 ];

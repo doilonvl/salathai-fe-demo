@@ -35,7 +35,7 @@ const NewReservationForm: React.FC = () => {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row bg-white overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)]">
           <div className="lg:w-2/5 h-[400px] lg:h-auto relative">
             <img
-              src="/Menu/menu7.jpg"
+              src="/NewMenu/menu-07-main-dish-4.png"
               alt="Elegant dining table setup"
               className="w-full h-full object-cover"
             />

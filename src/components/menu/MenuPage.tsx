@@ -18,10 +18,23 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const MENU_PAGES = Array.from({ length: 15 }, (_, index) => ({
-  src: `/Menu/menu${index + 1}.jpg`,
-  label: `Menu page ${index + 1}`,
-}));
+const MENU_PAGES = [
+  { src: "/NewMenu/menu-01-soup.png", label: "Soup" },
+  { src: "/NewMenu/menu-02-salad-1.png", label: "Salad page 1" },
+  { src: "/NewMenu/menu-03-salad-2.png", label: "Salad page 2" },
+  { src: "/NewMenu/menu-04-main-dish-1.png", label: "Main dish page 1" },
+  { src: "/NewMenu/menu-05-main-dish-2.png", label: "Main dish page 2" },
+  { src: "/NewMenu/menu-06-main-dish-3.png", label: "Main dish page 3" },
+  { src: "/NewMenu/menu-07-main-dish-4.png", label: "Main dish page 4" },
+  { src: "/NewMenu/menu-08-curry.png", label: "Curry" },
+  { src: "/NewMenu/menu-09-noodles-rice-1.png", label: "Noodles & rice page 1" },
+  { src: "/NewMenu/menu-10-noodles-rice-2.png", label: "Noodles & rice page 2" },
+  { src: "/NewMenu/menu-11-vegetables.png", label: "Vegetables" },
+  { src: "/NewMenu/menu-12-thai-hotpot.png", label: "Thai hotpot" },
+  { src: "/NewMenu/menu-13-vegetarian.png", label: "Vegetarian" },
+  { src: "/NewMenu/menu-14-drink-dessert.png", label: "Drink & dessert" },
+  { src: "/NewMenu/menu-15-bottled-drink.png", label: "Bottled drinks" },
+];
 
 type MenuCategory = {
   id: string;
@@ -31,17 +44,17 @@ type MenuCategory = {
 
 // Merged categories for a more compact view as requested
 const MENU_CATEGORIES: MenuCategory[] = [
-  { id: "appetizers", labelKey: "categories.appetizers", indices: [3, 12, 13] }, // Was: Soup, Salad
-  { id: "main", labelKey: "categories.main", indices: [4, 5, 6, 7, 11] }, // Was: Main, Curry
+  { id: "appetizers", labelKey: "categories.appetizers", indices: [1, 2, 3] }, // Was: Soup, Salad
+  { id: "main", labelKey: "categories.main", indices: [4, 5, 6, 7, 8] }, // Was: Main, Curry
   {
     id: "noodlesRiceHotpot",
     labelKey: "categories.noodlesRiceHotpot",
-    indices: [2, 8, 9],
+    indices: [9, 10, 12],
   }, // Was: Hotpot, Noodles & Rice
   {
     id: "vegetarian",
     labelKey: "categories.vegetarian",
-    indices: [1, 10],
+    indices: [11, 13],
   }, // Was: Vegetable, Vegetarian
   {
     id: "drinksDessert",

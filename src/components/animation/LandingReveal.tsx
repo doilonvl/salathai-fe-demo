@@ -32,12 +32,12 @@ type MenuPreviewItem = Pick<
 >;
 
 const FALLBACK_MOBILE_MENU: MenuPreviewItem[] = [
-  { imageUrl: "/Menu/menu1.jpg", altText: "Menu preview 1" },
-  { imageUrl: "/Menu/menu2.jpg", altText: "Menu preview 2" },
-  { imageUrl: "/Menu/menu3.jpg", altText: "Menu preview 3" },
-  { imageUrl: "/Menu/menu4.jpg", altText: "Menu preview 4" },
-  { imageUrl: "/Menu/menu5.jpg", altText: "Menu preview 5" },
-  { imageUrl: "/Menu/menu6.jpg", altText: "Menu preview 6" },
+  { imageUrl: "/NewMenu/menu-01-soup.png", altText: "Soup" },
+  { imageUrl: "/NewMenu/menu-02-salad-1.png", altText: "Salad page 1" },
+  { imageUrl: "/NewMenu/menu-03-salad-2.png", altText: "Salad page 2" },
+  { imageUrl: "/NewMenu/menu-04-main-dish-1.png", altText: "Main dish page 1" },
+  { imageUrl: "/NewMenu/menu-05-main-dish-2.png", altText: "Main dish page 2" },
+  { imageUrl: "/NewMenu/menu-06-main-dish-3.png", altText: "Main dish page 3" },
 ];
 
 export function LandingReveal({
