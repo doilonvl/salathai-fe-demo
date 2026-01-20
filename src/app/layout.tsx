@@ -23,6 +23,7 @@ const SITE_DESCRIPTION =
   "Salathai - Your gateway to authentic Thai cuisine and culture.";
 const OG_IMAGE_PATH = "/Marquee/slide-1.jpg";
 const GA_MEASUREMENT_ID = "G-B17S5R05ME";
+const GOOGLE_ADS_ID = "AW-11002275490";
 const siteUrl = getSiteUrl();
 const ogImageUrl = new URL(OG_IMAGE_PATH, siteUrl);
 
@@ -89,6 +90,7 @@ export default async function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}');
+            gtag('config', '${GOOGLE_ADS_ID}');
           `}
         </Script>
         <Providers>{children}</Providers>
