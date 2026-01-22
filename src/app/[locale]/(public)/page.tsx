@@ -9,6 +9,7 @@ import { ReservationForm } from "@/components/shared/reservation-form";
 import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
 import NewHero from "@/components/shared/NewHero";
 import NewMenu from "@/components/shared/NewMenu";
+import OurStory from "@/components/shared/OurStory";
 
 export const revalidate = 300;
 
@@ -31,9 +32,9 @@ function getSeoCopy(locale: string) {
     };
   }
   return {
-    title: "Authentic Thai Cuisine in Hanoi",
+    title: "Ẩm thực Thái Lan chuẩn vị tại Hà Nội",
     description:
-      "Salathai serves authentic Thai cuisine with fresh ingredients, balanced flavors, and a warm dining atmosphere in Hanoi.",
+      "SalaThai mang đến ẩm thực Thái Lan chuẩn vị với nguyên liệu tươi, hương vị cân bằng và không gian ấm cúng ngay tại Hà Nội.",
   };
 }
 
@@ -228,6 +229,7 @@ export default async function HomePage({ params }: HomePageProps) {
       
       <NewHero />
       <NewMenu />
+      <OurStory />
 
       <section className="py-16 md:py-24">
         <MarqueeScroller

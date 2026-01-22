@@ -46,6 +46,15 @@
         "description": "Nếp dẻo thơm nước cốt dừa, ăn kèm xoài chín và mè rang."
       }
     },
+    "story": {
+      "eyebrow": "Sala Thai",
+      "title": "Câu Chuyện Của Chúng Tôi",
+      "body1": "Sala Thai được tạo nên từ mong muốn mang ẩm thực Thái Lan đích thực đến trong một không gian gần gũi và thoải mái. Lấy cảm hứng từ sala – mái chòi truyền thống của Thái Lan, nơi mọi người quây quần và tận hưởng những khoảnh khắc giản dị, Sala Thai mong muốn trở thành nơi bạn có thể thư giãn và thưởng thức bữa ăn trọn vẹn.",
+      "body2": "Thực đơn của chúng tôi là sự kết hợp của những món Thái quen thuộc, được chế biến từ nguyên liệu tươi ngon, thảo mộc thơm và công thức truyền thống. Từ cà ri đậm đà đến các món xào và món đường phố đặc trưng, mỗi món ăn đều được nấu bằng sự chăm chút và yêu nghề.",
+      "body3": "Dù bạn ghé qua để ăn nhanh hay dùng bữa cùng gia đình và bạn bè, Sala Thai luôn chào đón bạn bằng hương vị Thái Lan chân thật, không khí ấm áp và nụ cười thân thiện.",
+      "imageAlt": "Không gian ấm cúng tại Sala Thai",
+      "tagline": "Ẩm thực Thái chân thật, không gian gần gũi"
+    },
     "hero": {
       "ctaPrimary": "Khám phá món đặc trưng",
       "ctaSecondary": "Đặt bàn"

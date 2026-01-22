@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -7,6 +8,13 @@ import AdminShell from "@/components/admin/AdminShell";
 export function generateStaticParams() {
   return [{ locale: "vi" }, { locale: "en" }];
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 type AdminLayoutProps = {
   children: ReactNode;

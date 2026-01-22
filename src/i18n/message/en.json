@@ -26,8 +26,8 @@
         "description": "Red curry cooked with coconut milk, chicken or beef, bamboo shoots, and fragrant kaffir lime leaves."
       },
       "steamedTilapia": {
-        "name": "Steamed red Tilapia with Lemon",
-        "description": "Fresh tilapia steamed with lemon, garlic, and chili, offering a harmonious blend of sour and spicy flavors."
+        "name": "Steamed red tilapia with lemon",
+        "description": "Fresh red tilapia steamed with lemon, garlic, and chili, offering a harmonious blend of sour and spicy flavors."
       },
       "greenCurry": {
         "name": "Green Curry",
@@ -45,6 +45,15 @@
         "name": "Mango sticky rice",
         "description": "Sweet coconut sticky rice paired with ripe mango slices and toasted sesame."
       }
+    },
+    "story": {
+      "eyebrow": "Sala Thai",
+      "title": "Our Story",
+      "body1": "Sala Thai started with a simple idea—sharing real Thai food in a relaxed and welcoming space. Inspired by the traditional Thai sala, a place where people gather and enjoy good company, we wanted Sala Thai to feel just as comfortable and inviting.",
+      "body2": "Our menu brings together classic Thai flavors, made with fresh ingredients, aromatic herbs, and time-honored recipes. From comforting curries to flavorful stir-fries and street-food favorites, every dish is cooked with care and meant to be enjoyed.",
+      "body3": "Whether you're stopping by for a quick bite or sitting down with friends and family, Sala Thai is all about good food, easy moments, and the taste of Thailand—served with warmth and a smile.",
+      "imageAlt": "Sala Thai dining atmosphere",
+      "tagline": "Relaxed moments, real Thai flavor"
     },
     "hero": {
       "ctaPrimary": "Explore signature dishes",

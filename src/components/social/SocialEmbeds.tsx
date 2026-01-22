@@ -16,7 +16,6 @@ const FACEBOOK_PAGE = "https://www.facebook.com/salathaihn";
 const INSTAGRAM_PROFILE = "https://www.instagram.com/salathaihn/";
 const INSTAGRAM_POSTS = [
   "https://www.instagram.com/p/DSbuoJwkU4I/",
-  "https://www.instagram.com/reel/DSTvODhEajE/",
 ];
 const FB_BASIC_HEIGHT = 520;
 const MIN_FB_WIDTH = 280;
@@ -66,6 +65,7 @@ export default function SocialEmbeds() {
     return () => window.clearTimeout(timeout);
   }, []);
 
+
   const resolvedFbWidth = fbWidth ?? DEFAULT_FB_WIDTH;
   const resolvedFbHeight = resolvedFbWidth <= 420 ? 320 : FB_BASIC_HEIGHT;
   const fbSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(
@@ -80,7 +80,6 @@ export default function SocialEmbeds() {
         src="https://www.instagram.com/embed.js"
         onLoad={() => window.instgrm?.Embeds?.process?.()}
       />
-
       <div className="grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start">
         <div
           ref={fbWrapRef}
@@ -149,6 +148,47 @@ export default function SocialEmbeds() {
               </div>
             </div>
           ))}
+
+          <div className="overflow-hidden">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <img
+                  src="/Logo/Logo1.png"
+                  alt="SalaThai"
+                  className="h-7 w-7 rounded-full object-cover"
+                />
+                <div className="leading-tight">
+                  <div className="text-sm font-semibold text-neutral-900">
+                    SalaThai
+                  </div>
+                  <div className="text-xs text-neutral-500">
+                    Google Maps
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://www.google.com/maps/place/SalaThai/@21.0322739,105.8438914,17z/data=!4m14!1m7!3m6!1s0x3135ab14cf45d9c9:0x3609bf2b7bb2d4e8!2sSalaThai!8m2!3d21.0322739!4d105.8464717!16s%2Fg%2F11jsg8f_7d!3m5!1s0x3135ab14cf45d9c9:0x3609bf2b7bb2d4e8!8m2!3d21.0322739!4d105.8464717!16s%2Fg%2F11jsg8f_7d?entry=ttu&g_ep=EgoyMDI2MDExOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full bg-neutral-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white"
+              >
+                Directions
+              </a>
+            </div>
+            <div className="overflow-hidden rounded-2xl border border-black/5 shadow-sm">
+              <iframe
+                title="SalaThai Google Maps"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.010299732844!2d105.84389141108723!3d21.03227388053704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab14cf45d9c9%3A0x3609bf2b7bb2d4e8!2sSalaThai!5e0!3m2!1svi!2s!4v1769074172067!5m2!1svi!2s"
+                width="600"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-[460px] w-full"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
