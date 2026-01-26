@@ -46,12 +46,12 @@
         "description": "Sweet coconut sticky rice paired with ripe mango slices and toasted sesame."
       },
       "tomKhaHotpot": {
-        "name": "Tom Kha coconut hotpot",
-        "description": "Creamy coconut broth with galangal, lemongrass, and mushrooms, served with mixed seafood and greens."
+        "name": "Thai mixed hotpot (small)",
+        "description": "Spicy and sour Thai hotpot with mixed seafood, served in a small size."
       },
       "sukiHotpot": {
-        "name": "Thai Suki hotpot",
-        "description": "Clear savory broth with hand-cut beef, shrimp, and crisp vegetables, finished with a light herbal dip."
+        "name": "Thai mixed hotpot (large)",
+        "description": "Spicy and sour Thai hotpot with mixed seafood, served in a large size."
       }
     },
     "introReels": {

@@ -46,18 +46,18 @@
         "description": "Nếp dẻo thơm nước cốt dừa, ăn kèm xoài chín và mè rang."
       },
       "tomKhaHotpot": {
-        "name": "Lẩu Tom Kha",
-        "description": "Nước dùng cốt dừa béo ngậy với sả, riềng, và nấm, phục vụ cùng hải sản và rau xanh."
+        "name": "Lẩu Thái thập cẩm chua cay (cỡ nhỏ)",
+        "description": "Lẩu Thái thập cẩm chua cay, hải sản và rau tươi, phục vụ cỡ nhỏ."
       },
       "sukiHotpot": {
-        "name": "Lẩu Suki Thái",
-        "description": "Nước dùng trong, đậm đà với thịt bò cắt tay, tôm, và rau giòn, hoàn thiện với nước chấm thảo mộc nhẹ."
+        "name": "Lẩu Thái thập cẩm chua cay (cỡ lớn)",
+        "description": "Lẩu Thái thập cẩm chua cay, hải sản và rau tươi, phục vụ cỡ lớn."
       }
     },
     "introReels": {
       "eyebrow": "Reel từ gian bếp",
       "title": "Góc nhìn điện ảnh tại Salathai",
-      "description": "Hai video dọc ghi lại âm thanh xèo xèo, làn khói và nguyên liệu tươi ngon tạo nên hương vị đặc trưng.",
+      "description": "Hai video dọc ghi lại cảm giác xèo xèo, hơi nước và nguyên liệu tươi trong bếp.",
       "reelOne": {
         "title": "Reel 01",
         "label": "Lẩu đặc trưng"
