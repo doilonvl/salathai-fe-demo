@@ -64,4 +64,22 @@ export const SIGNATURE_DISHES_DATA: Dish[] = [
     category: 'drinksDessert',
     image: '/signature/Mango Sticky Rice.jpeg',
   },
+  {
+    id: 8,
+    name: 'home.signature.tomKhaHotpot.name',
+    description: 'home.signature.tomKhaHotpot.description',
+    price: 289000,
+    spiciness: 1,
+    category: 'noodlesRiceHotpot',
+    image: '/signature/Hot pot 1.jpg',
+  },
+  {
+    id: 9,
+    name: 'home.signature.sukiHotpot.name',
+    description: 'home.signature.sukiHotpot.description',
+    price: 299000,
+    spiciness: 2,
+    category: 'noodlesRiceHotpot',
+    image: '/signature/Hot pot 2.jpg',
+  },
 ];

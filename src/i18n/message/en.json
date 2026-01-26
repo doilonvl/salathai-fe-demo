@@ -44,6 +44,27 @@
       "mangoSticky": {
         "name": "Mango sticky rice",
         "description": "Sweet coconut sticky rice paired with ripe mango slices and toasted sesame."
+      },
+      "tomKhaHotpot": {
+        "name": "Tom Kha coconut hotpot",
+        "description": "Creamy coconut broth with galangal, lemongrass, and mushrooms, served with mixed seafood and greens."
+      },
+      "sukiHotpot": {
+        "name": "Thai Suki hotpot",
+        "description": "Clear savory broth with hand-cut beef, shrimp, and crisp vegetables, finished with a light herbal dip."
+      }
+    },
+    "introReels": {
+      "eyebrow": "Reels from the kitchen",
+      "title": "A cinematic look at Salathai",
+      "description": "Two vertical reels spotlight the sizzle, the steam, and the fresh ingredients behind our signature flavors.",
+      "reelOne": {
+        "title": "Reel 01",
+        "label": "Signature hotpot"
+      },
+      "reelTwo": {
+        "title": "Reel 02",
+        "label": "Chef's fresh prep"
       }
     },
     "story": {

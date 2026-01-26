@@ -10,6 +10,7 @@ import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
 import NewHero from "@/components/shared/NewHero";
 import NewMenu from "@/components/shared/NewMenu";
 import OurStory from "@/components/shared/OurStory";
+import IntroReels from "@/components/shared/IntroReels";
 
 export const revalidate = 300;
 
@@ -230,6 +231,7 @@ export default async function HomePage({ params }: HomePageProps) {
       <NewHero />
       <NewMenu />
       <OurStory />
+      <IntroReels />
 
       <section className="py-16 md:py-24">
         <MarqueeScroller

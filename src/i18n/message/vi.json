@@ -4,8 +4,8 @@
     "scrollStroke": {
       "card1Title": "Đặt trước món Thái, lấy đúng giờ",
       "card1Body": "Khách đặt trước tại Sala Thai, chúng tôi gom hàng và sắp xếp thời gian lấy để pad thai và cà ri xanh luôn nóng hổi ngay khi bạn bước vào—không cần đợi, chỉ cần quét mã và lấy.",
-      "card2Title": "Giờ cao điểm vẫn mượt với Sala Thái",
-      "card2Body": "Khi đón khách chiều tối, Sala Thái gom đơn online và tại quầy vào một luồng rõ ràng; bếp ra món tuần tự, khách biết chính xác khi nào món lên quầy.",
+      "card2Title": "Giờ cao điểm vẫn mượt với Sala Thai",
+      "card2Body": "Khi đón khách chiều tối, Sala Thai gom đơn online và tại quầy vào một luồng rõ ràng; bếp ra món tuần tự, khách biết chính xác khi nào món lên quầy.",
       "img1Alt": "Quầy Sala Thai với khách đặt món Thái trước",
       "img2Alt": "Bảng điều phối đơn pickup của Sala Thai",
       "img3Alt": "Bếp thao tác theo hàng đợi pickup của Sala Thai",
@@ -44,6 +44,27 @@
       "mangoSticky": {
         "name": "Xôi xoài",
         "description": "Nếp dẻo thơm nước cốt dừa, ăn kèm xoài chín và mè rang."
+      },
+      "tomKhaHotpot": {
+        "name": "Lẩu Tom Kha",
+        "description": "Nước dùng cốt dừa béo ngậy với sả, riềng, và nấm, phục vụ cùng hải sản và rau xanh."
+      },
+      "sukiHotpot": {
+        "name": "Lẩu Suki Thái",
+        "description": "Nước dùng trong, đậm đà với thịt bò cắt tay, tôm, và rau giòn, hoàn thiện với nước chấm thảo mộc nhẹ."
+      }
+    },
+    "introReels": {
+      "eyebrow": "Reel từ gian bếp",
+      "title": "Góc nhìn điện ảnh tại Salathai",
+      "description": "Hai video dọc ghi lại âm thanh xèo xèo, làn khói và nguyên liệu tươi ngon tạo nên hương vị đặc trưng.",
+      "reelOne": {
+        "title": "Reel 01",
+        "label": "Lẩu đặc trưng"
+      },
+      "reelTwo": {
+        "title": "Reel 02",
+        "label": "Khâu chuẩn bị của bếp"
       }
     },
     "story": {
@@ -335,7 +356,7 @@
         "id": "rights",
         "title": "8. Quyền của bạn",
         "items": [
-          "Yêu cầu truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân.",
+          "Yêu cầu truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân của bạn.",
           "Rút lại đồng ý hoặc phản đối một số hoạt động xử lý.",
           "Gửi yêu cầu qua thông tin liên hệ bên dưới; chúng tôi phản hồi trong thời gian hợp lý."
         ],
