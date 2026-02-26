@@ -22,19 +22,7 @@ function buildReservationSchema(t: ReturnType<typeof useTranslations>) {
       fullName: z
         .string()
         .trim()
-        .transform(normalizeName)
-        .refine((val) => val.length >= 3, {
-          message: t("validation.fullNameMin"),
-        })
-        .refine((val) => val.length <= 80, {
-          message: t("validation.fullNameMax"),
-        })
-        .refine((val) => NAME_REGEX.test(val), {
-          message: t("validation.fullNamePattern"),
-        })
-        .refine((val) => val.split(/\s+/).filter(Boolean).length >= 2, {
-          message: t("validation.fullNameParts"),
-        }),
+        .min(1, t("validation.fullNameMin")),
       phoneNumber: z
         .string()
         .trim()
