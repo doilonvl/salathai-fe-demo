@@ -241,6 +241,14 @@ const FALLBACK_MARQUEE_SLIDES = [
   },
 ];
 
+function transformCloudinaryUrl(
+  url: string,
+  transform: string
+): string {
+  if (!url.includes("res.cloudinary.com")) return url;
+  return url.replace("/upload/", `/upload/${transform}/`);
+}
+
 function pickLocalized(
   value: { vi?: string; en?: string } | undefined,
   locale: Locale,
@@ -572,7 +580,11 @@ export function Marquee() {
                   idx === pinnedIndex ? " pin" : ""
                 }`}
               >
-                <img src={item.imageUrl} alt={item.altText} />
+                <img
+                  src={transformCloudinaryUrl(item.imageUrl, "w_600,q_auto,f_auto")}
+                  alt={item.altText}
+                  loading={idx === pinnedIndex ? "eager" : "lazy"}
+                />
               </div>
             ))}
           </div>
@@ -598,8 +610,9 @@ export function Marquee() {
               </div>
               <div className="col image">
                 <img
-                  src={slide.imageUrl}
+                  src={transformCloudinaryUrl(slide.imageUrl, "w_1000,q_auto,f_auto")}
                   alt={slide.tag || `slide-${idx + 1}`}
+                  loading="lazy"
                 />
               </div>
             </div>

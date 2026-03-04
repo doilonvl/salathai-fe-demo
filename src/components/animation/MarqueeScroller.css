@@ -349,6 +349,7 @@
 }
 
 .wjy-mobile-image-slide {
+  position: relative;
   height: 100%;
 }
 

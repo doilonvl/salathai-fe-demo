@@ -3,7 +3,6 @@ import type { MarqueeImage, MarqueeSlide } from "@/types/marquee";
 import type { Metadata } from "next";
 import { LandingReveal } from "@/components/animation/LandingReveal";
 import { MarqueeScroller } from "@/components/animation/MarqueeScroller";
-import ScrollStrokePage from "@/components/animation/ScrollStrokePage";
 import SocialEmbeds from "@/components/social/SocialEmbeds";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
@@ -238,11 +237,6 @@ export default async function HomePage({ params }: HomePageProps) {
           initialImages={marquee.images}
           initialSlides={marquee.slides}
         />
-      </section>
-
-      {/* Hidden Stroke svg */}
-      <section className="hidden">
-        <ScrollStrokePage />
       </section>
 
       {/* Reservation form - Now with new styles */}

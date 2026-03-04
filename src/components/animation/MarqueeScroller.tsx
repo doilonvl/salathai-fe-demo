@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
@@ -242,6 +243,11 @@ const FALLBACK_MARQUEE_SLIDES: MarqueeSlide[] = [
   },
 ];
 
+function optimizeCloudinaryUrl(url: string, width = 1200): string {
+  if (!url.includes("res.cloudinary.com")) return url;
+  return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+}
+
 function pickLocalized(
   value: { vi?: string; en?: string } | undefined,
   locale: Locale,
@@ -482,9 +488,12 @@ export function MarqueeScroller({
                   className="wjy-mobile-image-slide"
                   style={{ height: slideHeight }}
                 >
-                  <img
-                    src={slide.imageUrl}
+                  <Image
+                    src={optimizeCloudinaryUrl(slide.imageUrl)}
                     alt={slide.tag || "Slide"}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     loading="lazy"
                   />
                 </div>

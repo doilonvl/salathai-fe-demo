@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Script from "next/script";
 
 declare global {
@@ -105,11 +105,16 @@ export default function SocialEmbeds() {
             <div key={permalink} className="overflow-hidden">
               <div className="mb-2 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <img
-                    src="/Logo/Logo1.png"
-                    alt="SalaThai"
-                    className="h-7 w-7 rounded-full object-cover"
-                  />
+                  <div className="relative h-7 w-7 shrink-0 rounded-full overflow-hidden">
+                    <Image
+                      src="/Logo/Logo1.png"
+                      alt="SalaThai"
+                      fill
+                      className="object-cover"
+                      sizes="28px"
+                      loading="lazy"
+                    />
+                  </div>
                   <div className="leading-tight">
                     <div className="text-sm font-semibold text-neutral-900">
                       salathaihn

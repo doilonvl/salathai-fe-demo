@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
 
 const NewReservationForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -34,10 +35,13 @@ const NewReservationForm: React.FC = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row bg-white overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)]">
           <div className="lg:w-2/5 h-[400px] lg:h-auto relative">
-            <img
+            <Image
               src="/NewMenu/menu-07-main-dish-4.png"
               alt="Elegant dining table setup"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-sala-primary/40 mix-blend-multiply"></div>
             <div className="absolute inset-0 flex items-center justify-center p-12">
@@ -86,10 +90,11 @@ const NewReservationForm: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      <label htmlFor="res-name" className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
                         Full Name
                       </label>
                       <input
+                        id="res-name"
                         required
                         type="text"
                         name="name"
@@ -100,10 +105,11 @@ const NewReservationForm: React.FC = () => {
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      <label htmlFor="res-email" className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
                         Email Address
                       </label>
                       <input
+                        id="res-email"
                         required
                         type="email"
                         name="email"
@@ -117,10 +123,11 @@ const NewReservationForm: React.FC = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                     <div className="space-y-4">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      <label htmlFor="res-date" className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
                         Date
                       </label>
                       <input
+                        id="res-date"
                         required
                         type="date"
                         name="date"
@@ -131,10 +138,11 @@ const NewReservationForm: React.FC = () => {
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      <label htmlFor="res-time" className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
                         Time
                       </label>
                       <input
+                        id="res-time"
                         required
                         type="time"
                         name="time"
@@ -145,10 +153,11 @@ const NewReservationForm: React.FC = () => {
                       />
                     </div>
                     <div className="space-y-4">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
+                      <label htmlFor="res-guests" className="text-[10px] uppercase tracking-[0.4em] text-stone-400 font-black">
                         Guests
                       </label>
                       <select
+                        id="res-guests"
                         name="guests"
                         className="w-full border-b border-stone-200 bg-transparent py-3 focus:outline-none focus:border-sala-accent transition-colors font-light"
                         onChange={(e) =>

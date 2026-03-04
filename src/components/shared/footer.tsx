@@ -91,6 +91,7 @@ export function FooterExplosion({
     images.forEach((src) => {
       const img = document.createElement("img");
       img.src = src;
+      img.alt = "";
       img.className = "cg-explosion-particle";
       img.style.width = `${config.imageSize}px`;
       container.appendChild(img);

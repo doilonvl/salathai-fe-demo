@@ -1,20 +1,24 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const NewHero: React.FC = () => {
   const heroImage = "/Marquee/slide-1.jpg";
-  const logoImage = "/Logo/Logo1.png";
   const t = useTranslations("home.hero");
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="animate-fade-in absolute inset-0">
-          <img
+          <Image
             src={heroImage}
             alt="SalaThai Restaurant Ambiance"
-            className="w-full h-full object-cover transition-transform duration-[20s] scale-100 hover:scale-110"
+            fill
+            className="object-cover transition-transform duration-[20s] scale-100 hover:scale-110"
+            priority
+            sizes="100vw"
+            quality={85}
           />
         </div>
         <div className="absolute inset-0 bg-black/70 transition-colors duration-1000"></div>

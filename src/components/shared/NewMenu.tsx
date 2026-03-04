@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
+import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 import { SIGNATURE_DISHES_DATA } from "@/data/signature-dishes-data";
 import type { Dish } from "@/types/new-menu";
@@ -100,10 +101,13 @@ const NewMenu: React.FC = () => {
           {finalMenu.map((dish) => (
             <div key={dish.id} className="group cursor-pointer text-left">
               <div className="relative aspect-[4/5] overflow-hidden mb-6 bg-stone-100">
-                <img
+                <Image
                   src={dish.image}
                   alt={dish.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[20%] group-hover:grayscale-0"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[20%] group-hover:grayscale-0"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-sala-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>

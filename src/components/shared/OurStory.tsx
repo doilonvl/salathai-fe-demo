@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const OurStory = () => {
@@ -14,10 +15,13 @@ const OurStory = () => {
       className="relative overflow-hidden bg-stone-950 text-stone-100"
     >
       <div className="absolute inset-0">
-        <img
+        <Image
           src={textureImage}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+          fill
+          className="object-cover opacity-20"
+          sizes="100vw"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-950/90 to-black/70" />
         <div className="absolute -left-36 -top-20 h-80 w-80 rounded-full bg-amber-400/25 blur-[140px]" />
@@ -30,11 +34,14 @@ const OurStory = () => {
           <div className="relative">
             <div className="absolute -left-6 -top-6 h-20 w-20 border border-white/20" />
             <div className="absolute -bottom-6 -right-6 h-20 w-20 border border-white/10" />
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-              <img
+            <div className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+              <Image
                 src={storyImage}
                 alt={t("imageAlt")}
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-700 hover:scale-105"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6">
@@ -43,11 +50,14 @@ const OurStory = () => {
                 </p>
               </div>
             </div>
-            <div className="absolute -right-8 top-8 hidden w-36 rotate-6 overflow-hidden rounded-2xl border border-white/10 shadow-2xl md:block">
-              <img
+            <div className="absolute -right-8 top-8 hidden w-36 aspect-[3/4] rotate-6 overflow-hidden rounded-2xl border border-white/10 shadow-2xl md:block">
+              <Image
                 src={accentImage}
                 alt="Sala Thai dish"
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
+                sizes="144px"
+                loading="lazy"
               />
             </div>
           </div>

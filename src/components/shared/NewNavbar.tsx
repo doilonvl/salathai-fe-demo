@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import type { Locale } from "@/i18n/request";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
@@ -153,10 +154,13 @@ const NewNavbar: React.FC<NewNavbarProps> = ({
             <div
               className={`relative ${isScrolled ? "w-16 h-16" : "w-24 h-24"} transition-all duration-700`}
             >
-              <img
+              <Image
                 src={logoImage}
                 alt="Salathai Logo"
-                className="w-full h-full object-contain drop-shadow-2xl"
+                fill
+                className="object-contain drop-shadow-2xl"
+                priority
+                sizes="(max-width: 1024px) 96px, 96px"
               />
             </div>
           </a>
@@ -199,11 +203,15 @@ const NewNavbar: React.FC<NewNavbarProps> = ({
             className="relative z-[61] h-full w-full overflow-y-auto overscroll-contain"
           >
             <div className="sticky top-0 z-[62] flex items-center justify-between px-6 py-4 bg-white/95 backdrop-blur-sm">
-              <img
-                src={logoImage}
-                alt="Salathai Logo"
-                className="h-10 w-10 rounded-full object-contain"
-              />
+              <div className="relative h-10 w-10 shrink-0 rounded-full overflow-hidden">
+                <Image
+                  src={logoImage}
+                  alt="Salathai Logo"
+                  fill
+                  className="object-contain"
+                  sizes="40px"
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(false)}

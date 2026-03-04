@@ -1,6 +1,55 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+
+function LazyVideo({
+  src,
+  className,
+}: {
+  src: string;
+  className: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: "200px" }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (shouldLoad && videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [shouldLoad]);
+
+  return (
+    <video
+      ref={videoRef}
+      className={className}
+      muted
+      loop
+      playsInline
+      preload="none"
+    >
+      {shouldLoad && <source src={src} type="video/mp4" />}
+    </video>
+  );
+}
 
 const IntroReels = () => {
   const t = useTranslations("home.introReels");
@@ -55,16 +104,10 @@ const IntroReels = () => {
               }`}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/50 opacity-90" />
-              <video
+              <LazyVideo
+                src={reel.src}
                 className="h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              >
-                <source src={reel.src} type="video/mp4" />
-              </video>
+              />
               <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-4 p-5">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-white/70">
