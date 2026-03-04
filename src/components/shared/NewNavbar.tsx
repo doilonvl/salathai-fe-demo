@@ -160,7 +160,8 @@ const NewNavbar: React.FC<NewNavbarProps> = ({
                 fill
                 className="object-contain drop-shadow-2xl"
                 priority
-                sizes="(max-width: 1024px) 96px, 96px"
+                sizes="96px"
+                quality={75}
               />
             </div>
           </a>

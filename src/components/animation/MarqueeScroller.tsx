@@ -1,19 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Flip } from "gsap/Flip";
-import Lenis from "lenis";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { useLocale, useTranslations } from "next-intl";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { Locale } from "@/types/content";
-import {
-  useGetMarqueeImagesQuery,
-  useGetMarqueeSlidesQuery,
-} from "@/services/api";
+import { useGetMarqueeSlidesQuery } from "@/services/api";
 import type { MarqueeImage, MarqueeSlide } from "@/types/marquee";
 import "./MarqueeScroller.css";
 
@@ -31,151 +24,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const FALLBACK_MARQUEE_IMAGES: MarqueeImage[] = [
-  {
-    id: "local-marquee-1",
-    imageUrl: "/Marquee/img-1.jpg",
-    altText: "marquee-1",
-    altText_i18n: { vi: "marquee-1", en: "marquee-1" },
-    orderIndex: 1,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-2",
-    imageUrl: "/Marquee/img-2.jpg",
-    altText: "marquee-2",
-    altText_i18n: { vi: "marquee-2", en: "marquee-2" },
-    orderIndex: 2,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-3",
-    imageUrl: "/Marquee/img-3.jpg",
-    altText: "marquee-3",
-    altText_i18n: { vi: "marquee-3", en: "marquee-3" },
-    orderIndex: 3,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-4",
-    imageUrl: "/Marquee/img-4.jpg",
-    altText: "marquee-4",
-    altText_i18n: { vi: "marquee-4", en: "marquee-4" },
-    orderIndex: 4,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-5",
-    imageUrl: "/Marquee/img-5.jpg",
-    altText: "marquee-5",
-    altText_i18n: { vi: "marquee-5", en: "marquee-5" },
-    orderIndex: 5,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-6",
-    imageUrl: "/Marquee/img-6.jpeg",
-    altText: "marquee-6",
-    altText_i18n: { vi: "marquee-6", en: "marquee-6" },
-    orderIndex: 6,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-7",
-    imageUrl: "/Marquee/img-7.jpg",
-    altText: "marquee-7",
-    altText_i18n: { vi: "marquee-7", en: "marquee-7" },
-    orderIndex: 7,
-    isPinned: true,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-8",
-    imageUrl: "/Marquee/img-8.png",
-    altText: "marquee-8",
-    altText_i18n: { vi: "marquee-8", en: "marquee-8" },
-    orderIndex: 8,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-9",
-    imageUrl: "/Marquee/img-9.jpg",
-    altText: "marquee-9",
-    altText_i18n: { vi: "marquee-9", en: "marquee-9" },
-    orderIndex: 9,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-10",
-    imageUrl: "/Marquee/img-10.jpg",
-    altText: "marquee-10",
-    altText_i18n: { vi: "marquee-10", en: "marquee-10" },
-    orderIndex: 10,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-11",
-    imageUrl: "/Marquee/img-11.jpg",
-    altText: "marquee-11",
-    altText_i18n: { vi: "marquee-11", en: "marquee-11" },
-    orderIndex: 11,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-12",
-    imageUrl: "/Marquee/img-12.png",
-    altText: "marquee-12",
-    altText_i18n: { vi: "marquee-12", en: "marquee-12" },
-    orderIndex: 12,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "local-marquee-13",
-    imageUrl: "/Marquee/img-13.png",
-    altText: "marquee-13",
-    altText_i18n: { vi: "marquee-13", en: "marquee-13" },
-    orderIndex: 13,
-    isPinned: false,
-    isActive: true,
-    createdAt: "",
-    updatedAt: "",
-  },
-];
 const FALLBACK_MARQUEE_SLIDES: MarqueeSlide[] = [
   {
     id: "fallback-slide-1",
@@ -269,82 +117,11 @@ export function MarqueeScroller({
 }) {
   const locale = useLocale() as Locale;
   const t = useTranslations("home.marquee");
-  const [isMobile, setIsMobile] = useState(false);
-  const [hasMeasuredViewport, setHasMeasuredViewport] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const { data: marqueeImagesData } = useGetMarqueeImagesQuery(undefined, {
-    skip: initialImages.length > 0,
-  });
   const { data: marqueeSlidesData } = useGetMarqueeSlidesQuery(undefined, {
     skip: initialSlides.length > 0,
   });
 
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    const update = () => {
-      setIsMobile(mq.matches);
-      setHasMeasuredViewport(true);
-    };
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-
-  const marqueeItems = useMemo(() => {
-    const items = (
-      marqueeImagesData?.items?.length
-        ? marqueeImagesData.items
-        : initialImages.length
-          ? initialImages
-          : FALLBACK_MARQUEE_IMAGES
-    ) as MarqueeImage[];
-    if (!isMobile) {
-      return items.map((item, idx) => ({
-        ...item,
-        altText: pickLocalized(
-          item.altText_i18n,
-          locale,
-          item.altText || `marquee-${idx + 1}`,
-        ),
-      }));
-    }
-
-    const limit = 6;
-    const pinIdx = items.findIndex((item) => item.isPinned);
-    const centerIdx = pinIdx >= 0 ? pinIdx : 2;
-
-    let subset: typeof items;
-    if (items.length <= limit) {
-      subset = items;
-    } else {
-      const half = Math.floor(limit / 2); // 3 when limit=6
-      const start = Math.max(
-        0,
-        Math.min(items.length - limit, centerIdx - (half - 2)),
-      );
-      const end = start + limit;
-      subset = items.slice(start, end);
-      // Ensure pinned included; if not, append and trim.
-      if (pinIdx >= 0 && !subset.some((item) => item.isPinned)) {
-        subset = [...subset.slice(0, limit - 1), items[pinIdx]];
-      }
-    }
-
-    return subset.map((item, idx) => ({
-      ...item,
-      altText: pickLocalized(
-        item.altText_i18n,
-        locale,
-        item.altText || `marquee-${idx + 1}`,
-      ),
-    }));
-  }, [isMobile, locale, marqueeImagesData]);
-  const pinnedIndex = useMemo(() => {
-    if (!marqueeItems.length) return -1;
-    const idx = marqueeItems.findIndex((item) => item.isPinned);
-    if (idx >= 0) return idx;
-    return Math.min(6, marqueeItems.length - 1);
-  }, [marqueeItems]);
   const slides = useMemo(() => {
     const items = (
       marqueeSlidesData?.items?.length
@@ -372,14 +149,7 @@ export function MarqueeScroller({
     }
     return padded;
   }, [locale, marqueeSlidesData]);
-  const totalPanels = slides.length + 1; // spacer + slides
-  const maxTranslate =
-    totalPanels > 0 ? ((totalPanels - 1) / totalPanels) * 100 : 0; // wrapper shift %
-  const maxImageShift = Math.max(totalPanels - 1, 0) * 100; // pinned image shift %
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const pinnedCloneRef = useRef<HTMLImageElement | null>(null);
-  const flipRef = useRef<gsap.core.Timeline | null>(null);
-  const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!slides.length) return;
@@ -503,61 +273,6 @@ export function MarqueeScroller({
         </section>
       </div>
 
-      <div className="hidden">
-        
-
-        <section className="wjy-marquee">
-          <div className="wjy-marquee-wrapper">
-            <div className="wjy-marquee-images">
-              {marqueeItems.map((item, idx) => (
-                <div
-                  key={item.id}
-                  className={`wjy-marquee-img${
-                    idx === pinnedIndex ? " pin" : ""
-                  }`}
-                >
-                  <img src={item.imageUrl} alt={item.altText} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="wjy-horizontal">
-          <div
-            className="wjy-horizontal-wrapper"
-            style={{
-              ["--wjy-slide-count" as string]: totalPanels,
-            }}
-          >
-            <div className="wjy-horizontal-slide wjy-horizontal-spacer" />
-            {slides.map((slide, idx) => (
-              <div
-                key={slide.id ?? slide.imageUrl}
-                className="wjy-horizontal-slide"
-              >
-                <div className="wjy-slide-tag">{slide.tag}</div>
-                <div className="col text">
-                  <h3>{slide.text}</h3>
-                </div>
-                <div className="col image">
-                  <img
-                    src={slide.imageUrl}
-                    alt={slide.tag || `slide-${idx + 1}`}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="wjy-progress">
-            <div ref={progressRef} className="bar" />
-          </div>
-        </section>
-
-        <section className="wjy-outro">
-          <h1>{t("outro")}</h1>
-        </section>
-      </div>
     </div>
   );
 }

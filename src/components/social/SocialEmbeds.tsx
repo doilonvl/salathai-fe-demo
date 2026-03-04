@@ -76,7 +76,7 @@ export default function SocialEmbeds() {
     <div className="w-full">
       <Script
         id="instagram-embed"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src="https://www.instagram.com/embed.js"
         onLoad={() => window.instgrm?.Embeds?.process?.()}
       />
