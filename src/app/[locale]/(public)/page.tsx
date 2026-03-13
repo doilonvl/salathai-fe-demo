@@ -1,15 +1,30 @@
 import type { LandingMenuItem } from "@/types/landing";
 import type { MarqueeImage, MarqueeSlide } from "@/types/marquee";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { LandingReveal } from "@/components/animation/LandingReveal";
-import { MarqueeScroller } from "@/components/animation/MarqueeScroller";
-import SocialEmbeds from "@/components/social/SocialEmbeds";
 import { ReservationForm } from "@/components/shared/reservation-form";
 import { getApiBaseUrl, getSiteUrl } from "@/lib/env";
 import NewHero from "@/components/shared/NewHero";
 import NewMenu from "@/components/shared/NewMenu";
-import OurStory from "@/components/shared/OurStory";
-import IntroReels from "@/components/shared/IntroReels";
+
+const OurStory = dynamic(() => import("@/components/shared/OurStory"), {
+  ssr: true,
+});
+const IntroReels = dynamic(() => import("@/components/shared/IntroReels"), {
+  ssr: true,
+});
+const MarqueeScroller = dynamic(
+  () =>
+    import("@/components/animation/MarqueeScroller").then(
+      (mod) => mod.MarqueeScroller
+    ),
+  { ssr: true }
+);
+const SocialEmbeds = dynamic(
+  () => import("@/components/social/SocialEmbeds"),
+  { ssr: true }
+);
 
 export const revalidate = 300;
 

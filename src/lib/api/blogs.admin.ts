@@ -2,6 +2,7 @@
 import { getApiBaseUrl } from "@/lib/env";
 import type { Blog, BlogListResponse, BlogUpsertPayload } from "@/types/blog";
 import { refreshAccessToken } from "@/lib/auth";
+import { sanitizeSearch, safeLimit, validateImageFile } from "@/lib/security";
 
 const API_BASE_URL = getApiBaseUrl();
 
@@ -37,6 +38,15 @@ async function fetchAdminJson<T>(
     credentials: "include",
     cache: "no-store",
   });
+
+  // Handle rate limiting
+  if (res.status === 429) {
+    const error = new Error(
+      "Ban dang gui qua nhieu yeu cau. Vui long doi mot lat."
+    ) as AdminApiError;
+    error.status = 429;
+    throw error;
+  }
 
   if (res.status === 401 && retry) {
     const newToken = await refreshAccessToken();
@@ -74,12 +84,12 @@ export async function fetchAdminBlogs(params: {
 }) {
   const query = new URLSearchParams();
   if (params.page) query.set("page", String(params.page));
-  if (params.limit) query.set("limit", String(params.limit));
+  if (params.limit) query.set("limit", String(safeLimit(params.limit)));
   if (params.status && params.status !== "all") {
     query.set("status", params.status);
   }
   if (params.sort) query.set("sort", params.sort);
-  if (params.q) query.set("q", params.q);
+  if (params.q) query.set("q", sanitizeSearch(params.q));
   if (typeof params.deleted === "boolean") {
     query.set("deleted", params.deleted ? "true" : "false");
   }
@@ -143,6 +153,10 @@ type UploadImageResult = {
 };
 
 export async function uploadBlogImage(file: File) {
+  const validationError = validateImageFile(file);
+  if (validationError) {
+    throw new Error(validationError);
+  }
   const formData = new FormData();
   formData.append("file", file);
   return fetchAdminJson<UploadImageResult>(`/upload/single?folder=blogs`, {
@@ -180,6 +194,12 @@ function normalizeUploadImagesResponse(payload: unknown): UploadImageResult[] {
 }
 
 export async function uploadBlogImages(files: File[]) {
+  for (const file of files) {
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      throw new Error(`${file.name}: ${validationError}`);
+    }
+  }
   const formData = new FormData();
   files.forEach((file) => formData.append("files", file));
   const payload = await fetchAdminJson<unknown>(`/upload/multi?folder=blogs`, {

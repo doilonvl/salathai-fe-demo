@@ -7,6 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Email không hợp lệ"),
+  password: z.string().min(6, "Mật khẩu tối thiểu 6 ký tự"),
+});
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,15 +28,27 @@ export default function LoginPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    // Client-side validation
+    const parsed = loginSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message || "Dữ liệu không hợp lệ");
+      return;
+    }
+
     setLoading(true);
 
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: parsed.data.email, password: parsed.data.password }),
         credentials: "include",
       });
+
+      if (res.status === 429) {
+        throw new Error("Bạn đang gửi quá nhiều yêu cầu. Vui lòng đợi một lát.");
+      }
 
       if (!res.ok) {
         const data = await safeJson(res);
@@ -40,7 +58,7 @@ export default function LoginPage() {
       const nextUrl = searchParams.get("next") || `/${locale}/admin`;
       router.replace(nextUrl);
     } catch (err: any) {
-      setError(err?.message || "Có lỗi xảy ra");
+      setError(err?.message || "Có lỗi xảy ra, vui lòng thử lại");
     } finally {
       setLoading(false);
     }

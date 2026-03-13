@@ -4,6 +4,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { validateImageFile } from "@/lib/security";
 import {
   Loader2,
   Pencil,
@@ -265,6 +266,11 @@ export default function MarqueeSlidesAdminPage() {
                             onChange={async (e) => {
                               const file = e.target.files?.[0];
                               if (!file) return;
+                              const fileError = validateImageFile(file);
+                              if (fileError) {
+                                toast.error(fileError);
+                                return;
+                              }
                               try {
                                 const res = await uploadSingle({
                                   file,

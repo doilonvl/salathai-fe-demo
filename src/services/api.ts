@@ -46,6 +46,11 @@ const baseQueryWithReauth: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await rawBaseQuery(args, api, extraOptions);
 
+  // Handle rate limiting (429)
+  if (result.error && result.error.status === 429) {
+    return result;
+  }
+
   if (result.error && result.error.status === 401) {
     try {
       const refreshRes = await fetch("/api/auth/refresh", {
@@ -66,8 +71,8 @@ const baseQueryWithReauth: BaseQueryFn<
         }
         result = await rawBaseQuery(args, api, extraOptions);
       }
-    } catch (err) {
-      console.error("REFRESH_TOKEN_FAILED", err);
+    } catch {
+      // Token refresh failed silently
     }
   }
 

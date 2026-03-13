@@ -5,6 +5,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import type { Locale } from "@/i18n/request";
@@ -109,12 +110,13 @@ export default function LanguageSwitcher({
         aria-label={t("ariaLabel")}
       >
         <Globe className="h-4 w-4" />
-        <img
+        <Image
           src={flagByLocale[locale]?.flag}
           alt={flagByLocale[locale]?.label}
-          className="h-4 w-6 rounded-[3px] object-cover"
-          loading="lazy"
-          style={{ width: "1.5rem", height: "1rem" }}
+          width={24}
+          height={16}
+          className="rounded-[3px] object-cover"
+          sizes="24px"
         />
         <span className="text-[11px] font-semibold uppercase">
           {locale}

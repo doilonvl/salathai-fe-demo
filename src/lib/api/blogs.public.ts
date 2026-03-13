@@ -1,6 +1,7 @@
 import { getApiBaseUrl } from "@/lib/env";
 import type { Locale } from "@/types/content";
 import type { Blog, BlogListResponse } from "@/types/blog";
+import { safeLimit } from "@/lib/security";
 
 const API_BASE_URL = getApiBaseUrl();
 const PUBLIC_REVALIDATE_SECONDS = 60;
@@ -20,6 +21,14 @@ async function fetchPublicJson<T>(url: string, init?: RequestInit): Promise<T> {
     ...init,
     next: { revalidate: PUBLIC_REVALIDATE_SECONDS },
   });
+  if (res.status === 429) {
+    const error = new Error(
+      "Ban dang gui qua nhieu yeu cau. Vui long doi mot lat."
+    ) as ApiError;
+    error.status = 429;
+    throw error;
+  }
+
   if (!res.ok) {
     const error = new Error(
       `Public blogs request failed: ${res.status}`
@@ -42,7 +51,7 @@ export async function fetchPublicBlogs(params: {
   const url = new URL(`${API_BASE_URL}/public/blogs`);
   url.searchParams.set("locale", params.locale);
   if (params.page) url.searchParams.set("page", String(params.page));
-  if (params.limit) url.searchParams.set("limit", String(params.limit));
+  if (params.limit) url.searchParams.set("limit", String(safeLimit(params.limit)));
   if (params.sort) url.searchParams.set("sort", params.sort);
   if (params.tag) url.searchParams.set("tag", params.tag);
 
