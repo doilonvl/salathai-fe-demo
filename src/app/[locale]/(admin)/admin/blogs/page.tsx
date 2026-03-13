@@ -80,26 +80,34 @@ export default function AdminBlogsPage() {
 
   useEffect(() => {
     const controller = new AbortController();
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        const data = await fetchAdminBlogs({
+          page,
+          limit: LIMIT,
+          sort: "-updatedAt",
+          q: query || undefined,
+          status: status === "all" ? undefined : status,
+          signal: controller.signal,
+        });
+        if (!cancelled) {
+          setItems(data.items || []);
+          setTotal(data.total || 0);
+        }
+      } catch (err) {
+        if (cancelled || (err as Error).name === "AbortError") return;
+        setError(getErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
     setLoading(true);
     setError(null);
-    fetchAdminBlogs({
-      page,
-      limit: LIMIT,
-      sort: "-updatedAt",
-      q: query || undefined,
-      status: status === "all" ? undefined : status,
-      signal: controller.signal,
-    })
-      .then((data) => {
-        setItems(data.items || []);
-        setTotal(data.total || 0);
-      })
-      .catch((err) => {
-        if ((err as Error).name === "AbortError") return;
-        setError(getErrorMessage(err));
-      })
-      .finally(() => setLoading(false));
-    return () => controller.abort();
+    load();
+    return () => { cancelled = true; controller.abort(); };
   }, [page, query, status, refreshSeed]);
 
   const pageCount = Math.max(1, Math.ceil(total / LIMIT));
