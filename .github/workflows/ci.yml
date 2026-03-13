@@ -48,36 +48,3 @@ jobs:
           NEXT_PUBLIC_API_BASE_URL: https://api.salathai.com.vn/api/v1
           NEXT_PUBLIC_APP_URL: https://salathai.com.vn
           NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-
-  docker:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/salathai-fe:latest
-            ${{ secrets.DOCKER_USERNAME }}/salathai-fe:${{ github.sha }}
-          build-args: |
-            NEXT_PUBLIC_API_BASE_URL=https://api.salathai.com.vn/api/v1
-            NEXT_PUBLIC_APP_URL=https://salathai.com.vn
-            NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
