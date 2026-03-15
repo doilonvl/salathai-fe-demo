@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import NfContact from "@/components/contact/NfContact";
+import ContactMap from "@/components/contact/ContactMap";
 import type { Locale } from "@/types/content";
 import { getSiteUrl } from "@/lib/env";
 import { getLocalePrefix } from "@/lib/routes";
@@ -57,5 +58,10 @@ export async function generateMetadata({
 }
 
 export default function ContactPage() {
-  return <NfContact />;
+  return (
+    <>
+      <NfContact />
+      <ContactMap />
+    </>
+  );
 }

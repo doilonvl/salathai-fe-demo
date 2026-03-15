@@ -240,6 +240,10 @@
       "noteMax": "Notes must be 400 characters or fewer"
     }
   },
+  "contactMap": {
+    "heading": "Find us",
+    "getDirections": "Get directions"
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "The path you accessed may have been deleted or does not exist.",
